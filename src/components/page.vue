@@ -58,7 +58,7 @@
           <div class="table-col" style="width:33.3%;">
             <div class="table-title">活动名称</div>
               <div class="table-body" v-for="item in tableData" :key="item.activity_id">
-                <el-tooltip v-if="item.name&&item.name.length>4" class="item" effect="dark" :content="item.name" placement="top">
+                <el-tooltip v-if="item.name&&item.name.length>5" class="item" effect="dark" :content="item.name" placement="top">
                   <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
                 </el-tooltip>
                 <span v-else>{{item.name}}</span>
@@ -74,7 +74,7 @@
           <div class="table-col" style="width:24.6%;">
             <div class="table-title">所属场馆</div>
             <div class="table-body" v-for="item in tableData" :key="item.activity_id">
-              <el-tooltip v-if="item.stadium&&item.stadium.length>4" class="item" effect="dark" :content="item.stadium" placement="top">
+              <el-tooltip v-if="item.stadium&&item.stadium.length>5" class="item" effect="dark" :content="item.stadium" placement="top">
                 <span style="cursor:pointer;">{{item.stadium|cutString(item.stadium)}}</span>
               </el-tooltip>
               <span v-else>{{item.stadium}}</span>
@@ -86,7 +86,7 @@
             <div class="table-body" v-for="item in tableData" :key="item.activity_id">
               <span class="number">
                 <!-- {{item.number}} -->
-                <animate-number from="1" :to="item.peoplenum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number from="1" :to="item.peopleNum" duration="3000" easing="easeOutQuad"></animate-number>
               </span>
             </div>
           </div>
@@ -115,7 +115,7 @@
         <legend class="title">
           <div class="inner-title">数据统计</div>
         </legend>
-        <div class="statistics-body">
+        <div class="statistics-body" v-if="statisticData">
           <div class="sta-row">
             <!-- <div class="statistics-item">到馆<span class="number" style="margin:0 8px;">180</span>人</div> -->
             <!-- <div class="statistics-item">到馆
@@ -210,11 +210,6 @@
       <div class="topBox border">
         <div class="left-box">
           <div class="box-header" style="margin-bottom:20px;">场馆热力指数TOP5</div>
-          <!-- <div class="box-row">浙江图书馆<span class="number right">3094</span></div>
-          <div class="box-row">浙江文化馆<span class="number right">2580</span></div>
-          <div class="box-row">嘉兴图书馆<span class="number right">1427</span></div>
-          <div class="box-row">莲都区文化站<span class="number right">985</span></div>
-          <div class="box-row">宁波文化站<span class="number right">906</span></div>-->
           <div class="box-row" v-for="item in stadium" :key="item.name">
             {{item.name}}
             <span class="number right">
@@ -271,21 +266,6 @@
 </template>
 <script>
 var echarts = require("echarts");
-// var cities = require("../cities.json")
-// var map = require("../map.json");
-// var zhejiang = require("../zhejiang.json");
-// var hangzhou = require("../hangzhou.json");
-// var shaoxing = require("../shaoxing.json");
-// var huzhou = require("../huzhou.json");
-// var jiaxing = require("../jiaxing.json");
-// var jinhua = require("../jiaxing.json");
-// var lishui = require("../lishui.json");
-// var ningbo = require("../ningbo.json");
-// var quzhou = require("../quzhou.json");
-// var taizhou = require("../taizhou.json");
-// var wenzhou = require("../wenzhou.json");
-// var zhoushan = require("../zhoushan.json");
-// echarts.registerMap("map", cities);
 export default {
   name: "page",
   data() {
@@ -388,50 +368,8 @@ export default {
       button_area: "left",
       which: 0, //第几个按钮
       trend: "0",
-      stadium: [
-        {
-          name: "浙江图书馆",
-          value: 3094
-        },
-        {
-          name: "浙江文化馆",
-          value: 2580
-        },
-        {
-          name: "嘉兴图书馆",
-          value: 1427
-        },
-        {
-          name: "莲都区文化站",
-          value: 985
-        },
-        {
-          name: "宁波文化站",
-          value: 906
-        }
-      ],
-      site: [
-        {
-          name: "浙江图书馆",
-          value: 45
-        },
-        {
-          name: "浙江文化馆",
-          value: 39
-        },
-        {
-          name: "嘉兴图书馆",
-          value: 26
-        },
-        {
-          name: "莲都区文化站",
-          value: 17
-        },
-        {
-          name: "宁波文化站",
-          value: 13
-        }
-      ],
+      stadium: [],
+      site: [],
       currentTime: "",
       monthData: [],
       lineData: [],
@@ -442,7 +380,7 @@ export default {
       place: '浙江省',
       type: 'activity',
       mapData: [],
-      statisticData: {}
+      statisticData: '',
     };
   },
   methods: {
@@ -729,19 +667,9 @@ export default {
         ]
       });
     },
-    getMainData: function() {
-      this.$axios
-        .post("url", this.$qs(参数))
-        .then(res => {
-          console.log(res);
-        })
-        .catch(res => {
-          console.log(res);
-        });
-    },
     getHotActivity: function() {
       this.$axios
-        .post("/api/BigScreen/Index/hotActivityList",this.$qs.stringify({place:'浙江省'}))
+        .post("/api/BigScreen/Index/hotActivityList",this.$qs.stringify({place: this.place}))
         .then(res => {
           // console.log(res);
           if(res.data.CODE == 'ok'){
@@ -762,7 +690,7 @@ export default {
         });
     },
     getLoveData: function() {
-      this.$axios.post("/api/BigScreen/Index/hotActivityType",this.$qs.stringify({place:'浙江省'}))
+      this.$axios.post("/api/BigScreen/Index/hotActivityType",this.$qs.stringify({place: this.place}))
         .then(res => {
           // console.log(res);
           if(res.data.CODE == 'ok'){
@@ -781,7 +709,7 @@ export default {
         .catch(res => {
           console.log(res);
         });
-        this.$axios.post("/api/BigScreen/Index/hotServiceType",this.$qs.stringify({place:'浙江省'}))
+        this.$axios.post("/api/BigScreen/Index/hotServiceType",this.$qs.stringify({place: this.place}))
         .then(res => {
           if(res.data.CODE == 'ok'){
             this.pie2Data = res.data.DATA;
@@ -846,10 +774,15 @@ export default {
      * 下拉框值改变事件
      */
     switchMap: function(val) {
-      if(val=="浙江省"){
-        this.map.centerAndZoom('浙江省', 8);
-      }else{
-        this.map.centerAndZoom(val, 10);
+      if(this.place != val){
+        this.place = val;
+        if(val=="浙江省"){
+          this.map.centerAndZoom('浙江省', 8);
+          this.refresh();
+        }else{
+          this.map.centerAndZoom(val, 10);
+          this.refresh();
+        }
       }
     },
     /**
@@ -937,6 +870,7 @@ export default {
      * 获得月数据
      */
     getMonthData: function() {
+      this.monthData = [];
       let time = new Date();
       let startMonth = time.getMonth() -10;
       for(let i=0;i<12;i++){
@@ -952,7 +886,7 @@ export default {
      * 获得趋势数据
      */
     getTrendData: function() {
-      this.$axios.post('/api/BigScreen/Index/preMonthActivity',this.$qs.stringify({place:'浙江省'}))
+      this.$axios.post('/api/BigScreen/Index/preMonthActivity',this.$qs.stringify({place:this.place}))
         .then(res => {
           if(res.data.CODE == 'ok'){
             this.lineData = res.data.DATA;
@@ -1023,7 +957,7 @@ export default {
      * 切换趋势重新获取数据
      */
     changeTrendData: function(url) {
-      this.$axios.post(url,this.$qs.stringify({place:'浙江省'}))
+      this.$axios.post(url,this.$qs.stringify({place: this.place}))
       .then(res => {
         if(res.data.CODE == 'ok'){
           this.lineData = res.data.DATA;
@@ -1098,7 +1032,7 @@ export default {
      * 获取志愿者分布数据
      */
     getVolunteerData: function() {
-       this.$axios.post('/api/BigScreen/Index/volunteerDistribution',this.$qs.stringify({place:'浙江省'}))
+       this.$axios.post('/api/BigScreen/Index/volunteerDistribution',this.$qs.stringify({place: this.place}))
       .then(res => {
         if(res.data.CODE == 'ok'){
           this.ageData = res.data.DATA.age;
@@ -1110,6 +1044,11 @@ export default {
             this.typeData[i].itemStyle = { color: this.colors[i] };
           }
           this.initPie3();
+        }else{
+           this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
         }
       })
       .catch(res => {
@@ -1144,6 +1083,11 @@ export default {
               });
               this.map.addOverlay(label);  
             }
+        }else{
+           this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
         }
       })
       .catch(res=>{
@@ -1159,18 +1103,96 @@ export default {
         if(res.data.CODE == 'ok'){
           //  console.log(res);
           this.statisticData = res.data.DATA;
-          console.log(this.statisticData);
+          console.log('123',this.statisticData);
+        }else{
+           this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
         }
       })
       .catch(res=>{
         console.log(res);
       })
+    },
+    /**
+     * 获取top5数据
+     */
+    getTopData1: function() {
+      this.$axios.post('/api/BigScreen/Index/hopStadium',this.$qs.stringify({place: this.place}))
+      .then(res=>{
+        if(res.data.CODE == 'ok'){
+          //  console.log(res);
+          this.stadium = res.data.DATA;
+        }else{
+           this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
+        }
+      })
+      .catch(res=>{
+        console.log(res);
+      })
+    },
+    getTopData2: function() {
+      this.$axios.post('/api/BigScreen/Index/hotSpace',this.$qs.stringify({place: this.place}))
+      .then(res=>{
+        if(res.data.CODE == 'ok'){
+          this.site = res.data.DATA;
+        }else{
+           this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
+        }
+      })
+      .catch(res=>{
+        console.log(res);
+      })
+    },
+    /**
+     * 图书接还数据
+     */
+    getBookData: function() {
+      this.$axios.post('/api/BigScreen/Index/hotBookCirculate',this.$qs.stringify({place: this.place}))
+      .then(res=>{
+        if(res.data.CODE == 'ok'){
+           console.log(res);
+        }else{
+           this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
+        }
+      })
+      .catch(res=>{
+        console.log(res);
+      })
+    },
+    /**
+     * 更新地点执行函数
+     */
+    refresh: function() {
+      this.getHotActivity();
+      this.getStatisticsData();
+      this.initEchart();
+      this.getLoveData();
+      this.initBar();
+      this.getTrendData();
+      this.getVolunteerData();
+      this.getMapData();
+      this.getTopData1();
+      this.getTopData2();
+      this.getBookData();
+      this.getCurrentTime();
     }
   },
   created() {
     this.buttonData = this.leftButton;
     this.getMonthData();
     this.getHotActivity();
+    this.getStatisticsData();
   },
   mounted() {
     this.$nextTick(function() {
@@ -1180,15 +1202,17 @@ export default {
       this.getTrendData();
       this.getVolunteerData();
       this.getMapData();
-      this.getStatisticsData();
+      this.getTopData1();
+      this.getTopData2();
+      this.getBookData();
     });
     // this.getConect();
     this.getCurrentTime();
   },
   filters: {
     cutString: function (val) {
-      if(val&&val.length>4){
-        return val.slice(0,4) + '...'
+      if(val&&val.length>5){
+        return val.slice(0,5) + '...'
       }
     }
   }
