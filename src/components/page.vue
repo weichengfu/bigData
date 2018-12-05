@@ -4,140 +4,205 @@
     <div ref="earth" id="earth" style="height:100%;"></div>
     <!-- 城市选择下拉框 -->
     <div class="header">
-         <span>智慧文化云全省数据大屏</span>
-        <el-select v-model="city" placeholder="请选择" style="background:rgba(255,255,255,0);" @change="switchMap">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+      <span>智慧文化云全省数据大屏</span>
+      <el-select
+        v-model="city"
+        placeholder="请选择"
+        style="background:rgba(255,255,255,0);"
+        @change="switchMap"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
     </div>
     <!-- 散点图和热力图切换框 -->
     <div class="switch-button">
-      <div class="child-button" :class="{'active-father-button': button_area == 'left'}" @click="leftClick">分布图</div>
-      <div class="child-button" :class="{'active-father-button': button_area == 'right'}" @click="rightClick">热力图</div>
+      <div
+        class="child-button"
+        :class="{'active-father-button': button_area == 'left'}"
+        @click="leftClick"
+      >分布图</div>
+      <div
+        class="child-button"
+        :class="{'active-father-button': button_area == 'right'}"
+        @click="rightClick"
+      >热力图</div>
     </div>
     <div class="under-button">
-      <div class="button" v-for="(item,index) in buttonData" :key="item.name" @click="buttonClick(index)" :class="{'active-button': which==index }">{{item.name}}</div>
+      <div
+        class="button"
+        v-for="(item,index) in buttonData"
+        :key="item.name"
+        @click="buttonClick(index)"
+        :class="{'active-button': which==index }"
+      >{{item.name}}</div>
     </div>
     <!-- 时间框 -->
     <div class="time">{{currentTime}}</div>
     <!-- 左列框 -->
     <div class="left-area">
-        <!-- 热门活动框 -->
-        <fieldset class="hotActivity border">
-          <!-- 右上角 -->
-          <div class="hot-tr corner1"></div>
-          <!-- 左下角 -->
-          <div class="hot-lb corner2"></div>
-          <legend class="title"><div class="inner-title">热门活动</div></legend>
-          <div class="table">
-            <div class="table-col" style="width:33.3%;">
-              <div class="table-title">活动名称</div>
-              <div class="table-body" v-for="item in tableData" :key="item.name">{{item.name}}</div>
-            </div>
-            <!-- 渐变线框（用div填空背景色模拟边框） -->
-            <div class="jianbian"></div>
-            <div class="table-col" style="width:18.1%;">
-              <div class="table-title">类型</div>
-              <div class="table-body" v-for="item in tableData" :key="item.name">{{item.type}}</div>
-            </div>
-            <div class="jianbian"></div>
-            <div class="table-col" style="width:24.6%;">
-              <div class="table-title">所属场馆</div>
-              <div class="table-body" v-for="item in tableData" :key="item.name">{{item.address}}</div>
-            </div>
-            <div class="jianbian"></div>
-            <div class="table-col">
-              <div class="table-title">报名人数</div>
-              <div class="table-body" v-for="item in tableData" :key="item.name"><span class="number">
-                <!-- {{item.number}} -->
-                <animate-number from="1" :to='item.number'  duration="3000"  easing="easeOutQuad"></animate-number>
-                </span></div>
+      <!-- 热门活动框 -->
+      <fieldset class="hotActivity border">
+        <!-- 右上角 -->
+        <div class="hot-tr corner1"></div>
+        <!-- 左下角 -->
+        <div class="hot-lb corner2"></div>
+        <legend class="title">
+          <div class="inner-title">热门活动</div>
+        </legend>
+        <div class="table">
+          <div class="table-col" style="width:33.3%;">
+            <div class="table-title">活动名称</div>
+              <div class="table-body" v-for="item in tableData" :key="item.activity_id">
+                <el-tooltip v-if="item.name&&item.name.length>4" class="item" effect="dark" :content="item.name" placement="top">
+                  <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
+                </el-tooltip>
+                <span v-else>{{item.name}}</span>
+              </div>
+          </div>
+          <!-- 渐变线框（用div填空背景色模拟边框） -->
+          <div class="jianbian"></div>
+          <div class="table-col" style="width:18.1%;">
+            <div class="table-title">类型</div>
+            <div class="table-body" v-for="item in tableData" :key="item.activity_id">{{item.type}}</div>
+          </div>
+          <div class="jianbian"></div>
+          <div class="table-col" style="width:24.6%;">
+            <div class="table-title">所属场馆</div>
+            <div class="table-body" v-for="item in tableData" :key="item.activity_id">
+              <el-tooltip v-if="item.stadium&&item.stadium.length>4" class="item" effect="dark" :content="item.stadium" placement="top">
+                <span style="cursor:pointer;">{{item.stadium|cutString(item.stadium)}}</span>
+              </el-tooltip>
+              <span v-else>{{item.stadium}}</span>
             </div>
           </div>
-        </fieldset>
-        <!-- 喜爱情况框 -->
-        <div class="love border" ref="love">
-          <div ref="loveforactivity" style="width:50%;height:100%;"></div>
-          <div ref="loveforservice" style="width:50%;height:100%;"></div>
-          <div class="love-tr corner1"></div>
-          <div class="love-lb corner2"></div>
+          <div class="jianbian"></div>
+          <div class="table-col">
+            <div class="table-title">报名人数</div>
+            <div class="table-body" v-for="item in tableData" :key="item.activity_id">
+              <span class="number">
+                <!-- {{item.number}} -->
+                <animate-number from="1" :to="item.peoplenum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>
+            </div>
+          </div>
         </div>
-        <!-- 志愿者分布框 -->
-        <div class="volunteer border">
-          <div ref="volunteer" style="width:100%;height:100%;"></div>
-          <div class="volunteer-tr corner1"></div>
-          <div class="volunteer-lb corner2"></div>
-        </div>
+      </fieldset>
+      <!-- 喜爱情况框 -->
+      <div class="love border" ref="love">
+        <div ref="loveforactivity" style="width:50%;height:100%;"></div>
+        <div ref="loveforservice" style="width:50%;height:100%;"></div>
+        <div class="love-tr corner1"></div>
+        <div class="love-lb corner2"></div>
+      </div>
+      <!-- 志愿者分布框 -->
+      <div class="volunteer border">
+        <div ref="volunteer" style="width:100%;height:100%;"></div>
+        <div class="volunteer-tr corner1"></div>
+        <div class="volunteer-lb corner2"></div>
+      </div>
     </div>
     <!-- 右列框 -->
     <div class="right-area">
-       <!-- 数据统计框 -->
+      <!-- 数据统计框 -->
       <fieldset class="statistics border">
         <div class="statistics-tr corner1"></div>
         <div class="statistics-lb corner2"></div>
-        <legend class="title"><div class="inner-title">数据统计</div></legend>
+        <legend class="title">
+          <div class="inner-title">数据统计</div>
+        </legend>
         <div class="statistics-body">
           <div class="sta-row">
             <!-- <div class="statistics-item">到馆<span class="number" style="margin:0 8px;">180</span>人</div> -->
-            <div class="statistics-item">到馆<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="1000"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人</div>
-            <div class="statistics-item">注册<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="3000"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人</div>
+            <!-- <div class="statistics-item">到馆
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div> -->
+            <div class="statistics-item">注册
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.registerNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">活动<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="598"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>场</div>
-            <div class="statistics-item">报名<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="254"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人</div>
-            <div class="statistics-item">参与<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="324"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人</div>
+            <div class="statistics-item">活动
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.activityNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>场
+            </div>
+            <div class="statistics-item">报名
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.activityJoinNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div>
+            <div class="statistics-item">参与
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.activityApplyNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">志愿者<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="598"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人</div>
-            <div class="statistics-item">志愿项目<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="254"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>个</div>
-            <div class="statistics-item">参与<span class="number" style="margin:0 8px;">324</span>人</div>
+            <div class="statistics-item">志愿者
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.volunteerNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div>
+            <div class="statistics-item">志愿项目
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.volunteerActivityNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>个
+            </div>
+            <div class="statistics-item">参与
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.volunteerActivityApplyNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">场地预定<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="598"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>次</div>
-            <div class="statistics-item">场地使用<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="1254"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人</div>
+            <div class="statistics-item">场地预定
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.spaceAppointNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>次
+            </div>
+            <div class="statistics-item">场地使用
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.spaceUsedNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人
+            </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">服务点单<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="352"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>次</div>
-            <div class="statistics-item">覆盖区县<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="263"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>个</div>
+            <div class="statistics-item">服务点单
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.serviceNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>次
+            </div>
+            <div class="statistics-item">覆盖区县
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.serviceCoverNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>个
+            </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">资讯发布<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="8690"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>篇</div>
-            <div class="statistics-item">浏览<span class="number" style="margin:0 8px;">
-              <animate-number from="1" to="17953"  duration="3000"  easing="easeOutQuad"></animate-number>
-              </span>人次</div>
+            <div class="statistics-item">资讯发布
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.informationNum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>篇
+            </div>
+            <div class="statistics-item">浏览
+              <span class="number" style="margin:0 8px;">
+                <animate-number from="1" :to="statisticData.informationSum" duration="3000" easing="easeOutQuad"></animate-number>
+              </span>人次
+            </div>
           </div>
         </div>
       </fieldset>
@@ -149,9 +214,12 @@
           <div class="box-row">浙江文化馆<span class="number right">2580</span></div>
           <div class="box-row">嘉兴图书馆<span class="number right">1427</span></div>
           <div class="box-row">莲都区文化站<span class="number right">985</span></div>
-          <div class="box-row">宁波文化站<span class="number right">906</span></div> -->
+          <div class="box-row">宁波文化站<span class="number right">906</span></div>-->
           <div class="box-row" v-for="item in stadium" :key="item.name">
-            {{item.name}}<span class="number right"><animate-number from="1" :to="item.value"  duration="3000"  easing="easeOutQuad"></animate-number></span>
+            {{item.name}}
+            <span class="number right">
+              <animate-number from="1" :to="item.value" duration="3000" easing="easeOutQuad"></animate-number>
+            </span>
           </div>
         </div>
         <div class="jianbian" style="height: auto;"></div>
@@ -161,9 +229,13 @@
           <div class="box-row">浙江文化馆<span class="right">&nbsp;次</span><span class="number right">39</span></div>
           <div class="box-row">嘉兴图书馆<span class="right">&nbsp;次</span><span class="number right">26</span></div>
           <div class="box-row">莲都区文化站<span class="right">&nbsp;次</span><span class="number right">17</span></div>
-          <div class="box-row">宁波文化站<span class="right">&nbsp;次</span><span class="number right">13</span></div> -->
+          <div class="box-row">宁波文化站<span class="right">&nbsp;次</span><span class="number right">13</span></div>-->
           <div class="box-row" v-for="item in site" :key="item.name">
-            {{item.name}}<span class="right">&nbsp;次</span><span class="number right"><animate-number from="1" :to="item.value"  duration="3000"  easing="easeOutQuad"></animate-number></span>
+            {{item.name}}
+            <span class="right">&nbsp;次</span>
+            <span class="number right">
+              <animate-number from="1" :to="item.value" duration="3000" easing="easeOutQuad"></animate-number>
+            </span>
           </div>
         </div>
         <div class="topBox-tr corner1"></div>
@@ -179,7 +251,19 @@
     <!-- 趋势框 -->
     <div class="trend border">
       <div ref="trend" style="width:100%;height:100%;"></div>
-      <div class="switch-title"><span class="trend-switch" :class="{'activeTrend': trend=='0'}" @click="switchTrend1">活动报名月趋势</span><span style="margin:0 6px;">/</span><span class="trend-switch" :class="{'activeTrend': trend=='1'}" @click="switchTrend2">服务点单月趋势</span></div>
+      <div class="switch-title">
+        <span
+          class="trend-switch"
+          :class="{'activeTrend': trend=='0'}"
+          @click="switchTrend1"
+        >活动报名月趋势</span>
+        <span style="margin:0 6px;">/</span>
+        <span
+          class="trend-switch"
+          :class="{'activeTrend': trend=='1'}"
+          @click="switchTrend2"
+        >服务点单月趋势</span>
+      </div>
       <div class="trend-tr corner1"></div>
       <div class="trend-lb corner2"></div>
     </div>
@@ -187,144 +271,85 @@
 </template>
 <script>
 var echarts = require("echarts");
-var cities = require("../cities.json")
-var map = require("../map.json");
-var zhejiang = require("../zhejiang.json");
-var hangzhou = require("../hangzhou.json");
-var shaoxing = require("../shaoxing.json");
-var huzhou = require("../huzhou.json");
-var jiaxing = require("../jiaxing.json");
-var jinhua = require("../jiaxing.json");
-var lishui = require("../lishui.json");
-var ningbo = require("../ningbo.json");
-var quzhou = require("../quzhou.json");
-var taizhou = require("../taizhou.json");
-var wenzhou = require("../wenzhou.json");
-var zhoushan = require("../zhoushan.json");
-echarts.registerMap("map", cities);
+// var cities = require("../cities.json")
+// var map = require("../map.json");
+// var zhejiang = require("../zhejiang.json");
+// var hangzhou = require("../hangzhou.json");
+// var shaoxing = require("../shaoxing.json");
+// var huzhou = require("../huzhou.json");
+// var jiaxing = require("../jiaxing.json");
+// var jinhua = require("../jiaxing.json");
+// var lishui = require("../lishui.json");
+// var ningbo = require("../ningbo.json");
+// var quzhou = require("../quzhou.json");
+// var taizhou = require("../taizhou.json");
+// var wenzhou = require("../wenzhou.json");
+// var zhoushan = require("../zhoushan.json");
+// echarts.registerMap("map", cities);
 export default {
   name: "page",
   data() {
     return {
-      myChart: "",
-      tableData: [
-        {
-          name: "文演",
-          type: "文艺",
-          address: "杭州",
-          number: 569
-        },
-        {
-          name: "小品",
-          type: "文艺",
-          address: "金华",
-          number: 368
-        },
-        {
-          name: "相声",
-          type: "文艺",
-          address: "温州",
-          number: 786
-        },
-        {
-          name: "说书",
-          type: "文艺",
-          address: "衢州",
-          number: 956
-        },
-        {
-          name: "曲艺",
-          type: "文艺",
-          address: "丽水",
-          number: 368
-        },
-        {
-          name: "吹笛",
-          type: "文艺",
-          address: "杭州",
-          number: 498
-        },
-        {
-          name: "诗歌朗诵",
-          type: "文艺",
-          address: "宁波",
-          number: 956
-        },
-        {
-          name: "电影观赏",
-          type: "文艺",
-          address: "宁波",
-          number: 653
-        },
-        // {
-        //   name: "综艺节目",
-        //   type: "文艺",
-        //   address: "湖州",
-        //   number: 866
-        // },
-        // {
-        //   name: "书法大赛",
-        //   type: "文艺",
-        //   address: "嘉兴",
-        //   number: 687
-        // }
-      ],
+      colors: ['#33A0FF','#FFA033','#55E3ED','#7083FF','#ADE4FF','#5CC9FF','#93F5D4','#C2FFFB','#B17ACC','#D6D6FF'],
+      tableData: [],
       pie1: "",
+      pie1Data: [],
       pie2: "",
+      pie2Data: [],
       pie3: "",
       line: "",
       bar: "",
       options: [
         {
-          value: "1101",
+          value: "浙江省",
           label: "浙江省"
         },
         {
-          value: "1102",
+          value: "杭州市",
           label: "杭州市"
         },
         {
-          value: "1103",
+          value: "湖州市",
           label: "湖州市"
         },
         {
-          value: "1104",
+          value: "嘉兴市",
           label: "嘉兴市"
         },
         {
-          value: "1105",
+          value: "宁波市",
           label: "宁波市"
         },
         {
-          value: "1107",
+          value: "台州市",
           label: "台州市"
         },
         {
-          value: "1106",
+          value: "绍兴市",
           label: "绍兴市"
         },
         {
-          value: "1108",
+          value: "温州市",
           label: "温州市"
         },
         {
-          value: "1109",
+          value: "丽水市",
           label: "丽水市"
         },
         {
-          value: "1110",
+          value: "金华市",
           label: "金华市"
         },
         {
-          value: "1111",
+          value: "衢州市",
           label: "衢州市"
         },
         {
-          value: "1112",
+          value: "舟山市",
           label: "舟山市"
         }
       ],
-      city: "1101",
+      city: "浙江省",
       buttonData: [],
       leftButton: [
         {
@@ -363,428 +388,85 @@ export default {
       button_area: "left",
       which: 0, //第几个按钮
       trend: "0",
-      data1: [820, 932, 901, 934, 1290, 1330, 1320, 690, 780, 1543, 1110, 1200],
-      data2: [930, 899, 788, 925, 654, 1230, 1100, 566, 899, 985, 966, 874],
-      hangzhouData: [
-        {
-          name: '滨江区',
-          value: [120.2182019597,30.2147153586,300]
-        },
-        {
-          name: '江干区',
-          value: [120.2115832226,30.2633516551,200]
-        },
-        {
-          name: '上城区',
-          value: [120.1758834947,30.2482541529,123]
-        },
-        {
-          name: '萧山区',
-          value: [120.2707054791,30.1908560231,180]
-        },
-        {
-          name: '余杭区',
-          value: [120.3059202616, 30.3238430000001,180]
-        }
-      ],
-      shaoxingData: [
-        {
-          name: '绍兴县',
-          value: [120.4456958802, 30.0916047916,180]
-        },
-        {
-          name: '新昌县',
-          value: [120.9104264492, 29.5055626135,130]
-        },
-        {
-          name: '诸暨市',
-          value: [120.2532442741, 29.7148614199,210]
-        },
-        {
-          name: '嵊州市',
-          value: [120.8371869959, 29.5674963982,180]
-        }
-      ],
-      zhejiangData: [
-          {
-            name: "杭州",
-            value: [120.153576, 30.287459, 800]
-          },
-          {
-            name: "湖州",
-            value: [120.102398, 30.867198, 500]
-          },
-          {
-            name: "绍兴",
-            value: [120.582112, 29.997117, 300]
-          },
-          {
-            name: "金华",
-            value: [119.649506, 29.089524, 900]
-          }
-      ],
       stadium: [
         {
-          name: '浙江图书馆',
+          name: "浙江图书馆",
           value: 3094
         },
         {
-          name: '浙江文化馆',
+          name: "浙江文化馆",
           value: 2580
         },
         {
-          name: '嘉兴图书馆',
+          name: "嘉兴图书馆",
           value: 1427
         },
         {
-          name: '莲都区文化站',
+          name: "莲都区文化站",
           value: 985
         },
         {
-          name: '宁波文化站',
+          name: "宁波文化站",
           value: 906
         }
       ],
       site: [
         {
-          name: '浙江图书馆',
+          name: "浙江图书馆",
           value: 45
         },
         {
-          name: '浙江文化馆',
+          name: "浙江文化馆",
           value: 39
         },
         {
-          name: '嘉兴图书馆',
+          name: "嘉兴图书馆",
           value: 26
         },
         {
-          name: '莲都区文化站',
+          name: "莲都区文化站",
           value: 17
         },
         {
-          name: '宁波文化站',
+          name: "宁波文化站",
           value: 13
         }
       ],
-      currentTime: '',
-      zoom: 1,     //地图缩放比例
+      currentTime: "",
+      monthData: [],
+      lineData: [],
+      legendData: [],
+      ageData: [],
+      typeData: [],
+      map: '',
+      place: '浙江省',
+      type: 'activity',
+      mapData: [],
+      statisticData: {}
     };
   },
   methods: {
     initEchart: function() {
-      this.myChart = echarts.init(this.$refs.earth);
-      this.myChart.setOption({
-        backgroundColor: "rgba(21,78,144,0)",
-        tooltip: {
-          // trigger: 'item'
-        },
-        geo: {
-          map: "map",
-          // center: [120.498, 29.0918], //以浙江省为中心
-          scaleLimit: {
-            //缩放限制
-            min: 0.5,
-            max: 3
-          },
-          regions: [
-            {
-                name: '宁波市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '杭州市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '湖州市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '嘉兴市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '丽水市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '台州市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '温州市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '绍兴市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '舟山市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '衢州市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            },
-            {
-                name: '金华市',
-                label: {
-                  show: true,
-                  color: 'white',
-                  // fontSize: 16
-                },
-                itemStyle: {
-                  borderColor: "black"
-                }
-            }
-          ],
-          selectedMode: "single",
-          label: {
-            normal: {
-              // show: true,
-              color: "white"
-            },
-            emphasis: {
-              show: true,
-              color: "#fff"
-            }
-          },
-          roam: true,
-          itemStyle: {
-            normal: {
-              areaColor: "#5CB3FF",
-              borderColor: "rgba(0,135,255,0.3)"
-            },
-            emphasis: {
-              areaColor: "dodgerblue"
-            }
-          }
-        },
-        series: [
-          {
-            name: "活动人数",
-            type: "effectScatter",
-            coordinateSystem: "geo",
-            data: [
-              {
-                name: "杭州",
-                value: [120.153576, 30.287459, 800]
-              },
-              {
-                name: "湖州",
-                value: [120.102398, 30.867198, 500]
-              },
-              {
-                name: "绍兴",
-                value: [120.582112, 29.997117, 300]
-              },
-              {
-                name: "金华",
-                value: [119.649506, 29.089524, 900]
-              }
-            ],
-            symbolSize: function(val) {
-              return val[2] / 20;
-            },
-            showEffectOn: "render", //特效显示
-            rippleEffect: {
-              brushType: "stroke", //波纹的绘制方式
-              period: 2, //动画周期，控制波纹扩展速度
-              scale: 3 //波纹的最大缩放比例
-            },
-            symbol: "circle",
-            hoverAnimation: true,
-            label: {
-              normal: {
-                // formatter: "{b}",
-                // position: ['50%','50%'],
-                formatter: function (params) {
-                    return params.value[2];
-                },
-                top: 'center',
-                left: 'center',
-                show: true
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#FFAA00",
-                shadowBlur: 10,
-                shadowColor: "#333"
-              }
-            },
-            tooltip: {
-              trigger: "item",
-              // formatter: "{a} <br/>{b} : {c1}"
-              formatter: function (params) {
-                  return params.seriesName + '<br>' + params.name + ' : ' + params.value[2];
-              }
-            },
-          }
-          // {
-          //   name: "test",
-          //   type: "effectScatter",
-          //   coordinateSystem: "geo",
-          //   silent: true,
-          //   data: [
-          //     {
-          //       name: "衢州市",
-          //       value: [118.87263, 28.941708, 120]
-          //     },
-          //     {
-          //       name: "丽水市",
-          //       value: [119.921786, 28.451993, 110]
-          //     },
-          //     {
-          //       name: "台州市",
-          //       value: [121.428599, 28.661378, 126]
-          //     },
-          //     {
-          //       name: "嘉兴市",
-          //       value: [120.750865, 30.762653, 160]
-          //     },
-          //     {
-          //       name: "温州市",
-          //       value: [120.672111, 28.000575, 160]
-          //     }
-          //   ],
-          //   symbolSize: function(val) {
-          //     return val[2] / 10;
-          //   },
-          //   showEffectOn: "render", //特效显示
-          //   rippleEffect: {
-          //     brushType: "stroke", //波纹的绘制方式
-          //     period: 2, //动画周期，控制波纹扩展速度
-          //     scale: 4 //波纹的最大缩放比例
-          //   },
-          //   symbol: "circle",
-          //   hoverAnimation: true,
-          //   label: {
-          //     normal: {
-          //       formatter: "{b}",
-          //       position: "right",
-          //       show: true
-          //     }
-          //   },
-          //   itemStyle: {
-          //     normal: {
-          //       color: "#ff0000",
-          //       shadowBlur: 10,
-          //       shadowColor: "#333"
-          //     }
-          //   }
-          // }
-        ]
+      this.map = new BMap.Map("earth",{enableMapClick:false});
+      // map.centerAndZoom(new BMap.Point(120.2163362199, 30.2527602473), 10);
+      this.map.centerAndZoom('浙江省', 8);
+      this.map.enableScrollWheelZoom();
+      var geocoder = new BMap.Geocoder();
+      // 拖拽后获取中心点坐标
+      this.map.addEventListener("dragend", (e)=> {
+        console.log(this.map.getZoom());
+        console.log(this.map.getCenter());
+        geocoder.getLocation(this.map.getCenter(), function(rs) {
+          console.log(rs); //位置信息
+        });
       });
-      // 监听点击
-      this.myChart.on("click", params => {
-        console.log(params);
-        if (params.name == "杭州市") {
-          this.city = "1102";
-          echarts.registerMap("map", hangzhou);
-          this.myChart.clear();
-          this.initEchart();
-          let option = this.myChart.getOption();
-          option.series[0].data = this.hangzhouData;
-          this.myChart.setOption(option);
-        } else if (params.name == "绍兴市") {
-          this.city = "1106";
-          echarts.registerMap("map", shaoxing);
-          this.myChart.clear();
-          this.initEchart();
-          let option = this.myChart.getOption();
-          option.series[0].data = this.shaoxingData;
-          this.myChart.setOption(option);
-        }
+      // 缩放结束
+      this.map.addEventListener("zoomend", (e)=> {
+        console.log("e", e);
+        console.log(this.map.getZoom());
       });
-      // 监听缩放
-      this.myChart.on('georoam', (params)=>{ 
-        // console.log(params);
-        if(params.zoom){
-          let option = this.myChart.getOption();
-          console.log(option);
-          this.zoom *= params.zoom;
-          if(this.zoom>1.5){
-            option.geo[0].label.show = true;
-            this.myChart.setOption(option);
-          }else{
-            option.geo[0].label.show = false;
-            this.myChart.setOption(option);
-          }
-        }
-      });
+      var mapStyle={  style : "midnight" }  
+      this.map.setMapStyle(mapStyle);
     },
     initPie1: function() {
       this.pie1 = echarts.init(this.$refs.loveforactivity);
@@ -810,36 +492,7 @@ export default {
             type: "pie",
             radius: "50%",
             center: ["50%", "60%"],
-            data: [
-              {
-                value: 335,
-                name: "书法",
-                itemStyle: {
-                  color: "#0087FF"
-                }
-              },
-              {
-                value: 310,
-                name: "绘画",
-                itemStyle: {
-                  color: "#FF8800"
-                }
-              },
-              {
-                value: 234,
-                name: "钢琴",
-                itemStyle: {
-                  color: "#00BAD6"
-                }
-              },
-              {
-                value: 135,
-                name: "太极",
-                itemStyle: {
-                  color: "#5D3DFF"
-                }
-              }
-            ],
+            data: this.pie1Data,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -869,48 +522,15 @@ export default {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
-        roseType: 'radius',
-        // legend: {
-        //   orient: "vertical",
-        //   left: "left",
-        //   data: ["服务", "讲座", "演出", "其他"]
-        // },
+        // roseType: "radius",
         series: [
           {
             name: "服务类型",
             type: "pie",
             radius: "50%",
+            radius: ["30%", "60%"],
             center: ["50%", "60%"],
-            data: [
-              {
-                value: 335,
-                name: "服务",
-                itemStyle: {
-                  color: "#0087FF"
-                }
-              },
-              {
-                value: 310,
-                name: "讲座",
-                itemStyle: {
-                  color: "#FF8800"
-                }
-              },
-              {
-                value: 234,
-                name: "演出",
-                itemStyle: {
-                  color: "#00BAD6"
-                }
-              },
-              {
-                value: 135,
-                name: "其他",
-                itemStyle: {
-                  color: "#5D3DFF"
-                }
-              }
-            ],
+            data: this.pie2Data,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -940,47 +560,18 @@ export default {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
-        // legend: {
-        //   orient: "vertical",
-        //   left: "left",
-        //   data: ["杭州", "金华", "台州", "舟山"]
-        // },
         series: [
           {
-            name: "分布",
+            name: "年龄分布",
             type: "pie",
-            radius: ['30%','60%'],
+            radius: "30%",
             center: ["50%", "50%"],
-            data: [
-              {
-                value: 335,
-                name: "杭州",
-                itemStyle: {
-                  color: "#0087FF"
+            label: {
+                normal: {
+                    position: 'inner'
                 }
-              },
-              {
-                value: 310,
-                name: "金华",
-                itemStyle: {
-                  color: "#FF8800"
-                }
-              },
-              {
-                value: 234,
-                name: "台州",
-                itemStyle: {
-                  color: "#00BAD6"
-                }
-              },
-              {
-                value: 135,
-                name: "舟山",
-                itemStyle: {
-                  color: "#5D3DFF"
-                }
-              }
-            ],
+            },
+            data: this.ageData,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -988,6 +579,12 @@ export default {
                 shadowColor: "rgba(0, 0, 0, 0.5)"
               }
             }
+          },
+          {
+              name:'类型分布',
+              type:'pie',
+              radius: ['40%', '60%'],
+              data: this.typeData
           }
         ]
       });
@@ -1009,20 +606,7 @@ export default {
               color: "rgba(214,236,255,0.32)"
             }
           },
-          data: [
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月"
-          ]
+          data: this.monthData
         },
         yAxis: {
           type: "value",
@@ -1036,137 +620,23 @@ export default {
           }
         },
         grid: {
-          bottom: '10%',
-          right: '6%'
+          bottom: "10%",
+          right: "6%"
         },
         legend: {
-          data: ["全部", "类型2", "类型3"],
+          data: this.legendData,
           selectedMode: "single",
           y: 10,
           right: 10,
           inactiveColor: "#ADD9FF",
           textStyle: {
-            color: '#00FFFF'
+            color: "#00FFFF"
           }
         },
         tooltip: {
           trigger: "axis"
         },
-        series: [
-          {
-            name: "全部",
-            data: [
-              820,
-              932,
-              901,
-              934,
-              1290,
-              1330,
-              1320,
-              690,
-              780,
-              1543,
-              1110,
-              1200
-            ],
-            type: "line",
-            itemStyle: {
-              color: "#00FFFF"
-            },
-            // smooth: true,
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(0,255,255,1)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(0,255,255,0)" // 100% 处的颜色
-                  }
-                ],
-                globalCoord: true // 缺省为 false
-              }
-            }
-          },
-          {
-            name: "类型2",
-            data: [
-              1200,
-              899,
-              901,
-              934,
-              1000,
-              1210,
-              1002,
-              690,
-              780,
-              1543,
-              910,
-              880
-            ],
-            type: "line",
-            itemStyle: {
-              color: "#0087FF"
-            },
-            // smooth: true,
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(0,135,255,1)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(0,135,255,0)" // 100% 处的颜色
-                  }
-                ],
-                globalCoord: true // 缺省为 false
-              }
-            }
-          },
-          {
-            name: "类型3",
-            data: [562, 932, 901, 934, 730, 840, 666, 690, 780, 777, 1110, 980],
-            type: "line",
-            itemStyle: {
-              color: "#0087FF"
-            },
-            // smooth: true,
-            areaStyle: {
-              color: {
-                type: "linear",
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "rgba(0,135,255,1)" // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "rgba(0,135,255,0)" // 100% 处的颜色
-                  }
-                ],
-                globalCoord: true // 缺省为 false
-              }
-            }
-          }
-        ]
+        series: this.lineData
       });
     },
     initBar: function() {
@@ -1236,15 +706,12 @@ export default {
             stack: "图书",
             data: [-320, -280, -240, -199, -152],
             itemStyle: {
-              color: new echarts.graphic.LinearGradient(
-                0, 0, 1, 0,
-                [
-                    {offset: 0, color: '#FFBC70'},
-                    {offset: 1, color: '#FF8800'}
-                ]
-              )
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "#FFBC70" },
+                { offset: 1, color: "#FF8800" }
+              ])
             },
-            barCategoryGap: '50%'
+            barCategoryGap: "50%"
           },
           {
             name: "已还图书数量",
@@ -1252,15 +719,12 @@ export default {
             stack: "图书",
             data: [320, 280, 240, 199, 152],
             itemStyle: {
-              color: new echarts.graphic.LinearGradient(
-                0, 0, 1, 0,
-                [
-                    {offset: 0, color: '#0087FF'},
-                    {offset: 1, color: '#5CB3FF'}
-                ]
-              )
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "#0087FF" },
+                { offset: 1, color: "#5CB3FF" }
+              ])
             },
-            barCategoryGap: '50%'
+            barCategoryGap: "50%"
           }
         ]
       });
@@ -1277,16 +741,67 @@ export default {
     },
     getHotActivity: function() {
       this.$axios
-        .post("url", this.$qs(参数))
+        .post("/api/BigScreen/Index/hotActivityList",this.$qs.stringify({place:'浙江省'}))
         .then(res => {
+          // console.log(res);
+          if(res.data.CODE == 'ok'){
+            let data = res.data.DATA.slice(0,8);
+            for(let i=0;i<data.length;i++){
+              data[i].peoplenum = Number(data[i].peoplenum);
+            }
+            this.tableData = data;
+          }else{
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
           console.log(res);
+        });
+    },
+    getLoveData: function() {
+      this.$axios.post("/api/BigScreen/Index/hotActivityType",this.$qs.stringify({place:'浙江省'}))
+        .then(res => {
+          // console.log(res);
+          if(res.data.CODE == 'ok'){
+            this.pie1Data = res.data.DATA;
+            for(let i=0;i<this.pie1Data.length;i++){
+              this.pie1Data[i].itemStyle = {color: this.colors[i]};
+            }
+            this.initPie1();
+          }else{
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
+        this.$axios.post("/api/BigScreen/Index/hotServiceType",this.$qs.stringify({place:'浙江省'}))
+        .then(res => {
+          if(res.data.CODE == 'ok'){
+            this.pie2Data = res.data.DATA;
+            for(let i=0;i<this.pie2Data.length;i++){
+              this.pie2Data[i].itemStyle = {color: this.colors[i]};
+            };
+            this.initPie2();
+          }else{
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
         })
         .catch(res => {
           console.log(res);
         });
     },
     leftClick: function() {
-      if(this.button_area == 'right'){
+      if (this.button_area == "right") {
         this.button_area = "left";
         this.buttonData = this.leftButton;
         let option = this.myChart.getOption();
@@ -1297,7 +812,7 @@ export default {
       }
     },
     rightClick: function() {
-      if(this.button_area == 'left'){
+      if (this.button_area == "left") {
         this.button_area = "right";
         this.buttonData = this.rightButton;
         let option = this.myChart.getOption();
@@ -1319,7 +834,7 @@ export default {
             ]
           },
           show: false
-        }
+        };
         this.myChart.clear();
         this.myChart.setOption(option);
       }
@@ -1331,77 +846,60 @@ export default {
      * 下拉框值改变事件
      */
     switchMap: function(val) {
-      if (val == "1101") {
-        echarts.registerMap("map", zhejiang);
-        this.myChart.clear();
-        this.initEchart();
-        let option = this.myChart.getOption();
-        option.series[0].data = this.zhejiangData;
-        this.myChart.setOption(option);
-      } else if (val == "1102") {
-        echarts.registerMap("map", hangzhou);
-        this.myChart.clear();
-        this.initEchart();
-        let option = this.myChart.getOption();
-        option.series[0].data = this.hangzhouData;
-        this.myChart.setOption(option);
-      }else if(val=='1106') {
-        echarts.registerMap("map", shaoxing);
-        this.myChart.clear();
-        this.initEchart();
-        let option = this.myChart.getOption();
-        option.series[0].data = this.shaoxingData;
-        this.myChart.setOption(option);
+      if(val=="浙江省"){
+        this.map.centerAndZoom('浙江省', 8);
+      }else{
+        this.map.centerAndZoom(val, 10);
       }
     },
     /**
      * 趋势数据切换
      */
     switchTrend1: function() {
-      this.trend = "0";
-      let option = this.line.getOption();
-      option.series[0].data = this.data1;
-      this.line.clear();
-      this.line.setOption(option);
+      if(this.trend == "1"){
+        this.trend = "0";
+        let url = '/api/BigScreen/Index/preMonthActivity';
+        this.changeTrendData(url);
+      }
     },
     switchTrend2: function() {
-      this.trend = "1";
-      let option = this.line.getOption();
-      option.series[0].data = this.data2;
-      this.line.clear();
-      this.line.setOption(option);
+      if(this.trend == "0"){
+        this.trend = "1";
+        let url = '/api/BigScreen/Index/preMonthService';
+        this.changeTrendData(url);
+      }
     },
     /**
      * 连接服务器函数
      */
     getConect: function() {
-      var socket = new WebSocket('ws://www.baidu.com');
-      if(socket.readyState==0){
+      var socket = new WebSocket("ws://why-test.hz.backustech.com/BigScreen/Index/hotActivityList");
+      if (socket.readyState == 0) {
         this.$message({
-          message: '正在尝试连接',
-          type: 'warning'
+          message: "正在尝试连接",
+          type: "warning"
         });
-      }else if(socket.readyState==1){
+      } else if (socket.readyState == 1) {
         this.$message({
-          message: '连接成功，可以通信了',
-          type: 'success'
+          message: "连接成功，可以通信了",
+          type: "success"
         });
-        socket.onopen = function () {
-          console.log('123');
-        }
+        socket.onopen = function() {
+          console.log("123");
+        };
         socket.onmessage = function(event) {
           // var data = event.data;
           // 处理数据
         };
-      }else if(socket.readyState==2){
+      } else if (socket.readyState == 2) {
         this.$message({
-          message: '连接正在关闭',
-          type: 'warning'
+          message: "连接正在关闭",
+          type: "warning"
         });
-      }else{
+      } else {
         this.$message({
-          message: '连接已经关闭，或者打开连接失败',
-          type: 'warning'
+          message: "连接已经关闭，或者打开连接失败",
+          type: "warning"
         });
       }
     },
@@ -1411,38 +909,292 @@ export default {
     getCurrentTime: function() {
       let time = new Date();
       let year = time.getFullYear();
-      year = year>9 ? year:'0'+year
+      year = year > 9 ? year : "0" + year;
       let month = time.getMonth() + 1;
-      month = month>9 ? month:'0'+month;
+      month = month > 9 ? month : "0" + month;
       let day = time.getDate();
-      day = day>9 ? day:'0'+day;
+      day = day > 9 ? day : "0" + day;
       let hour = time.getHours();
-      hour = hour>9 ? hour:'0'+hour;
+      hour = hour > 9 ? hour : "0" + hour;
       let minute = time.getMinutes();
-      minute = minute>9 ? minute:'0'+minute;
+      minute = minute > 9 ? minute : "0" + minute;
       let second = time.getSeconds();
-      second = second>9 ? second: '0'+second;
-      this.currentTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+      second = second > 9 ? second : "0" + second;
+      this.currentTime =
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hour +
+        ":" +
+        minute +
+        ":" +
+        second;
+    },
+    /**
+     * 获得月数据
+     */
+    getMonthData: function() {
+      let time = new Date();
+      let startMonth = time.getMonth() -10;
+      for(let i=0;i<12;i++){
+        let month = startMonth + i;
+        if(month<1){
+          month += 12;
+        }
+        month += '月';
+        this.monthData.push(month);
+      }
+    },
+    /**
+     * 获得趋势数据
+     */
+    getTrendData: function() {
+      this.$axios.post('/api/BigScreen/Index/preMonthActivity',this.$qs.stringify({place:'浙江省'}))
+        .then(res => {
+          if(res.data.CODE == 'ok'){
+            this.lineData = res.data.DATA;
+            this.legendData = [];
+            for(let i=0;i<this.lineData.length;i++){
+              this.legendData.push(this.lineData[i].name);
+              this.lineData[i].data = this.lineData[i].value;
+              this.lineData[i].type = 'line';
+              if(i==0){
+                this.lineData[i].itemStyle = { color: "#00FFFF"};
+                this.lineData[i].areaStyle = {
+                  color: {
+                    type: "linear",
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: "rgba(0,255,255,1)" 
+                      },
+                      {
+                        offset: 1,
+                        color: "rgba(0,255,255,0)" 
+                      }
+                    ],
+                    globalCoord: true 
+                  }
+                }
+              }else{
+                 this.lineData[i].itemStyle = { color: "#0087FF"};
+                  this.lineData[i].areaStyle = {
+                    color: {
+                      type: "linear",
+                      x: 0,
+                      y: 0,
+                      x2: 0,
+                      y2: 1,
+                      colorStops: [
+                        {
+                          offset: 0,
+                          color: "rgba(0,135,255,1)" 
+                        },
+                        {
+                          offset: 1,
+                          color: "rgba(0,135,255,0)" 
+                        }
+                      ],
+                      globalCoord: true 
+                    }
+                  }
+              }
+            }
+            this.initLine();
+          }else{
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    },
+    /**
+     * 切换趋势重新获取数据
+     */
+    changeTrendData: function(url) {
+      this.$axios.post(url,this.$qs.stringify({place:'浙江省'}))
+      .then(res => {
+        if(res.data.CODE == 'ok'){
+          this.lineData = res.data.DATA;
+          this.legendData = [];
+          for(let i=0;i<this.lineData.length;i++){
+            this.legendData.push(this.lineData[i].name);
+            this.lineData[i].data = this.lineData[i].value;
+            this.lineData[i].type = 'line';
+            if(i==0){
+              this.lineData[i].itemStyle = { color: "#00FFFF"};
+              this.lineData[i].areaStyle = {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: "rgba(0,255,255,1)" 
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(0,255,255,0)" 
+                    }
+                  ],
+                  globalCoord: true 
+                }
+              }
+            }else{
+                this.lineData[i].itemStyle = { color: "#0087FF"};
+                this.lineData[i].areaStyle = {
+                  color: {
+                    type: "linear",
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: "rgba(0,135,255,1)" 
+                      },
+                      {
+                        offset: 1,
+                        color: "rgba(0,135,255,0)" 
+                      }
+                    ],
+                    globalCoord: true 
+                  }
+                }
+            }
+          }
+          let option = this.line.getOption();
+          this.line.clear();
+          option.series = this.lineData;
+          option.legend.data = this.legendData;
+          this.line.setOption(option);
+        }else{
+          this.$message({
+            message: res.data.MESSAGE,
+            type: "error"
+          });
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+    },
+    /**
+     * 获取志愿者分布数据
+     */
+    getVolunteerData: function() {
+       this.$axios.post('/api/BigScreen/Index/volunteerDistribution',this.$qs.stringify({place:'浙江省'}))
+      .then(res => {
+        if(res.data.CODE == 'ok'){
+          this.ageData = res.data.DATA.age;
+          this.typeData = res.data.DATA.type;
+          for(let i=0;i<this.ageData.length;i++){
+            this.ageData[i].itemStyle = { color: this.colors[i] };
+          }
+          for(let i=0;i<this.typeData.length;i++){
+            this.typeData[i].itemStyle = { color: this.colors[i] };
+          }
+          this.initPie3();
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
+    },
+    /**
+     * 获取地图数据
+     */
+    getMapData: function() {
+      this.$axios.post('/api/BigScreen/Index/mapData',this.$qs.stringify({place: this.place,type: this.type}))
+      .then(res=>{
+        if(res.data.CODE == 'ok'){
+            // console.log('res',res);
+            this.mapData = res.data.DATA;
+            for(let i=0;i<this.mapData.length;i++){
+              let point = new BMap.Point(this.mapData[i].value[0],this.mapData[i].value[1]);
+              let value = this.mapData[i].value[2]*100;
+              let circle = new BMap.Circle(point,value,{fillColor:"#FFAA00",strokeColor:"orange",strokeOpacity:0.7});
+              this.map.addOverlay(circle); 
+              let opts = {
+                position : point,    // 指定文本标注所在的地理位置
+                offset   : new BMap.Size(-10,-10)    //设置文本偏移量
+              };
+              let label = new BMap.Label(this.mapData[i].value[2], opts);  // 创建文本标注对象
+              label.setStyle({
+                color : "white",
+                fontSize : "14px",
+                fontFamily:"微软雅黑",
+                      border:"none",
+                      background:"none"
+              });
+              this.map.addOverlay(label);  
+            }
+        }
+      })
+      .catch(res=>{
+        console.log(res);
+      })
+    },
+    /**
+     * 获取统计数据
+     */
+    getStatisticsData: function () {
+      this.$axios.post('/api/BigScreen/Index/dataStatistic',this.$qs.stringify({place: this.place}))
+      .then(res=>{
+        if(res.data.CODE == 'ok'){
+          //  console.log(res);
+          this.statisticData = res.data.DATA;
+          console.log(this.statisticData);
+        }
+      })
+      .catch(res=>{
+        console.log(res);
+      })
     }
   },
   created() {
     this.buttonData = this.leftButton;
+    this.getMonthData();
+    this.getHotActivity();
   },
   mounted() {
     this.$nextTick(function() {
       this.initEchart();
-      this.initPie1();
-      this.initPie2();
-      this.initPie3();
-      this.initLine();
+      this.getLoveData();
       this.initBar();
+      this.getTrendData();
+      this.getVolunteerData();
+      this.getMapData();
+      this.getStatisticsData();
     });
     // this.getConect();
     this.getCurrentTime();
+  },
+  filters: {
+    cutString: function (val) {
+      if(val&&val.length>4){
+        return val.slice(0,4) + '...'
+      }
+    }
   }
 };
 </script>
 <style>
-  @import "../assets/page.css";
+@import "../assets/page.css";
 </style>
 

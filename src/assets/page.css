@@ -218,6 +218,9 @@
   top: 50%;
   transform: translateY(-50%);
 }
+.statistics-item:nth-child(3){
+  margin-right: 0;
+}
 .trend {
   position: absolute;
   bottom: 1%;

@@ -5,17 +5,18 @@ import App from './App'
 import router from './router'
 import axios from 'axios'  // 引入axios
 import qs from 'qs'      // 引入qs用于解析参数
-import { Button, Select,Table,TableColumn,Option,Message } from 'element-ui';
+import { Button, Select,Table,TableColumn,Option,Message,Tooltip } from 'element-ui';
 import animateNumber from 'vue-animate-number'
 import VCharts from 'v-charts'
 
 Vue.prototype.$axios = axios  //将 axios 改写为 Vue 的原型属性，这样在各个组件中都可以使用axios
-Vue.prototype.$qs = qs  
+Vue.prototype.$qs = qs 
 Vue.use(Button)
 Vue.use(Select)     
 Vue.use(Table)     
 Vue.use(TableColumn)     
 Vue.use(Option) 
+Vue.use(Tooltip) 
 Vue.use(animateNumber) 
 Vue.use(VCharts)
 Message.install = function (Vue, options) {
