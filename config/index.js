@@ -11,13 +11,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
-          target: 'http://why-test.hz.backustech.com',
-          changeOrigin: true,
-          pathRewrite: {
-              '^/api': '/'
-          }
-      }
+      // '/api': {
+      //     target: 'http://why-test.hz.backustech.com',
+      //     changeOrigin: true,
+      //     pathRewrite: {
+      //         '^/api': ''
+      //     }
+      // }
+      '/': {
+            target: 'http://why.hz.backustech.com',
+            changeOrigin: true,
+            pathRewrite: {
+                '^/': ''
+            }
+        }
     },
 
     // Various Dev Server settings

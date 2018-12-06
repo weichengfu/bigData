@@ -1,7 +1,7 @@
 <template>
   <div class="page" style="height:100vh;">
     <!-- 主体地图 -->
-    <div ref="earth" id="earth" style="height:100%;"></div>
+    <div ref="earth" id="earth"></div>
     <!-- 城市选择下拉框 -->
     <div class="header">
       <span>智慧文化云全省数据大屏</span>
@@ -26,18 +26,18 @@
         :class="{'active-father-button': button_area == 'left'}"
         @click="leftClick"
       >分布图</div>
-      <div
+      <!-- <div
         class="child-button"
         :class="{'active-father-button': button_area == 'right'}"
         @click="rightClick"
-      >热力图</div>
+      >热力图</div>-->
     </div>
     <div class="under-button">
       <div
         class="button"
         v-for="(item,index) in buttonData"
         :key="item.name"
-        @click="buttonClick(index)"
+        @click="buttonClick(index,item.value)"
         :class="{'active-button': which==index }"
       >{{item.name}}</div>
     </div>
@@ -57,12 +57,16 @@
         <div class="table">
           <div class="table-col" style="width:33.3%;">
             <div class="table-title">活动名称</div>
-              <div class="table-body" v-for="item in tableData" :key="item.activity_id">
-                <el-tooltip v-if="item.name&&item.name.length>5" class="item" effect="dark" :content="item.name" placement="top">
-                  <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
-                </el-tooltip>
-                <span v-else>{{item.name}}</span>
-              </div>
+            <div
+              class="table-body"
+              style="max-width:120px;"
+              v-for="item in tableData"
+              :key="item.activity_id"
+            >
+              <el-tooltip class="item" effect="dark" :content="item.name" placement="top">
+                <span style="cursor:pointer;">{{item.name}}</span>
+              </el-tooltip>
+            </div>
           </div>
           <!-- 渐变线框（用div填空背景色模拟边框） -->
           <div class="jianbian"></div>
@@ -73,11 +77,15 @@
           <div class="jianbian"></div>
           <div class="table-col" style="width:24.6%;">
             <div class="table-title">所属场馆</div>
-            <div class="table-body" v-for="item in tableData" :key="item.activity_id">
-              <el-tooltip v-if="item.stadium&&item.stadium.length>5" class="item" effect="dark" :content="item.stadium" placement="top">
-                <span style="cursor:pointer;">{{item.stadium|cutString(item.stadium)}}</span>
+            <div
+              class="table-body"
+              style="max-width:80px;"
+              v-for="item in tableData"
+              :key="item.activity_id"
+            >
+              <el-tooltip class="item" effect="dark" :content="item.stadium" placement="top">
+                <span style="cursor:pointer;">{{item.stadium}}</span>
               </el-tooltip>
-              <span v-else>{{item.stadium}}</span>
             </div>
           </div>
           <div class="jianbian"></div>
@@ -122,85 +130,163 @@
               <span class="number" style="margin:0 8px;">
                 <animate-number from="1" :to="statisticData" duration="3000" easing="easeOutQuad"></animate-number>
               </span>人
-            </div> -->
-            <div class="statistics-item">注册
+            </div>-->
+            <div class="statistics-item">
+              注册
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.registerNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.registerNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人
             </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">活动
+            <div class="statistics-item">
+              活动
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.activityNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.activityNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>场
             </div>
-            <div class="statistics-item">报名
+            <div class="statistics-item">
+              报名
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.activityJoinNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.activityJoinNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人
             </div>
-            <div class="statistics-item">参与
+            <div class="statistics-item">
+              参与
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.activityApplyNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.activityApplyNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人
             </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">志愿者
+            <div class="statistics-item">
+              志愿者
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.volunteerNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.volunteerNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人
             </div>
-            <div class="statistics-item">志愿项目
+            <div class="statistics-item">
+              志愿项目
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.volunteerActivityNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.volunteerActivityNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>个
             </div>
-            <div class="statistics-item">参与
+            <div class="statistics-item">
+              参与
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.volunteerActivityApplyNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.volunteerActivityApplyNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人
             </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">场地预定
+            <div class="statistics-item">
+              场地预定
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.spaceAppointNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.spaceAppointNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>次
             </div>
-            <div class="statistics-item">场地使用
+            <div class="statistics-item">
+              场地使用
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.spaceUsedNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.spaceUsedNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人
             </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">服务点单
+            <div class="statistics-item">
+              服务点单
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.serviceNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.serviceNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>次
             </div>
-            <div class="statistics-item">覆盖区县
+            <div class="statistics-item">
+              覆盖区县
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.serviceCoverNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.serviceCoverNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>个
             </div>
           </div>
           <div class="jianbian" style="height: 1px;width: 100%;"></div>
           <div class="sta-row">
-            <div class="statistics-item">资讯发布
+            <div class="statistics-item">
+              资讯发布
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.informationNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.informationNum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>篇
             </div>
-            <div class="statistics-item">浏览
+            <div class="statistics-item">
+              浏览
               <span class="number" style="margin:0 8px;">
-                <animate-number from="1" :to="statisticData.informationSum" duration="3000" easing="easeOutQuad"></animate-number>
+                <animate-number
+                  from="1"
+                  :to="statisticData.informationSum"
+                  duration="3000"
+                  easing="easeOutQuad"
+                ></animate-number>
               </span>人次
             </div>
           </div>
@@ -211,7 +297,16 @@
         <div class="left-box">
           <div class="box-header" style="margin-bottom:20px;">场馆热力指数TOP5</div>
           <div class="box-row" v-for="item in stadium" :key="item.name">
-            {{item.name}}
+            <el-tooltip
+              v-if="item.name&&item.name.length>5"
+              class="item"
+              effect="dark"
+              :content="item.name"
+              placement="top"
+            >
+              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
+            </el-tooltip>
+            <span v-else>{{item.name}}</span>
             <span class="number right">
               <animate-number from="1" :to="item.value" duration="3000" easing="easeOutQuad"></animate-number>
             </span>
@@ -220,13 +315,17 @@
         <div class="jianbian" style="height: auto;"></div>
         <div class="right-box">
           <div class="box-header" style="margin-bottom:20px;">场地预定TOP5</div>
-          <!-- <div class="box-row">浙江图书馆<span class="right">&nbsp;次</span><span class="number right">45</span></div>
-          <div class="box-row">浙江文化馆<span class="right">&nbsp;次</span><span class="number right">39</span></div>
-          <div class="box-row">嘉兴图书馆<span class="right">&nbsp;次</span><span class="number right">26</span></div>
-          <div class="box-row">莲都区文化站<span class="right">&nbsp;次</span><span class="number right">17</span></div>
-          <div class="box-row">宁波文化站<span class="right">&nbsp;次</span><span class="number right">13</span></div>-->
           <div class="box-row" v-for="item in site" :key="item.name">
-            {{item.name}}
+            <el-tooltip
+              v-if="item.name&&item.name.length>5"
+              class="item"
+              effect="dark"
+              :content="item.name"
+              placement="top"
+            >
+              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
+            </el-tooltip>
+            <span v-else>{{item.name}}</span>
             <span class="right">&nbsp;次</span>
             <span class="number right">
               <animate-number from="1" :to="item.value" duration="3000" easing="easeOutQuad"></animate-number>
@@ -270,7 +369,18 @@ export default {
   name: "page",
   data() {
     return {
-      colors: ['#33A0FF','#FFA033','#55E3ED','#7083FF','#ADE4FF','#5CC9FF','#93F5D4','#C2FFFB','#B17ACC','#D6D6FF'],
+      colors: [
+        "#33A0FF",
+        "#FFA033",
+        "#55E3ED",
+        "#7083FF",
+        "#ADE4FF",
+        "#5CC9FF",
+        "#93F5D4",
+        "#C2FFFB",
+        "#B17ACC",
+        "#D6D6FF"
+      ],
       tableData: [],
       pie1: "",
       pie1Data: [],
@@ -333,19 +443,24 @@ export default {
       buttonData: [],
       leftButton: [
         {
-          name: "活动分布"
+          name: "活动分布",
+          value: "activity"
         },
         {
-          name: "场馆分布"
+          name: "场馆分布",
+          value: "stadium"
         },
         {
-          name: "场地预定分布"
+          name: "场地预定分布",
+          value: "space"
         },
         {
-          name: "服务点单分布"
+          name: "服务点单分布",
+          value: "service"
         },
         {
-          name: "志愿者分布"
+          name: "志愿者分布",
+          value: "volunteer"
         }
       ],
       rightButton: [
@@ -376,35 +491,219 @@ export default {
       legendData: [],
       ageData: [],
       typeData: [],
-      map: '',
-      place: '浙江省',
-      type: 'activity',
+      map: "",
+      place: "浙江省",
+      type: "activity",
       mapData: [],
-      statisticData: '',
+      statisticData: "",
+      barData: [],
+      block: false //用于标记是否到县区级别
     };
   },
   methods: {
     initEchart: function() {
-      this.map = new BMap.Map("earth",{enableMapClick:false});
-      // map.centerAndZoom(new BMap.Point(120.2163362199, 30.2527602473), 10);
-      this.map.centerAndZoom('浙江省', 8);
+      this.map = new BMap.Map("earth", { enableMapClick: false });
+      this.map.centerAndZoom("浙江省", 8);
       this.map.enableScrollWheelZoom();
       var geocoder = new BMap.Geocoder();
       // 拖拽后获取中心点坐标
-      this.map.addEventListener("dragend", (e)=> {
-        console.log(this.map.getZoom());
-        console.log(this.map.getCenter());
-        geocoder.getLocation(this.map.getCenter(), function(rs) {
-          console.log(rs); //位置信息
+      this.map.addEventListener("dragend", e => {
+        // console.log(this.map.getZoom());
+        // console.log(this.map.getCenter());
+        let zoom = this.map.getZoom();
+        let center = this.map.getCenter();
+        geocoder.getLocation(center, res => {
+          this.block = false;
+          if (zoom < 10) {
+            if (this.place != "浙江省") {
+              this.city = "浙江省";
+              this.place = "浙江省";
+              this.refresh();
+            }
+          } else if (zoom < 14) {
+            if (res.addressComponents.province == "浙江省") {
+              if (this.place != res.addressComponents.city) {
+                this.place = res.addressComponents.city;
+                this.city = res.addressComponents.city;
+                this.refresh();
+              }
+            }
+          } else {
+            if (res.addressComponents.province == "浙江省") {
+              this.block = true;
+              if (this.place != res.addressComponents.city) {
+                this.place = res.addressComponents.district;
+                this.city = res.addressComponents.city;
+                this.refresh();
+              }
+            }
+          }
         });
       });
       // 缩放结束
-      this.map.addEventListener("zoomend", (e)=> {
-        console.log("e", e);
-        console.log(this.map.getZoom());
+      this.map.addEventListener("zoomend", e => {
+        // console.log("e", e);
+        let zoom = this.map.getZoom();
+        let center = this.map.getCenter();
+        this.block = false;
+        if (zoom < 10) {
+          if (this.place != "浙江省") {
+            this.city = "浙江省";
+            this.place = "浙江省";
+            this.refresh();
+          }
+        } else if (zoom < 14) {
+          geocoder.getLocation(center, res => {
+            if (res.addressComponents.province == "浙江省") {
+              if (this.place != res.addressComponents.city) {
+                this.place = res.addressComponents.city;
+                this.city = res.addressComponents.city;
+                this.refresh();
+              }
+            }
+          });
+        } else {
+          geocoder.getLocation(center, res => {
+            //获取位置
+            if (res.addressComponents.province == "浙江省") {
+              this.block = true;
+              if (this.place != res.addressComponents.district) {
+                this.place = res.addressComponents.district;
+                this.city = res.addressComponents.city;
+                this.refresh();
+              }
+            }
+          });
+        }
       });
-      var mapStyle={  style : "midnight" }  
-      this.map.setMapStyle(mapStyle);
+      var mapStyleJson = {
+        styleJson: [
+          {
+            featureType: "water",
+            elementType: "all",
+            stylers: {
+              color: "#044161"
+            }
+          },
+          {
+            featureType: "land",
+            elementType: "all",
+            stylers: {
+              color: "#004981"
+            }
+          },
+          {
+            featureType: "boundary",
+            elementType: "geometry",
+            stylers: {
+              color: "#064f85"
+            }
+          },
+          {
+            featureType: "railway",
+            elementType: "all",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "highway",
+            elementType: "geometry",
+            stylers: {
+              color: "#004981"
+            }
+          },
+          {
+            featureType: "highway",
+            elementType: "geometry.fill",
+            stylers: {
+              color: "#005b96",
+              lightness: 1
+            }
+          },
+          {
+            featureType: "highway",
+            elementType: "labels",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "arterial",
+            elementType: "geometry",
+            stylers: {
+              color: "#004981"
+            }
+          },
+          {
+            featureType: "arterial",
+            elementType: "geometry.fill",
+            stylers: {
+              color: "#00508b"
+            }
+          },
+          {
+            featureType: "poi",
+            elementType: "all",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "green",
+            elementType: "all",
+            stylers: {
+              color: "#056197",
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "subway",
+            elementType: "all",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "manmade",
+            elementType: "all",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "local",
+            elementType: "all",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "arterial",
+            elementType: "labels",
+            stylers: {
+              visibility: "off"
+            }
+          },
+          {
+            featureType: "boundary",
+            elementType: "geometry.fill",
+            stylers: {
+              color: "#029fd4"
+            }
+          },
+          {
+            featureType: "building",
+            elementType: "all",
+            stylers: {
+              color: "#1a5787"
+            }
+          }
+        ]
+      };
+      // var mapStyle={  style : "midnight" }
+      // this.map.setMapStyle(mapStyle);
+      this.map.setMapStyle(mapStyleJson);
     },
     initPie1: function() {
       this.pie1 = echarts.init(this.$refs.loveforactivity);
@@ -505,9 +804,9 @@ export default {
             radius: "30%",
             center: ["50%", "50%"],
             label: {
-                normal: {
-                    position: 'inner'
-                }
+              normal: {
+                position: "inner"
+              }
             },
             data: this.ageData,
             itemStyle: {
@@ -519,10 +818,10 @@ export default {
             }
           },
           {
-              name:'类型分布',
-              type:'pie',
-              radius: ['40%', '60%'],
-              data: this.typeData
+            name: "类型分布",
+            type: "pie",
+            radius: ["40%", "60%"],
+            data: this.typeData
           }
         ]
       });
@@ -629,20 +928,22 @@ export default {
             }
           },
           inverse: true,
-          data: [
-            "浙江图书馆",
-            "浙江文化馆",
-            "嘉兴图书馆",
-            "莲都区文化站",
-            "宁波文化馆"
-          ]
+          // data: [
+          //   "浙江图书馆",
+          //   "浙江文化馆",
+          //   "嘉兴图书馆",
+          //   "莲都区文化站",
+          //   "宁波文化馆"
+          // ]
+          data: this.barData.name
         },
         series: [
           {
             name: "借出图书数量",
             type: "bar",
             stack: "图书",
-            data: [-320, -280, -240, -199, -152],
+            // data: [-320, -280, -240, -199, -152],
+            data: this.barData.borrowNum,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 { offset: 0, color: "#FFBC70" },
@@ -655,7 +956,8 @@ export default {
             name: "已还图书数量",
             type: "bar",
             stack: "图书",
-            data: [320, 280, 240, 199, 152],
+            // data: [320, 280, 240, 199, 152],
+            data: this.barData.repayNum,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 { offset: 0, color: "#0087FF" },
@@ -669,16 +971,19 @@ export default {
     },
     getHotActivity: function() {
       this.$axios
-        .post("/api/BigScreen/Index/hotActivityList",this.$qs.stringify({place: this.place}))
+        .post(
+          "/BigScreen/Index/hotActivityList",
+          this.$qs.stringify({ place: this.place })
+        )
         .then(res => {
           // console.log(res);
-          if(res.data.CODE == 'ok'){
-            let data = res.data.DATA.slice(0,8);
-            for(let i=0;i<data.length;i++){
+          if (res.data.CODE == "ok") {
+            let data = res.data.DATA.slice(0, 8);
+            for (let i = 0; i < data.length; i++) {
               data[i].peoplenum = Number(data[i].peoplenum);
             }
             this.tableData = data;
-          }else{
+          } else {
             this.$message({
               message: res.data.MESSAGE,
               type: "error"
@@ -690,16 +995,20 @@ export default {
         });
     },
     getLoveData: function() {
-      this.$axios.post("/api/BigScreen/Index/hotActivityType",this.$qs.stringify({place: this.place}))
+      this.$axios
+        .post(
+          "/BigScreen/Index/hotActivityType",
+          this.$qs.stringify({ place: this.place })
+        )
         .then(res => {
           // console.log(res);
-          if(res.data.CODE == 'ok'){
+          if (res.data.CODE == "ok") {
             this.pie1Data = res.data.DATA;
-            for(let i=0;i<this.pie1Data.length;i++){
-              this.pie1Data[i].itemStyle = {color: this.colors[i]};
+            for (let i = 0; i < this.pie1Data.length; i++) {
+              this.pie1Data[i].itemStyle = { color: this.colors[i] };
             }
             this.initPie1();
-          }else{
+          } else {
             this.$message({
               message: res.data.MESSAGE,
               type: "error"
@@ -709,15 +1018,19 @@ export default {
         .catch(res => {
           console.log(res);
         });
-        this.$axios.post("/api/BigScreen/Index/hotServiceType",this.$qs.stringify({place: this.place}))
+      this.$axios
+        .post(
+          "/BigScreen/Index/hotServiceType",
+          this.$qs.stringify({ place: this.place })
+        )
         .then(res => {
-          if(res.data.CODE == 'ok'){
+          if (res.data.CODE == "ok") {
             this.pie2Data = res.data.DATA;
-            for(let i=0;i<this.pie2Data.length;i++){
-              this.pie2Data[i].itemStyle = {color: this.colors[i]};
-            };
+            for (let i = 0; i < this.pie2Data.length; i++) {
+              this.pie2Data[i].itemStyle = { color: this.colors[i] };
+            }
             this.initPie2();
-          }else{
+          } else {
             this.$message({
               message: res.data.MESSAGE,
               type: "error"
@@ -767,20 +1080,26 @@ export default {
         this.myChart.setOption(option);
       }
     },
-    buttonClick: function(val) {
+    buttonClick: function(val, val1) {
       this.which = val;
+      if (this.type != val1) {
+        // console.log("buttonclick");
+        // console.log(val1);
+        this.type = val1;
+        this.getMapData();
+      }
     },
     /**
      * 下拉框值改变事件
      */
     switchMap: function(val) {
-      if(this.place != val){
+      if (this.place != val) {
         this.place = val;
-        if(val=="浙江省"){
-          this.map.centerAndZoom('浙江省', 8);
+        if (val == "浙江省") {
+          this.map.centerAndZoom("浙江省", 9);
           this.refresh();
-        }else{
-          this.map.centerAndZoom(val, 10);
+        } else {
+          this.map.centerAndZoom(val, 11);
           this.refresh();
         }
       }
@@ -789,16 +1108,16 @@ export default {
      * 趋势数据切换
      */
     switchTrend1: function() {
-      if(this.trend == "1"){
+      if (this.trend == "1") {
         this.trend = "0";
-        let url = '/api/BigScreen/Index/preMonthActivity';
+        let url = "/BigScreen/Index/preMonthActivity";
         this.changeTrendData(url);
       }
     },
     switchTrend2: function() {
-      if(this.trend == "0"){
+      if (this.trend == "0") {
         this.trend = "1";
-        let url = '/api/BigScreen/Index/preMonthService';
+        let url = "/BigScreen/Index/preMonthService";
         this.changeTrendData(url);
       }
     },
@@ -806,7 +1125,9 @@ export default {
      * 连接服务器函数
      */
     getConect: function() {
-      var socket = new WebSocket("ws://why-test.hz.backustech.com/BigScreen/Index/hotActivityList");
+      var socket = new WebSocket(
+        "ws://why-test.hz.backustech.com/BigScreen/Index/hotActivityList"
+      );
       if (socket.readyState == 0) {
         this.$message({
           message: "正在尝试连接",
@@ -872,13 +1193,13 @@ export default {
     getMonthData: function() {
       this.monthData = [];
       let time = new Date();
-      let startMonth = time.getMonth() -10;
-      for(let i=0;i<12;i++){
+      let startMonth = time.getMonth() - 10;
+      for (let i = 0; i < 12; i++) {
         let month = startMonth + i;
-        if(month<1){
+        if (month < 1) {
           month += 12;
         }
-        month += '月';
+        month += "月";
         this.monthData.push(month);
       }
     },
@@ -886,17 +1207,21 @@ export default {
      * 获得趋势数据
      */
     getTrendData: function() {
-      this.$axios.post('/api/BigScreen/Index/preMonthActivity',this.$qs.stringify({place:this.place}))
+      this.$axios
+        .post(
+          "/BigScreen/Index/preMonthActivity",
+          this.$qs.stringify({ place: this.place })
+        )
         .then(res => {
-          if(res.data.CODE == 'ok'){
+          if (res.data.CODE == "ok") {
             this.lineData = res.data.DATA;
             this.legendData = [];
-            for(let i=0;i<this.lineData.length;i++){
+            for (let i = 0; i < this.lineData.length; i++) {
               this.legendData.push(this.lineData[i].name);
               this.lineData[i].data = this.lineData[i].value;
-              this.lineData[i].type = 'line';
-              if(i==0){
-                this.lineData[i].itemStyle = { color: "#00FFFF"};
+              this.lineData[i].type = "line";
+              if (i == 0) {
+                this.lineData[i].itemStyle = { color: "#00FFFF" };
                 this.lineData[i].areaStyle = {
                   color: {
                     type: "linear",
@@ -907,42 +1232,42 @@ export default {
                     colorStops: [
                       {
                         offset: 0,
-                        color: "rgba(0,255,255,1)" 
+                        color: "rgba(0,255,255,1)"
                       },
                       {
                         offset: 1,
-                        color: "rgba(0,255,255,0)" 
+                        color: "rgba(0,255,255,0)"
                       }
                     ],
-                    globalCoord: true 
+                    globalCoord: true
                   }
-                }
-              }else{
-                 this.lineData[i].itemStyle = { color: "#0087FF"};
-                  this.lineData[i].areaStyle = {
-                    color: {
-                      type: "linear",
-                      x: 0,
-                      y: 0,
-                      x2: 0,
-                      y2: 1,
-                      colorStops: [
-                        {
-                          offset: 0,
-                          color: "rgba(0,135,255,1)" 
-                        },
-                        {
-                          offset: 1,
-                          color: "rgba(0,135,255,0)" 
-                        }
-                      ],
-                      globalCoord: true 
-                    }
+                };
+              } else {
+                this.lineData[i].itemStyle = { color: "#0087FF" };
+                this.lineData[i].areaStyle = {
+                  color: {
+                    type: "linear",
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: "rgba(0,135,255,1)"
+                      },
+                      {
+                        offset: 1,
+                        color: "rgba(0,135,255,0)"
+                      }
+                    ],
+                    globalCoord: true
                   }
+                };
               }
             }
             this.initLine();
-          }else{
+          } else {
             this.$message({
               message: res.data.MESSAGE,
               type: "error"
@@ -957,39 +1282,18 @@ export default {
      * 切换趋势重新获取数据
      */
     changeTrendData: function(url) {
-      this.$axios.post(url,this.$qs.stringify({place: this.place}))
-      .then(res => {
-        if(res.data.CODE == 'ok'){
-          this.lineData = res.data.DATA;
-          this.legendData = [];
-          for(let i=0;i<this.lineData.length;i++){
-            this.legendData.push(this.lineData[i].name);
-            this.lineData[i].data = this.lineData[i].value;
-            this.lineData[i].type = 'line';
-            if(i==0){
-              this.lineData[i].itemStyle = { color: "#00FFFF"};
-              this.lineData[i].areaStyle = {
-                color: {
-                  type: "linear",
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [
-                    {
-                      offset: 0,
-                      color: "rgba(0,255,255,1)" 
-                    },
-                    {
-                      offset: 1,
-                      color: "rgba(0,255,255,0)" 
-                    }
-                  ],
-                  globalCoord: true 
-                }
-              }
-            }else{
-                this.lineData[i].itemStyle = { color: "#0087FF"};
+      this.$axios
+        .post(url, this.$qs.stringify({ place: this.place }))
+        .then(res => {
+          if (res.data.CODE == "ok") {
+            this.lineData = res.data.DATA;
+            this.legendData = [];
+            for (let i = 0; i < this.lineData.length; i++) {
+              this.legendData.push(this.lineData[i].name);
+              this.lineData[i].data = this.lineData[i].value;
+              this.lineData[i].type = "line";
+              if (i == 0) {
+                this.lineData[i].itemStyle = { color: "#00FFFF" };
                 this.lineData[i].areaStyle = {
                   color: {
                     type: "linear",
@@ -1000,175 +1304,315 @@ export default {
                     colorStops: [
                       {
                         offset: 0,
-                        color: "rgba(0,135,255,1)" 
+                        color: "rgba(0,255,255,1)"
                       },
                       {
                         offset: 1,
-                        color: "rgba(0,135,255,0)" 
+                        color: "rgba(0,255,255,0)"
                       }
                     ],
-                    globalCoord: true 
+                    globalCoord: true
                   }
-                }
+                };
+              } else {
+                this.lineData[i].itemStyle = { color: "#0087FF" };
+                this.lineData[i].areaStyle = {
+                  color: {
+                    type: "linear",
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: "rgba(0,135,255,1)"
+                      },
+                      {
+                        offset: 1,
+                        color: "rgba(0,135,255,0)"
+                      }
+                    ],
+                    globalCoord: true
+                  }
+                };
+              }
             }
+            let option = this.line.getOption();
+            this.line.clear();
+            option.series = this.lineData;
+            option.legend.data = this.legendData;
+            this.line.setOption(option);
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
           }
-          let option = this.line.getOption();
-          this.line.clear();
-          option.series = this.lineData;
-          option.legend.data = this.legendData;
-          this.line.setOption(option);
-        }else{
-          this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res => {
-        console.log(res);
-      });
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     /**
      * 获取志愿者分布数据
      */
     getVolunteerData: function() {
-       this.$axios.post('/api/BigScreen/Index/volunteerDistribution',this.$qs.stringify({place: this.place}))
-      .then(res => {
-        if(res.data.CODE == 'ok'){
-          this.ageData = res.data.DATA.age;
-          this.typeData = res.data.DATA.type;
-          for(let i=0;i<this.ageData.length;i++){
-            this.ageData[i].itemStyle = { color: this.colors[i] };
+      this.$axios
+        .post(
+          "/BigScreen/Index/volunteerDistribution",
+          this.$qs.stringify({ place: this.place })
+        )
+        .then(res => {
+          if (res.data.CODE == "ok") {
+            this.ageData = res.data.DATA.age;
+            this.typeData = res.data.DATA.type;
+            for (let i = 0; i < this.ageData.length; i++) {
+              this.ageData[i].itemStyle = { color: this.colors[i] };
+            }
+            for (let i = 0; i < this.typeData.length; i++) {
+              this.typeData[i].itemStyle = { color: this.colors[i] };
+            }
+            this.initPie3();
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
           }
-          for(let i=0;i<this.typeData.length;i++){
-            this.typeData[i].itemStyle = { color: this.colors[i] };
-          }
-          this.initPie3();
-        }else{
-           this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res => {
-        console.log(res);
-      });
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     /**
      * 获取地图数据
      */
     getMapData: function() {
-      this.$axios.post('/api/BigScreen/Index/mapData',this.$qs.stringify({place: this.place,type: this.type}))
-      .then(res=>{
-        if(res.data.CODE == 'ok'){
+      this.$axios
+        .post(
+          "/BigScreen/Index/mapData",
+          this.$qs.stringify({ place: this.place, type: this.type })
+        )
+        .then(res => {
+          if (res.data.CODE == "ok") {
             // console.log('res',res);
             this.mapData = res.data.DATA;
-            for(let i=0;i<this.mapData.length;i++){
-              let point = new BMap.Point(this.mapData[i].value[0],this.mapData[i].value[1]);
-              let value = this.mapData[i].value[2]*100;
-              let circle = new BMap.Circle(point,value,{fillColor:"#FFAA00",strokeColor:"orange",strokeOpacity:0.7});
-              this.map.addOverlay(circle); 
-              let opts = {
-                position : point,    // 指定文本标注所在的地理位置
-                offset   : new BMap.Size(-10,-10)    //设置文本偏移量
-              };
-              let label = new BMap.Label(this.mapData[i].value[2], opts);  // 创建文本标注对象
-              label.setStyle({
-                color : "white",
-                fontSize : "14px",
-                fontFamily:"微软雅黑",
-                      border:"none",
-                      background:"none"
-              });
-              this.map.addOverlay(label);  
+            this.map.clearOverlays();
+            if (this.block) {
+              for (let i = 0; i < this.mapData.length; i++) {
+                let point = new BMap.Point(
+                  this.mapData[i].lng,
+                  this.mapData[i].lat
+                );
+                var marker = new BMap.Marker(point); // 创建标注
+                this.map.addOverlay(marker);
+              }
+            } else {
+              for (let i = 0; i < this.mapData.length; i++) {
+                let offsetLeft = -5;
+                if (this.mapData[i].value[2] > 9) {
+                  offsetLeft = -10;
+                } else if (this.mapData[i].value[2] > 99) {
+                  offsetLeft = -15;
+                } else if (this.mapData[i].value[2] > 999) {
+                  offsetLeft = -20;
+                } else if (this.mapData[i].value[2] > 9999) {
+                  offsetLeft = -25;
+                }
+                let point = new BMap.Point(
+                  this.mapData[i].value[0],
+                  this.mapData[i].value[1]
+                );
+                let opts = {
+                  position: point, // 指定文本标注所在的地理位置
+                  offset: new BMap.Size(offsetLeft, -10) //设置文本偏移量
+                };
+                let label = new BMap.Label(this.mapData[i].value[2], opts); // 创建文本标注对象
+                label.setStyle({
+                  color: "white",
+                  fontSize: "14px",
+                  fontFamily: "微软雅黑",
+                  border: "none",
+                  background: "none"
+                });
+                this.map.addOverlay(label); //添加标签
+                label.addEventListener('click',function(){
+                  var geocoder = new BMap.Geocoder();
+                  let zoom = this.map.getZoom();
+                  let zoom1 = zoom + 2;
+                  geocoder.getLocation(point, res => {     //根据坐标解析地名
+                    this.block = false;
+                    if (zoom < 10) {
+                        this.city = res.addressComponents.city;
+                        this.place = res.addressComponents.city;
+                        this.refresh();
+                    } else{
+                        this.place = res.addressComponents.district;
+                        this.city = res.addressComponents.city;
+                        this.refresh();
+                    }
+                  });
+                  this.map.centerAndZoom(point, zoom1);
+                })
+                let value = this.mapData[i].value[2] * 200;
+                if (value < 7000) {
+                  value = 7000;
+                }
+                let circle = new BMap.Circle(point, value, {
+                  fillColor: "#FFAA00",
+                  strokeColor: "orange",
+                  strokeOpacity: 0.7
+                });
+                let position = {
+                  position: point, // 指定文本标注所在的地理位置
+                  offset: new BMap.Size(10, -10) //设置文本偏移量
+                };
+                let text =
+                  this.mapData[i].name + " : " + this.mapData[i].value[2];
+                let overLable = new BMap.Label(text, position); // 创建文本标注对象
+                overLable.setStyle({
+                  color: "white",
+                  fontSize: "14px",
+                  fontFamily: "微软雅黑",
+                  border: "none",
+                  background: "rgba(0,0,0,0.5)",
+                  borderRadius: "5px",
+                  padding: "10px"
+                });
+                this.map.addOverlay(overLable);
+                overLable.hide();
+                this.map.addOverlay(circle);
+                circle.addEventListener("mouseover", function() {
+                  overLable.show();
+                });
+                circle.addEventListener("mouseout", function() {
+                  overLable.hide();
+                });
+                circle.addEventListener("click", () => {
+                  var geocoder = new BMap.Geocoder();
+                  let zoom = this.map.getZoom();
+                  let zoom1 = zoom + 2;
+                  geocoder.getLocation(point, res => {     //根据坐标解析地名
+                    this.block = false;
+                    if (zoom < 10) {
+                        this.city = res.addressComponents.city;
+                        this.place = res.addressComponents.city;
+                        this.refresh();
+                    } else{
+                        this.place = res.addressComponents.district;
+                        this.city = res.addressComponents.city;
+                        this.refresh();
+                    }
+                  });
+                  this.map.centerAndZoom(point, zoom1);
+                });
+              }
             }
-        }else{
-           this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res=>{
-        console.log(res);
-      })
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     /**
      * 获取统计数据
      */
-    getStatisticsData: function () {
-      this.$axios.post('/api/BigScreen/Index/dataStatistic',this.$qs.stringify({place: this.place}))
-      .then(res=>{
-        if(res.data.CODE == 'ok'){
-          //  console.log(res);
-          this.statisticData = res.data.DATA;
-          console.log('123',this.statisticData);
-        }else{
-           this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res=>{
-        console.log(res);
-      })
+    getStatisticsData: function() {
+      this.$axios
+        .post(
+          "/BigScreen/Index/dataStatistic",
+          this.$qs.stringify({ place: this.place })
+        )
+        .then(res => {
+          if (res.data.CODE == "ok") {
+            //  console.log(res);
+            this.statisticData = res.data.DATA;
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     /**
      * 获取top5数据
      */
     getTopData1: function() {
-      this.$axios.post('/api/BigScreen/Index/hopStadium',this.$qs.stringify({place: this.place}))
-      .then(res=>{
-        if(res.data.CODE == 'ok'){
-          //  console.log(res);
-          this.stadium = res.data.DATA;
-        }else{
-           this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res=>{
-        console.log(res);
-      })
+      this.$axios
+        .post(
+          "/BigScreen/Index/hopStadium",
+          this.$qs.stringify({ place: this.place })
+        )
+        .then(res => {
+          if (res.data.CODE == "ok") {
+            //  console.log(res);
+            this.stadium = res.data.DATA;
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     getTopData2: function() {
-      this.$axios.post('/api/BigScreen/Index/hotSpace',this.$qs.stringify({place: this.place}))
-      .then(res=>{
-        if(res.data.CODE == 'ok'){
-          this.site = res.data.DATA;
-        }else{
-           this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res=>{
-        console.log(res);
-      })
+      this.$axios
+        .post(
+          "/BigScreen/Index/hotSpace",
+          this.$qs.stringify({ place: this.place })
+        )
+        .then(res => {
+          if (res.data.CODE == "ok") {
+            this.site = res.data.DATA;
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     /**
      * 图书接还数据
      */
     getBookData: function() {
-      this.$axios.post('/api/BigScreen/Index/hotBookCirculate',this.$qs.stringify({place: this.place}))
-      .then(res=>{
-        if(res.data.CODE == 'ok'){
-           console.log(res);
-        }else{
-           this.$message({
-            message: res.data.MESSAGE,
-            type: "error"
-          });
-        }
-      })
-      .catch(res=>{
-        console.log(res);
-      })
+      this.$axios
+        .post(
+          "/BigScreen/Index/hotBookCirculate",
+          this.$qs.stringify({ place: this.place })
+        )
+        .then(res => {
+          if (res.data.CODE == "ok") {
+            // console.log('book');
+            //  console.log(res);
+            this.barData = res.data.DATA;
+            this.initBar();
+          } else {
+            this.$message({
+              message: res.data.MESSAGE,
+              type: "error"
+            });
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     /**
      * 更新地点执行函数
@@ -1176,7 +1620,6 @@ export default {
     refresh: function() {
       this.getHotActivity();
       this.getStatisticsData();
-      this.initEchart();
       this.getLoveData();
       this.initBar();
       this.getTrendData();
@@ -1210,9 +1653,9 @@ export default {
     this.getCurrentTime();
   },
   filters: {
-    cutString: function (val) {
-      if(val&&val.length>5){
-        return val.slice(0,5) + '...'
+    cutString: function(val) {
+      if (val && val.length > 5) {
+        return val.slice(0, 5) + "...";
       }
     }
   }
