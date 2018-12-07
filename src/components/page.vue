@@ -4,7 +4,7 @@
     <div ref="earth" id="earth"></div>
     <!-- 城市选择下拉框 -->
     <div class="header">
-      <span>智慧文化云全省数据大屏</span>
+      <span>智慧文化云全省数据中心</span>
       <el-select
         v-model="city"
         placeholder="请选择"
@@ -21,11 +21,11 @@
     </div>
     <!-- 散点图和热力图切换框 -->
     <div class="switch-button">
-      <div
+      <!-- <div
         class="child-button"
         :class="{'active-father-button': button_area == 'left'}"
         @click="leftClick"
-      >分布图</div>
+      >分布图</div> -->
       <!-- <div
         class="child-button"
         :class="{'active-father-button': button_area == 'right'}"
@@ -36,7 +36,7 @@
       <div
         class="button"
         v-for="(item,index) in buttonData"
-        :key="item.name"
+        :key="item.value"
         @click="buttonClick(index,item.value)"
         :class="{'active-button': which==index }"
       >{{item.name}}</div>
@@ -161,7 +161,7 @@
               <span class="number" style="margin:0 8px;">
                 <animate-number
                   from="1"
-                  :to="statisticData.activityJoinNum"
+                  :to="statisticData.activityApplyNum"
                   duration="3000"
                   easing="easeOutQuad"
                 ></animate-number>
@@ -172,7 +172,7 @@
               <span class="number" style="margin:0 8px;">
                 <animate-number
                   from="1"
-                  :to="statisticData.activityApplyNum"
+                  :to="statisticData.activityJoinNum"
                   duration="3000"
                   easing="easeOutQuad"
                 ></animate-number>
@@ -514,13 +514,13 @@ export default {
         let center = this.map.getCenter();
         geocoder.getLocation(center, res => {
           this.block = false;
-          if (zoom < 10) {
+          if (zoom < 11) {
             if (this.place != "浙江省") {
               this.city = "浙江省";
               this.place = "浙江省";
               this.refresh();
             }
-          } else if (zoom < 14) {
+          } else if (zoom < 13) {
             if (res.addressComponents.province == "浙江省") {
               if (this.place != res.addressComponents.city) {
                 this.place = res.addressComponents.city;
@@ -531,7 +531,7 @@ export default {
           } else {
             if (res.addressComponents.province == "浙江省") {
               this.block = true;
-              if (this.place != res.addressComponents.city) {
+              if (this.place != res.addressComponents.district) {
                 this.place = res.addressComponents.district;
                 this.city = res.addressComponents.city;
                 this.refresh();
@@ -546,13 +546,13 @@ export default {
         let zoom = this.map.getZoom();
         let center = this.map.getCenter();
         this.block = false;
-        if (zoom < 10) {
+        if (zoom < 11) {
           if (this.place != "浙江省") {
             this.city = "浙江省";
             this.place = "浙江省";
             this.refresh();
           }
-        } else if (zoom < 14) {
+        } else if (zoom < 13) {
           geocoder.getLocation(center, res => {
             if (res.addressComponents.province == "浙江省") {
               if (this.place != res.addressComponents.city) {
@@ -893,6 +893,13 @@ export default {
           trigger: "axis",
           axisPointer: {
             type: "shadow"
+          },
+          formatter: function (params) {
+              let txt = params[0].name + '<br>';
+              for(let i=0;i<params.length;i++){
+                  txt += params[i].seriesName  + ': ' + Math.abs(params[i].data) + '<br>'
+              }
+              return txt
           }
         },
         grid: {
@@ -913,6 +920,11 @@ export default {
             lineStyle: {
               color: "white"
             }
+          },
+          axisLabel:{
+            formatter: function (data) {
+                  return (Math.abs(data));
+              }
           }
         },
         yAxis: {
@@ -950,7 +962,10 @@ export default {
                 { offset: 1, color: "#FF8800" }
               ])
             },
-            barCategoryGap: "50%"
+            barCategoryGap: "50%",
+            label: {
+              formatter: function (value) { return (Math.abs(value.data))}
+            }
           },
           {
             name: "已还图书数量",
@@ -1096,7 +1111,7 @@ export default {
       if (this.place != val) {
         this.place = val;
         if (val == "浙江省") {
-          this.map.centerAndZoom("浙江省", 9);
+          this.map.centerAndZoom("浙江省", 8);
           this.refresh();
         } else {
           this.map.centerAndZoom(val, 11);
@@ -1407,6 +1422,84 @@ export default {
                 );
                 var marker = new BMap.Marker(point); // 创建标注
                 this.map.addOverlay(marker);
+                // let position = {
+                //   position: point, // 指定文本标注所在的地理位置
+                //   offset: new BMap.Size(10, -10) //设置文本偏移量
+                // };
+                // let text =
+                //   "活动名称：" +
+                //   this.mapData[i].name +
+                //   " \n " +
+                //   "地址：" +
+                //   this.mapData[i].address;
+                // let overLable = new BMap.Label(text, position); // 创建文本标注对象
+                // overLable.setStyle({
+                //   color: "white",
+                //   fontSize: "14px",
+                //   fontFamily: "微软雅黑",
+                //   border: "none",
+                //   background: "rgba(0,0,0,0.5)",
+                //   borderRadius: "5px",
+                //   padding: "10px"
+                // });
+                // let myIcon = new BMap.Icon("https://static-public.hz.backustech.com/1544089445631", new BMap.Size(48,48),{anchor: new BMap.Size(20,70)});
+                // var marker1 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+                // this.map.addOverlay(marker1);
+                // 复杂的自定义覆盖物
+                function ComplexCustomOverlay(point, text, text1) {
+                  this._point = point;
+                  this._text = text;
+                  this._text1 = text1;
+                }
+                ComplexCustomOverlay.prototype = new BMap.Overlay();
+                var that = this;
+                ComplexCustomOverlay.prototype.initialize = function(map1){
+                  this._map = map1;
+                  var div = (this._div = document.createElement("div"));
+                  div.style.position = "absolute";
+                  div.style.backgroundColor = "rgba(0,0,0,0.5)";
+                  div.style.color = "white";
+                  div.style.height = "32px";
+                  div.style.padding = "5px 10px";
+                  div.style.whiteSpace = "nowrap";
+                  div.style.fontSize = "12px";
+                  div.style.borderRadius = "5px";
+                  var span = document.createElement("span");
+                  div.appendChild(span);
+                  span.appendChild(document.createTextNode(this._text));
+                  var br = document.createElement("br");
+                  div.appendChild(br);
+                  var span1 = document.createElement("span");
+                  div.appendChild(span1);
+                  span1.appendChild(document.createTextNode(this._text1));
+                  that.map.getPanes().labelPane.appendChild(div);
+                  return div;
+                };
+                ComplexCustomOverlay.prototype.draw = function() {
+                  var map1 = this._map;
+                  var pixel = map1.pointToOverlayPixel(this._point);
+                  this._div.style.left = pixel.x + 10 + "px";
+                  this._div.style.top = pixel.y - 30 + "px";
+                };
+                if(this.type == 'activity'){
+                  var txt = "活动名称：" + this.mapData[i].name;
+                }else{
+                  var txt = "场馆名称：" + this.mapData[i].name;
+                }
+                var txt1 = "地址：" + this.mapData[i].address;
+                let myCompOverlay = new ComplexCustomOverlay(
+                  point,
+                  txt,
+                  txt1
+                );
+                this.map.addOverlay(myCompOverlay);
+                myCompOverlay.hide();
+                marker.addEventListener("mouseover", ()=> {
+                  myCompOverlay.show();
+                });
+                marker.addEventListener("mouseout", ()=> {
+                  myCompOverlay.hide();
+                });
               }
             } else {
               for (let i = 0; i < this.mapData.length; i++) {
@@ -1437,24 +1530,27 @@ export default {
                   background: "none"
                 });
                 this.map.addOverlay(label); //添加标签
-                label.addEventListener('click',function(){
+                label.addEventListener("click", () => {
                   var geocoder = new BMap.Geocoder();
                   let zoom = this.map.getZoom();
-                  let zoom1 = zoom + 2;
-                  geocoder.getLocation(point, res => {     //根据坐标解析地名
+                  // console.log(zoom);
+                  let zoom1 = zoom + 3;
+                  geocoder.getLocation(point, res => {
+                    //根据坐标解析地名
                     this.block = false;
-                    if (zoom < 10) {
-                        this.city = res.addressComponents.city;
-                        this.place = res.addressComponents.city;
-                        this.refresh();
-                    } else{
-                        this.place = res.addressComponents.district;
-                        this.city = res.addressComponents.city;
-                        this.refresh();
+                    if (zoom < 14) {
+                      this.city = res.addressComponents.city;
+                      this.place = res.addressComponents.city;
+                      this.refresh();
+                    } else {
+                      this.book = true;
+                      this.place = res.addressComponents.district;
+                      this.city = res.addressComponents.city;
+                      this.refresh();
                     }
                   });
                   this.map.centerAndZoom(point, zoom1);
-                })
+                });
                 let value = this.mapData[i].value[2] * 200;
                 if (value < 7000) {
                   value = 7000;
@@ -1492,20 +1588,22 @@ export default {
                 circle.addEventListener("click", () => {
                   var geocoder = new BMap.Geocoder();
                   let zoom = this.map.getZoom();
-                  let zoom1 = zoom + 2;
-                  geocoder.getLocation(point, res => {     //根据坐标解析地名
+                  geocoder.getLocation(point, res => {
+                    //根据坐标解析地名
                     this.block = false;
-                    if (zoom < 10) {
-                        this.city = res.addressComponents.city;
-                        this.place = res.addressComponents.city;
-                        this.refresh();
-                    } else{
-                        this.place = res.addressComponents.district;
-                        this.city = res.addressComponents.city;
-                        this.refresh();
+                    if(zoom<11){
+                      this.city = res.addressComponents.city;
+                      this.place = res.addressComponents.city;
+                      this.refresh();
+                      this.map.centerAndZoom(point, 11);
+                    }else {
+                      this.block = true;
+                      this.place = res.addressComponents.district;
+                      this.city = res.addressComponents.city;
+                      this.refresh();
+                      this.map.centerAndZoom(point, 14);
                     }
                   });
-                  this.map.centerAndZoom(point, zoom1);
                 });
               }
             }
@@ -1524,6 +1622,7 @@ export default {
      * 获取统计数据
      */
     getStatisticsData: function() {
+      this.statisticData = "";
       this.$axios
         .post(
           "/BigScreen/Index/dataStatistic",

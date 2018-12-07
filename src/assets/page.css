@@ -409,4 +409,60 @@
 .right{
   float: right;
 }
+@media screen and (max-width: 1620px) {
+  .statistics-item{
+    margin-right: 10px;
+  }
+  .statistics-body{
+    font-size: 13px;
+    padding: 0;
+  }
+}
+@media screen and (max-width: 1440px) {
+  fieldset{
+    padding: 0;
+  }
+  .table-body{
+    font-size: 12px;
+  }
+  .statistics{
+    padding: 0;
+    height: 45%;
+  }
+  .statistics-body{
+    font-size: 12px;
+    padding-left: 14px;
+  }
+  .statistics-item{
+    margin-right: 8px;
+  }
+  .left-box{
+    padding: 0 10px;
+  }
+  .right-box{
+    padding: 0 10px;
+  }
+  .topBox{
+    font-size: 12px;
+  }
+  .trend{
+    left: 28%;
+    right: 28%;
+  }
+  .left-area{
+    left: 20px;
+  }
+  .right-area{
+    right: 20px;
+  }
+  .table-title{
+    margin-bottom: 10px;
+  }
+  .hotActivity{
+    height: 45%;
+  }
+  .under-button{
+    bottom: 26%;
+  }
+}
 
