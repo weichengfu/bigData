@@ -409,6 +409,11 @@
 .right{
   float: right;
 }
+.activityPage{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 @media screen and (max-width: 1620px) {
   .statistics-item{
     margin-right: 10px;

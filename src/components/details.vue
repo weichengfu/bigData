@@ -5,7 +5,7 @@
         <div class="hot-tr corner1"></div>
         <!-- 左下角 -->
         <div class="hot-lb corner2"></div>
-            <legend class="title"><div class="inner-title" style="cursor:pointer;">返回</div></legend>
+            <legend class="title"><div class="inner-title" style="cursor:pointer;" @click="closePage">返回</div></legend>
             <div class="details-content">
                 <div class="left-content">
                     <div class="content-title">{{details.title}}</div>
@@ -30,6 +30,7 @@
 <script>
 export default {
     name: 'details',
+    props : ['message'],
     data(){
         return {
             details: {
@@ -47,13 +48,17 @@ export default {
         }
     },
     created(){
+        this.$axios.post('',this.$qs.stringify({})).then(res=>{
 
+        })
     },
     mounted(){
 
     },
     methods: {
-
+         closePage: function(){
+            this.$emit("gotoParent","closePage");
+        }
     }
 }
 </script>
@@ -62,12 +67,13 @@ export default {
     .details{
         width: 100vw;
         height: 100vh;
+        padding-top: 28px;
+        box-sizing: border-box;
     }
     .details-wrap{
         width: 62.5%;
         height: 92%;
         margin: auto;
-        margin-top: 30px;
         padding: 0 40px;
         text-align: left;
         position: relative;

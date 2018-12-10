@@ -63,7 +63,7 @@
               v-for="item in tableData"
               :key="item.activity_id"
             >
-              <el-tooltip class="item" effect="dark" :content="item.name" placement="top">
+              <el-tooltip class="item" effect="dark" :content="item.name" placement="top-start">
                 <span style="cursor:pointer;">{{item.name}}</span>
               </el-tooltip>
             </div>
@@ -361,12 +361,20 @@
       <div class="trend-tr corner1"></div>
       <div class="trend-lb corner2"></div>
     </div>
+    <!-- 详情页 -->
+    <div class="activityPage" v-if="show">
+      <child :message="childId" v-on:gotoParent="closePage"></child>
+    </div>
   </div>
 </template>
 <script>
 var echarts = require("echarts");
+import child from '@/components/details';
 export default {
   name: "page",
+  components: {
+    child
+  },
   data() {
     return {
       colors: [
@@ -497,7 +505,9 @@ export default {
       mapData: [],
       statisticData: "",
       barData: [],
-      block: false //用于标记是否到县区级别
+      block: false, //用于标记是否到县区级别
+      show: false,
+      childId: ''
     };
   },
   methods: {
@@ -643,13 +653,6 @@ export default {
             }
           },
           {
-            featureType: "poi",
-            elementType: "all",
-            stylers: {
-              visibility: "off"
-            }
-          },
-          {
             featureType: "green",
             elementType: "all",
             stylers: {
@@ -698,6 +701,20 @@ export default {
             stylers: {
               color: "#1a5787"
             }
+          },
+          {
+              featureType: "city",
+              elementType: "labels.text.fill",
+              stylers: {
+                color: "#ffffff"
+              }
+          },
+          {
+              featureType: "city",
+              elementType: "labels.text.stroke",
+              stylers: {
+                  "color": "#ffffff40"
+              }
           }
         ]
       };
@@ -1422,26 +1439,6 @@ export default {
                 );
                 var marker = new BMap.Marker(point); // 创建标注
                 this.map.addOverlay(marker);
-                // let position = {
-                //   position: point, // 指定文本标注所在的地理位置
-                //   offset: new BMap.Size(10, -10) //设置文本偏移量
-                // };
-                // let text =
-                //   "活动名称：" +
-                //   this.mapData[i].name +
-                //   " \n " +
-                //   "地址：" +
-                //   this.mapData[i].address;
-                // let overLable = new BMap.Label(text, position); // 创建文本标注对象
-                // overLable.setStyle({
-                //   color: "white",
-                //   fontSize: "14px",
-                //   fontFamily: "微软雅黑",
-                //   border: "none",
-                //   background: "rgba(0,0,0,0.5)",
-                //   borderRadius: "5px",
-                //   padding: "10px"
-                // });
                 // let myIcon = new BMap.Icon("https://static-public.hz.backustech.com/1544089445631", new BMap.Size(48,48),{anchor: new BMap.Size(20,70)});
                 // var marker1 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
                 // this.map.addOverlay(marker1);
@@ -1500,6 +1497,9 @@ export default {
                 marker.addEventListener("mouseout", ()=> {
                   myCompOverlay.hide();
                 });
+                marker.addEventListener("click",()=>{
+                  this.show = true;
+                })
               }
             } else {
               for (let i = 0; i < this.mapData.length; i++) {
@@ -1533,27 +1533,34 @@ export default {
                 label.addEventListener("click", () => {
                   var geocoder = new BMap.Geocoder();
                   let zoom = this.map.getZoom();
-                  // console.log(zoom);
-                  let zoom1 = zoom + 3;
                   geocoder.getLocation(point, res => {
                     //根据坐标解析地名
                     this.block = false;
-                    if (zoom < 14) {
+                    if(zoom<11){
                       this.city = res.addressComponents.city;
                       this.place = res.addressComponents.city;
                       this.refresh();
-                    } else {
-                      this.book = true;
+                      this.map.centerAndZoom(point, 11);
+                    }else {
+                      this.block = true;
                       this.place = res.addressComponents.district;
                       this.city = res.addressComponents.city;
                       this.refresh();
+                      this.map.centerAndZoom(point, 14);
                     }
                   });
-                  this.map.centerAndZoom(point, zoom1);
                 });
+                let zoom = this.map.getZoom();
                 let value = this.mapData[i].value[2] * 200;
-                if (value < 7000) {
-                  value = 7000;
+                if(zoom<11){
+                  if (value < 7000) {
+                    value = 7000;
+                  }
+                }else{
+                  value = this.mapData[i].value[2] * 100;
+                  if(value<1000){
+                    value = 1000;
+                  }
                 }
                 let circle = new BMap.Circle(point, value, {
                   fillColor: "#FFAA00",
@@ -1728,6 +1735,14 @@ export default {
       this.getTopData2();
       this.getBookData();
       this.getCurrentTime();
+    },
+    /**
+     * 关闭活动页
+     */
+    closePage: function (data){
+      if(data == "closePage"){
+        this.show = false;
+      }
     }
   },
   created() {
