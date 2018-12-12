@@ -29,8 +29,9 @@
 </template>
 <script>
 export default {
-    name: 'details',
-    props : ['message'],
+    name: 'detailPage',
+    // props : ['message'],
+    inject: ['message'],
     data(){
         return {
             details: {
@@ -48,9 +49,7 @@ export default {
         }
     },
     created(){
-        this.$axios.post('',this.$qs.stringify({})).then(res=>{
-
-        })
+        console.log(this.message);
     },
     mounted(){
 
@@ -58,6 +57,11 @@ export default {
     methods: {
          closePage: function(){
             this.$emit("gotoParent","closePage");
+        },
+        getDetailData: function(){
+             this.$axios.post('',this.$qs.stringify({})).then(res=>{
+                
+            })
         }
     }
 }

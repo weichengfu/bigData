@@ -21,16 +21,16 @@
     </div>
     <!-- 散点图和热力图切换框 -->
     <div class="switch-button">
-      <!-- <div
+      <div
         class="child-button"
         :class="{'active-father-button': button_area == 'left'}"
         @click="leftClick"
-      >分布图</div> -->
-      <!-- <div
+      >分布图</div>
+      <div
         class="child-button"
         :class="{'active-father-button': button_area == 'right'}"
         @click="rightClick"
-      >热力图</div>-->
+      >热力图</div>
     </div>
     <div class="under-button">
       <div
@@ -94,7 +94,7 @@
             <div class="table-body" v-for="item in tableData" :key="item.activity_id">
               <span class="number">
                 <!-- {{item.number}} -->
-                <animate-number from="1" :to="item.peopleNum" duration="3000" easing="easeOutQuad"></animate-number>
+                <countTo :startVal='1' :endVal='item.peopleNum' :duration='3000'></countTo>
               </span>
             </div>
           </div>
@@ -134,12 +134,7 @@
             <div class="statistics-item">
               注册
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.registerNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.registerNum' :duration='3000'></countTo>
               </span>人
             </div>
           </div>
@@ -148,34 +143,19 @@
             <div class="statistics-item">
               活动
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.activityNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.activityNum' :duration='3000'></countTo>
               </span>场
             </div>
             <div class="statistics-item">
               报名
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.activityApplyNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.activityApplyNum' :duration='3000'></countTo>
               </span>人
             </div>
             <div class="statistics-item">
               参与
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.activityJoinNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.activityJoinNum' :duration='3000'></countTo>
               </span>人
             </div>
           </div>
@@ -184,34 +164,19 @@
             <div class="statistics-item">
               志愿者
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.volunteerNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.volunteerNum' :duration='3000'></countTo>
               </span>人
             </div>
             <div class="statistics-item">
               志愿项目
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.volunteerActivityNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.volunteerActivityNum' :duration='3000'></countTo>
               </span>个
             </div>
             <div class="statistics-item">
               参与
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.volunteerActivityApplyNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.volunteerActivityApplyNum' :duration='3000'></countTo>
               </span>人
             </div>
           </div>
@@ -220,23 +185,13 @@
             <div class="statistics-item">
               场地预定
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.spaceAppointNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.spaceAppointNum' :duration='3000'></countTo>
               </span>次
             </div>
             <div class="statistics-item">
               场地使用
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.spaceUsedNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.spaceUsedNum' :duration='3000'></countTo>
               </span>人
             </div>
           </div>
@@ -245,23 +200,13 @@
             <div class="statistics-item">
               服务点单
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.serviceNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.serviceNum' :duration='3000'></countTo>
               </span>次
             </div>
             <div class="statistics-item">
               覆盖区县
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.serviceCoverNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.serviceCoverNum' :duration='3000'></countTo>
               </span>个
             </div>
           </div>
@@ -270,23 +215,13 @@
             <div class="statistics-item">
               资讯发布
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.informationNum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.informationNum' :duration='3000'></countTo>
               </span>篇
             </div>
             <div class="statistics-item">
               浏览
               <span class="number" style="margin:0 8px;">
-                <animate-number
-                  from="1"
-                  :to="statisticData.informationSum"
-                  duration="3000"
-                  easing="easeOutQuad"
-                ></animate-number>
+                <countTo :startVal='1' :endVal='statisticData.informationSum' :duration='3000'></countTo>
               </span>人次
             </div>
           </div>
@@ -308,7 +243,7 @@
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="number right">
-              <animate-number from="1" :to="item.value" duration="3000" easing="easeOutQuad"></animate-number>
+              <countTo :startVal='1' :endVal='item.value' :duration='3000'></countTo>
             </span>
           </div>
         </div>
@@ -328,7 +263,7 @@
             <span v-else>{{item.name}}</span>
             <span class="right">&nbsp;次</span>
             <span class="number right">
-              <animate-number from="1" :to="item.value" duration="3000" easing="easeOutQuad"></animate-number>
+              <countTo :startVal='1' :endVal='item.value' :duration='3000'></countTo>
             </span>
           </div>
         </div>
@@ -363,17 +298,23 @@
     </div>
     <!-- 详情页 -->
     <div class="activityPage" v-if="show">
-      <child :message="childId" v-on:gotoParent="closePage"></child>
+      <!-- <child :message="childId" v-on:gotoParent="closePage"></child> -->
+      <child v-on:gotoParent="closePage"></child>
     </div>
   </div>
 </template>
 <script>
 var echarts = require("echarts");
 import child from '@/components/details';
+import countTo from 'vue-count-to';
 export default {
   name: "page",
+  provide: {
+    message: 'testInfo'
+  },
   components: {
-    child
+    child,
+    countTo
   },
   data() {
     return {
@@ -473,19 +414,24 @@ export default {
       ],
       rightButton: [
         {
-          name: "活动热力"
+          name: "活动热力",
+          value: 'activity'
         },
         {
-          name: "场馆热力"
+          name: "场馆热力",
+          value: 'stadium'
         },
         {
-          name: "场地预定热力"
+          name: "场地预定热力",
+          value: 'space'
         },
         {
-          name: "服务点单热力"
+          name: "服务点单热力",
+          value: 'service'
         },
         {
-          name: "志愿者热力"
+          name: "志愿者热力",
+          value: 'volunteer'
         }
       ],
       button_area: "left",
@@ -507,12 +453,13 @@ export default {
       barData: [],
       block: false, //用于标记是否到县区级别
       show: false,
-      childId: ''
+      childId: 'test',
+      timeCount: 60
     };
   },
   methods: {
     initEchart: function() {
-      this.map = new BMap.Map("earth", { enableMapClick: false });
+      this.map = new BMap.Map("earth", { enableMapClick: false,minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
       this.map.enableScrollWheelZoom();
       var geocoder = new BMap.Geocoder();
@@ -1077,45 +1024,20 @@ export default {
       if (this.button_area == "right") {
         this.button_area = "left";
         this.buttonData = this.leftButton;
-        let option = this.myChart.getOption();
-        option.series[0].type = "effectScatter";
-        option.visualMap = undefined;
-        this.myChart.clear();
-        this.myChart.setOption(option);
+        this.getMapData();
       }
     },
     rightClick: function() {
       if (this.button_area == "left") {
         this.button_area = "right";
         this.buttonData = this.rightButton;
-        let option = this.myChart.getOption();
-        option.series[0].type = "heatmap";
-        option.visualMap = {
-          min: 0,
-          max: 1000,
-          calculable: true,
-          realtime: false,
-          inRange: {
-            color: [
-              "#e0f3f8",
-              "#ffffbf",
-              "#fee090",
-              "#fdae61",
-              "#f46d43",
-              "#d73027",
-              "#a50026"
-            ]
-          },
-          show: false
-        };
-        this.myChart.clear();
-        this.myChart.setOption(option);
+        this.getMapData();
       }
     },
     buttonClick: function(val, val1) {
       this.which = val;
+      console.log(this.which);
       if (this.type != val1) {
-        // console.log("buttonclick");
         // console.log(val1);
         this.type = val1;
         this.getMapData();
@@ -1156,39 +1078,39 @@ export default {
     /**
      * 连接服务器函数
      */
-    getConect: function() {
-      var socket = new WebSocket(
-        "ws://why-test.hz.backustech.com/BigScreen/Index/hotActivityList"
-      );
-      if (socket.readyState == 0) {
-        this.$message({
-          message: "正在尝试连接",
-          type: "warning"
-        });
-      } else if (socket.readyState == 1) {
-        this.$message({
-          message: "连接成功，可以通信了",
-          type: "success"
-        });
-        socket.onopen = function() {
-          console.log("123");
-        };
-        socket.onmessage = function(event) {
-          // var data = event.data;
-          // 处理数据
-        };
-      } else if (socket.readyState == 2) {
-        this.$message({
-          message: "连接正在关闭",
-          type: "warning"
-        });
-      } else {
-        this.$message({
-          message: "连接已经关闭，或者打开连接失败",
-          type: "warning"
-        });
-      }
-    },
+    // getConect: function() {
+    //   var socket = new WebSocket(
+    //     "ws://http://why.hz.backustech.com/BigScreen/Index/hotActivityList"
+    //   );
+    //   if (socket.readyState == 0) {
+    //     this.$message({
+    //       message: "正在尝试连接",
+    //       type: "warning"
+    //     });
+    //   } else if (socket.readyState == 1) {
+    //     this.$message({
+    //       message: "连接成功，可以通信了",
+    //       type: "success"
+    //     });
+    //     socket.onopen = function() {
+    //       console.log("123");
+    //     };
+    //     socket.onmessage = function(event) {
+    //       // var data = event.data;
+    //       // 处理数据
+    //     };
+    //   } else if (socket.readyState == 2) {
+    //     this.$message({
+    //       message: "连接正在关闭",
+    //       type: "warning"
+    //     });
+    //   } else {
+    //     this.$message({
+    //       message: "连接已经关闭，或者打开连接失败",
+    //       type: "warning"
+    //     });
+    //   }
+    // },
     /**
      * 当前时间函数
      */
@@ -1215,9 +1137,7 @@ export default {
         " " +
         hour +
         ":" +
-        minute +
-        ":" +
-        second;
+        minute;
     },
     /**
      * 获得月数据
@@ -1502,116 +1422,131 @@ export default {
                 })
               }
             } else {
-              for (let i = 0; i < this.mapData.length; i++) {
-                let offsetLeft = -5;
-                if (this.mapData[i].value[2] > 9) {
-                  offsetLeft = -10;
-                } else if (this.mapData[i].value[2] > 99) {
-                  offsetLeft = -15;
-                } else if (this.mapData[i].value[2] > 999) {
-                  offsetLeft = -20;
-                } else if (this.mapData[i].value[2] > 9999) {
-                  offsetLeft = -25;
-                }
-                let point = new BMap.Point(
-                  this.mapData[i].value[0],
-                  this.mapData[i].value[1]
-                );
-                let opts = {
-                  position: point, // 指定文本标注所在的地理位置
-                  offset: new BMap.Size(offsetLeft, -10) //设置文本偏移量
-                };
-                let label = new BMap.Label(this.mapData[i].value[2], opts); // 创建文本标注对象
-                label.setStyle({
-                  color: "white",
-                  fontSize: "14px",
-                  fontFamily: "微软雅黑",
-                  border: "none",
-                  background: "none"
-                });
-                this.map.addOverlay(label); //添加标签
-                label.addEventListener("click", () => {
-                  var geocoder = new BMap.Geocoder();
-                  let zoom = this.map.getZoom();
-                  geocoder.getLocation(point, res => {
-                    //根据坐标解析地名
-                    this.block = false;
-                    if(zoom<11){
-                      this.city = res.addressComponents.city;
-                      this.place = res.addressComponents.city;
-                      this.refresh();
-                      this.map.centerAndZoom(point, 11);
-                    }else {
-                      this.block = true;
-                      this.place = res.addressComponents.district;
-                      this.city = res.addressComponents.city;
-                      this.refresh();
-                      this.map.centerAndZoom(point, 14);
-                    }
+              if(this.button_area == 'left'){
+                for (let i = 0; i < this.mapData.length; i++) {
+                  let offsetLeft = -5;
+                  if (this.mapData[i].value[2] > 9) {
+                    offsetLeft = -10;
+                  } else if (this.mapData[i].value[2] > 99) {
+                    offsetLeft = -20;
+                  } else if (this.mapData[i].value[2] > 999) {
+                    offsetLeft = -25;
+                  } else if (this.mapData[i].value[2] > 9999) {
+                    offsetLeft = -30;
+                  }
+                  let point = new BMap.Point(
+                    this.mapData[i].value[0],
+                    this.mapData[i].value[1]
+                  );
+                  let opts = {
+                    position: point, // 指定文本标注所在的地理位置
+                    offset: new BMap.Size(offsetLeft, -10) //设置文本偏移量
+                  };
+                  let label = new BMap.Label(this.mapData[i].value[2], opts); // 创建文本标注对象
+                  label.setStyle({
+                    color: "white",
+                    fontSize: "14px",
+                    fontFamily: "微软雅黑",
+                    border: "none",
+                    background: "none"
                   });
-                });
-                let zoom = this.map.getZoom();
-                let value = this.mapData[i].value[2] * 200;
-                if(zoom<11){
-                  if (value < 7000) {
-                    value = 7000;
+                  this.map.addOverlay(label); //添加标签
+                  label.addEventListener("click", () => {
+                    var geocoder = new BMap.Geocoder();
+                    let zoom = this.map.getZoom();
+                    geocoder.getLocation(point, res => {
+                      //根据坐标解析地名
+                      this.block = false;
+                      if(zoom<11){
+                        this.city = res.addressComponents.city;
+                        this.place = res.addressComponents.city;
+                        this.refresh();
+                        this.map.centerAndZoom(point, 11);
+                      }else {
+                        this.block = true;
+                        this.place = res.addressComponents.district;
+                        this.city = res.addressComponents.city;
+                        this.refresh();
+                        this.map.centerAndZoom(point, 14);
+                      }
+                    });
+                  });
+                  let zoom = this.map.getZoom();
+                  let value = this.mapData[i].value[2] * 200;
+                  if(zoom<11){
+                    if (value < 7000) {
+                      value = 7000;
+                    }
+                  }else{
+                    value = this.mapData[i].value[2] * 100;
+                    if(value<1000){
+                      value = 1000;
+                    }
                   }
-                }else{
-                  value = this.mapData[i].value[2] * 100;
-                  if(value<1000){
-                    value = 1000;
-                  }
-                }
-                let circle = new BMap.Circle(point, value, {
-                  fillColor: "#FFAA00",
-                  strokeColor: "orange",
-                  strokeOpacity: 0.7
-                });
-                let position = {
-                  position: point, // 指定文本标注所在的地理位置
-                  offset: new BMap.Size(10, -10) //设置文本偏移量
-                };
-                let text =
-                  this.mapData[i].name + " : " + this.mapData[i].value[2];
-                let overLable = new BMap.Label(text, position); // 创建文本标注对象
-                overLable.setStyle({
-                  color: "white",
-                  fontSize: "14px",
-                  fontFamily: "微软雅黑",
-                  border: "none",
-                  background: "rgba(0,0,0,0.5)",
-                  borderRadius: "5px",
-                  padding: "10px"
-                });
-                this.map.addOverlay(overLable);
-                overLable.hide();
-                this.map.addOverlay(circle);
-                circle.addEventListener("mouseover", function() {
-                  overLable.show();
-                });
-                circle.addEventListener("mouseout", function() {
+                  let circle = new BMap.Circle(point, value, {
+                    fillColor: "#FFAA00",
+                    strokeColor: "orange",
+                    strokeOpacity: 0.7
+                  });
+                  let position = {
+                    position: point, // 指定文本标注所在的地理位置
+                    offset: new BMap.Size(10, -10) //设置文本偏移量
+                  };
+                  let text =
+                    this.mapData[i].name + " : " + this.mapData[i].value[2];
+                  let overLable = new BMap.Label(text, position); // 创建文本标注对象
+                  overLable.setStyle({
+                    color: "white",
+                    fontSize: "14px",
+                    fontFamily: "微软雅黑",
+                    border: "none",
+                    background: "rgba(0,0,0,0.5)",
+                    borderRadius: "5px",
+                    padding: "10px"
+                  });
+                  this.map.addOverlay(overLable);
                   overLable.hide();
-                });
-                circle.addEventListener("click", () => {
-                  var geocoder = new BMap.Geocoder();
-                  let zoom = this.map.getZoom();
-                  geocoder.getLocation(point, res => {
-                    //根据坐标解析地名
-                    this.block = false;
-                    if(zoom<11){
-                      this.city = res.addressComponents.city;
-                      this.place = res.addressComponents.city;
-                      this.refresh();
-                      this.map.centerAndZoom(point, 11);
-                    }else {
-                      this.block = true;
-                      this.place = res.addressComponents.district;
-                      this.city = res.addressComponents.city;
-                      this.refresh();
-                      this.map.centerAndZoom(point, 14);
-                    }
+                  this.map.addOverlay(circle);
+                  circle.addEventListener("mouseover", function() {
+                    overLable.show();
                   });
-                });
+                  circle.addEventListener("mouseout", function() {
+                    overLable.hide();
+                  });
+                  circle.addEventListener("click", () => {
+                    var geocoder = new BMap.Geocoder();
+                    let zoom = this.map.getZoom();
+                    geocoder.getLocation(point, res => {
+                      //根据坐标解析地名
+                      this.block = false;
+                      if(zoom<11){
+                        this.city = res.addressComponents.city;
+                        this.place = res.addressComponents.city;
+                        this.refresh();
+                        this.map.centerAndZoom(point, 11);
+                      }else {
+                        this.block = true;
+                        this.place = res.addressComponents.district;
+                        this.city = res.addressComponents.city;
+                        this.refresh();
+                        this.map.centerAndZoom(point, 14);
+                      }
+                    });
+                  });
+                }
+              }else{
+                let points = [];
+                for(let i=0;i<this.mapData.length;i++){
+                  let point = {
+                    "lng": this.mapData[i].value[0],
+                    "lat": this.mapData[i].value[1],
+                    "count": this.mapData[i].value[2]
+                  };
+                  points.push(point);
+                };
+                let heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":30});
+	              this.map.addOverlay(heatmapOverlay);
+	              heatmapOverlay.setDataSet({data:points,max:100});
               }
             }
           } else {
@@ -1629,7 +1564,6 @@ export default {
      * 获取统计数据
      */
     getStatisticsData: function() {
-      this.statisticData = "";
       this.$axios
         .post(
           "/BigScreen/Index/dataStatistic",
@@ -1638,7 +1572,9 @@ export default {
         .then(res => {
           if (res.data.CODE == "ok") {
             //  console.log(res);
-            this.statisticData = res.data.DATA;
+            if(this.statisticData != res.data.DATA){
+              this.statisticData = res.data.DATA;
+            }
           } else {
             this.$message({
               message: res.data.MESSAGE,
@@ -1735,6 +1671,7 @@ export default {
       this.getTopData2();
       this.getBookData();
       this.getCurrentTime();
+      this.timeCount = 60;
     },
     /**
      * 关闭活动页
@@ -1743,6 +1680,19 @@ export default {
       if(data == "closePage"){
         this.show = false;
       }
+    },
+    /**
+     * 倒计时函数
+     */
+    countDown: function(){
+      setInterval(()=>{
+        this.timeCount -= 1;
+        console.log(this.timeCount);
+        if(this.timeCount == 0){
+          this.refresh();
+          this.getCurrentTime();
+        }
+      },1000)
     }
   },
   created() {
@@ -1763,8 +1713,8 @@ export default {
       this.getTopData2();
       this.getBookData();
     });
-    // this.getConect();
     this.getCurrentTime();
+    this.countDown();
   },
   filters: {
     cutString: function(val) {
