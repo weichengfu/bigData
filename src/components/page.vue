@@ -454,7 +454,9 @@ export default {
       block: false, //用于标记是否到县区级别
       show: false,
       childId: 'test',
-      timeCount: 60
+      timeCount: 60,
+      timer: '',
+      j: 1
     };
   },
   methods: {
@@ -462,6 +464,12 @@ export default {
       this.map = new BMap.Map("earth", { enableMapClick: false,minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
       this.map.enableScrollWheelZoom();
+      let width = document.body.clientWidth;
+      let height = document.body.clientHeight;
+      let w = width * 0.28;
+      let h = height * 0.33;
+      var navigation = new BMap.NavigationControl({offset: new BMap.Size(w, h), type: BMAP_NAVIGATION_CONTROL_SMALL}); 
+      this.map.addControl(navigation); 
       var geocoder = new BMap.Geocoder();
       // 拖拽后获取中心点坐标
       this.map.addEventListener("dragend", e => {
@@ -791,6 +799,11 @@ export default {
       });
     },
     initLine: function() {
+      let width = document.body.clientWidth;
+      let y = 10;
+      if(width<1680){
+        y= 30
+      }
       this.line = echarts.init(this.$refs.trend);
       this.line.setOption({
         xAxis: {
@@ -827,7 +840,7 @@ export default {
         legend: {
           data: this.legendData,
           selectedMode: "single",
-          y: 10,
+          y: y,
           right: 10,
           inactiveColor: "#ADD9FF",
           textStyle: {
@@ -887,8 +900,13 @@ export default {
           },
           axisLabel:{
             formatter: function (data) {
+                if(Math.abs(data)>10000){
+                  return Math.abs(data)/10000 + '万';
+                }else{
                   return (Math.abs(data));
-              }
+                }
+            },
+            rotate: 45
           }
         },
         yAxis: {
@@ -1066,6 +1084,7 @@ export default {
         this.trend = "0";
         let url = "/BigScreen/Index/preMonthActivity";
         this.changeTrendData(url);
+        clearTimeout(this.timer);
       }
     },
     switchTrend2: function() {
@@ -1073,6 +1092,7 @@ export default {
         this.trend = "1";
         let url = "/BigScreen/Index/preMonthService";
         this.changeTrendData(url);
+        clearTimeout(this.timer);
       }
     },
     /**
@@ -1218,7 +1238,13 @@ export default {
                 };
               }
             }
+            // console.log(this.lineData);
+            if(this.line){
+              this.line.clear();
+            }
             this.initLine();
+            clearTimeout(this.timer);
+            this.moveLine();
           } else {
             this.$message({
               message: res.data.MESSAGE,
@@ -1234,6 +1260,8 @@ export default {
      * 切换趋势重新获取数据
      */
     changeTrendData: function(url) {
+      clearTimeout(this.timer);
+      this.j = 1;
       this.$axios
         .post(url, this.$qs.stringify({ place: this.place }))
         .then(res => {
@@ -1290,11 +1318,9 @@ export default {
                 };
               }
             }
-            let option = this.line.getOption();
             this.line.clear();
-            option.series = this.lineData;
-            option.legend.data = this.legendData;
-            this.line.setOption(option);
+            this.initLine();
+            this.moveLine();
           } else {
             this.$message({
               message: res.data.MESSAGE,
@@ -1305,6 +1331,30 @@ export default {
         .catch(res => {
           console.log(res);
         });
+    },
+    /**
+     * 动画线型图
+     */
+    moveLine: function(){
+      this.timer = setTimeout(()=>{
+        let option = this.line.getOption();
+        let selected = {};
+        for(let i=0;i<this.legendData.length;i++){
+          if(this.j==i){
+            selected[this.legendData[i]] = true;
+          }else{
+            selected[this.legendData[i]] = false;
+          }
+        };
+        this.line.clear();
+        option.legend[0].selected = selected;
+        this.line.setOption(option);
+        this.j += 1;
+        if(this.j == this.legendData.length){
+          this.j = 0;
+        };
+        this.moveLine();
+      },5000)
     },
     /**
      * 获取志愿者分布数据
@@ -1660,18 +1710,20 @@ export default {
      * 更新地点执行函数
      */
     refresh: function() {
+      this.getMapData();
       this.getHotActivity();
       this.getStatisticsData();
       this.getLoveData();
       this.initBar();
       this.getTrendData();
       this.getVolunteerData();
-      this.getMapData();
       this.getTopData1();
       this.getTopData2();
       this.getBookData();
       this.getCurrentTime();
       this.timeCount = 60;
+      this.trend = '0';
+      this.j = 1;
     },
     /**
      * 关闭活动页
@@ -1685,14 +1737,23 @@ export default {
      * 倒计时函数
      */
     countDown: function(){
-      setInterval(()=>{
-        this.timeCount -= 1;
-        console.log(this.timeCount);
+      // setInterval(()=>{
+      //   this.timeCount -= 1;
+      //   console.log(this.timeCount);
+      //   if(this.timeCount == 0){
+      //     this.refresh();
+      //     this.getCurrentTime();
+      //   }
+      // },1000)
+      setTimeout(()=>{
+        this.timeCount = 0;
+        // console.log(this.timeCount);
         if(this.timeCount == 0){
           this.refresh();
           this.getCurrentTime();
-        }
-      },1000)
+        };
+        this.countDown();
+      },60000)
     }
   },
   created() {

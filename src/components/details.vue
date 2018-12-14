@@ -1,5 +1,5 @@
 <template>
-    <div class="details">
+    <div class="details" @click.self="closePage">
         <fieldset class="border details-wrap">
         <!-- 右上角 -->
         <div class="hot-tr corner1"></div>
@@ -73,6 +73,7 @@ export default {
         height: 100vh;
         padding-top: 28px;
         box-sizing: border-box;
+        background: rgba(0,0,0,0.70);
     }
     .details-wrap{
         width: 62.5%;
