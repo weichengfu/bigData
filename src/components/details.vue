@@ -19,7 +19,12 @@
                     <div class="content-info" style="margin-top:24px;">报名日期:{{details.enterTime}}</div>
                     <div class="content-info" style="margin-bottom:40px;">报名人数:{{details.enterPeople}}</div>
                     <div class="content-video">
-                        <video :src="details.vido" controls="controls" height="216" width="100%"></video>
+                        <!-- <video :src="details.vido" controls="controls" height="216" width="100%"></video> -->
+                        <video id="myPlayer" height="216" width="100%" poster="" controls playsInline webkit-playsinline autoplay>
+                            <!-- <source src="rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b" type="" /> -->
+                            <source src="http://hls.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8" type="application/x-mpegURL" />
+                            <!-- <source src="[这里填入从开放平台官网获取到的ws协议URL]"  /> -->
+                        </video>
                     </div>
                 </div>
                 <div class="right-content" v-html="details.h5"></div>
@@ -43,7 +48,7 @@ export default {
                 phone: '0571-87988338',
                 enterTime: '截至2018-03-04 16:00',
                 enterPeople: '25/100',
-                video: '',
+                video: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.hd',
                 h5: '<div>hello world</div>'
             }
         }
@@ -52,7 +57,9 @@ export default {
         console.log(this.message);
     },
     mounted(){
-
+        this.$nextTick(function(){
+            var player = new EZUIPlayer('myPlayer');
+        })
     },
     methods: {
          closePage: function(){

@@ -239,7 +239,7 @@
               :content="item.name"
               placement="top"
             >
-              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
+              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}<span style="font-weight:bold;">...</span></span>
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="number right">
@@ -258,7 +258,7 @@
               :content="item.name"
               placement="top"
             >
-              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}</span>
+              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}<span style="font-weight:bold;">...</span></span>
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="right">&nbsp;次</span>
@@ -272,7 +272,7 @@
       </div>
       <!-- 图书借还框 -->
       <div class="book border">
-        <div ref="book" style="height:100%;width:100%;"></div>
+        <div ref="book" style="height:100%;width:100%;text-align:left;"></div>
         <div class="book-tr corner1"></div>
         <div class="book-lb corner2"></div>
       </div>
@@ -690,6 +690,7 @@ export default {
             color: "#ADD9FF"
           }
         },
+        color: this.colors,
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -731,6 +732,7 @@ export default {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
+        color: this.colors,
         // roseType: "radius",
         series: [
           {
@@ -874,7 +876,12 @@ export default {
           formatter: function (params) {
               let txt = params[0].name + '<br>';
               for(let i=0;i<params.length;i++){
-                  txt += params[i].seriesName  + ': ' + Math.abs(params[i].data) + '<br>'
+                  if(i==0){
+                    params[i].marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFBC70;'></span>";
+                  }else{
+                    params[i].marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#0087FF;'></span>";
+                  }
+                  txt += params[i].marker + params[i].seriesName  + ': ' + Math.abs(params[i].data) + '<br>'
               }
               return txt
           }
@@ -888,6 +895,7 @@ export default {
         },
         xAxis: {
           type: "value",
+          // scale: true,
           // boundaryGap: [0, 0.01]
           splitLine: { show: false },
           axisTick: {
@@ -906,7 +914,8 @@ export default {
                   return (Math.abs(data));
                 }
             },
-            rotate: 45
+            rotate: 45,
+            showMinLabel: true
           }
         },
         yAxis: {
@@ -920,6 +929,17 @@ export default {
             lineStyle: {
               color: "white"
             }
+          },
+          axisLabel:{
+            formatter: function (data) {
+              // console.log(data);
+              if(data.length>5){
+                return data.slice(0,5) + '...';
+              }else{
+                return data;
+              }
+            },
+            rotate: -45
           },
           inverse: true,
           // data: [
@@ -1001,9 +1021,9 @@ export default {
           // console.log(res);
           if (res.data.CODE == "ok") {
             this.pie1Data = res.data.DATA;
-            for (let i = 0; i < this.pie1Data.length; i++) {
-              this.pie1Data[i].itemStyle = { color: this.colors[i] };
-            }
+            // for (let i = 0; i < this.pie1Data.length; i++) {
+            //   this.pie1Data[i].itemStyle = { color: this.colors[i] };
+            // }
             this.initPie1();
           } else {
             this.$message({
@@ -1023,9 +1043,9 @@ export default {
         .then(res => {
           if (res.data.CODE == "ok") {
             this.pie2Data = res.data.DATA;
-            for (let i = 0; i < this.pie2Data.length; i++) {
-              this.pie2Data[i].itemStyle = { color: this.colors[i] };
-            }
+            // for (let i = 0; i < this.pie2Data.length; i++) {
+            //   this.pie2Data[i].itemStyle = { color: this.colors[i] };
+            // }
             this.initPie2();
           } else {
             this.$message({
@@ -1780,7 +1800,7 @@ export default {
   filters: {
     cutString: function(val) {
       if (val && val.length > 5) {
-        return val.slice(0, 5) + "...";
+        return val.slice(0, 5);
       }
     }
   }
