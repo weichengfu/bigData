@@ -2,13 +2,16 @@
     <div class="details" @click.self="closePage">
         <fieldset class="border details-wrap">
         <!-- 右上角 -->
-        <div class="hot-tr corner1"></div>
+        <div class="hot-tr corner1" ref="hotTr"></div>
         <!-- 左下角 -->
         <div class="hot-lb corner2"></div>
             <legend class="title"><div class="inner-title" style="cursor:pointer;" @click="closePage">返回</div></legend>
             <div class="details-content">
                 <div class="left-content">
-                    <div class="content-title">{{details.title}}</div>
+                    <el-tooltip v-if="details.title&&details.title.length>8" class="item" effect="dark" :content="details.title" placement="top">
+                        <div class="content-title" style="cursor:pointer;">{{details.title|cutString}}<span style="font-weight:bold;">...</span></div>
+                    </el-tooltip>
+                    <div v-else class="content-title" style="cursor:pointer;">{{details.title}}</div>
                     <div class="content-time" style="margin-bottom:8px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/time.png">{{details.time}}</div>
                     <div class="content-time" style="margin-bottom:24px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/icon.png">{{details.place}}</div>
                     <div class="jianbian" style="height:1px;width:100%;"></div>
@@ -35,30 +38,41 @@
 <script>
 export default {
     name: 'detailPage',
-    // props : ['message'],
-    inject: ['message'],
+    props : ['message'],
     data(){
         return {
-            details: {
-                title: '活动标题',
-                time: '2018-03-17 09:30~11:30',
-                place: '浙江省图书馆二楼集体视听室',
-                sponsor: '浙江省图书馆',
-                issuer: '发布方名称',
-                phone: '0571-87988338',
-                enterTime: '截至2018-03-04 16:00',
-                enterPeople: '25/100',
-                video: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.hd',
-                h5: '<div>hello world</div>'
-            }
+            details: ''
         }
     },
     created(){
-        console.log(this.message);
+        // console.log(this.message);
+        this.$axios
+        .get("/BigScreen/Index/activityDetail?id="+this.message)
+        .then((res)=>{
+                if (res.data.CODE == "ok") {
+                    // console.log(res)
+                    this.details = res.data.DATA.details;
+                } else {
+                    this.$message({
+                    message: res.data.MESSAGE,
+                    type: "error"
+                    });
+                }
+          }).catch((res)=>{
+              console.log(res)
+          })
     },
     mounted(){
         this.$nextTick(function(){
             var player = new EZUIPlayer('myPlayer');
+            var brower = navigator.userAgent;
+            if (brower.indexOf("Firefox") > -1) {        //判断是否为火狐浏览器
+                this.$refs.hotTr.style.top = -32 + 'px';
+            };
+            let h = document.body.clientHeight;
+            if(h<720){
+                document.getElementById('myPlayer').style.height = 160 + 'px';
+            }
         })
     },
     methods: {
@@ -69,6 +83,13 @@ export default {
              this.$axios.post('',this.$qs.stringify({})).then(res=>{
                 
             })
+        }
+    },
+    filters: {
+        cutString: function(val) {
+            if (val && val.length > 8) {
+                return val.substr(0,8);
+            }
         }
     }
 }
@@ -121,6 +142,12 @@ export default {
         font-family: PingFangSC-Regular;
         font-size: 14px;
         color: #ADD9FF;
+    }
+    .right-content{
+        color: #D6ECFF;
+    }
+    .right-content img{
+        max-width: 100% !important;
     }
 </style>
 

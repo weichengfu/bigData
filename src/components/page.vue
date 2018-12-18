@@ -47,10 +47,6 @@
     <div class="left-area">
       <!-- 热门活动框 -->
       <fieldset class="hotActivity border">
-        <!-- 右上角 -->
-        <div class="hot-tr corner1"></div>
-        <!-- 左下角 -->
-        <div class="hot-lb corner2"></div>
         <legend class="title">
           <div class="inner-title">热门活动</div>
         </legend>
@@ -99,6 +95,10 @@
             </div>
           </div>
         </div>
+        <!-- 右上角 -->
+        <div class="hot-tr corner1" ref="hotTr"></div>
+        <!-- 左下角 -->
+        <div class="hot-lb corner2"></div>
       </fieldset>
       <!-- 喜爱情况框 -->
       <div class="love border" ref="love">
@@ -118,7 +118,7 @@
     <div class="right-area">
       <!-- 数据统计框 -->
       <fieldset class="statistics border">
-        <div class="statistics-tr corner1"></div>
+        <div class="statistics-tr corner1" ref="statisticsTr"></div>
         <div class="statistics-lb corner2"></div>
         <legend class="title">
           <div class="inner-title">数据统计</div>
@@ -239,7 +239,7 @@
               :content="item.name"
               placement="top"
             >
-              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}<span style="font-weight:bold;">...</span></span>
+              <span style="cursor:pointer;">{{item.name|cutString}}<span style="font-weight:bold;">...</span></span>
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="number right">
@@ -258,7 +258,7 @@
               :content="item.name"
               placement="top"
             >
-              <span style="cursor:pointer;">{{item.name|cutString(item.name)}}<span style="font-weight:bold;">...</span></span>
+              <span style="cursor:pointer;">{{item.name|cutString}}<span style="font-weight:bold;">...</span></span>
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="right">&nbsp;次</span>
@@ -298,8 +298,7 @@
     </div>
     <!-- 详情页 -->
     <div class="activityPage" v-if="show">
-      <!-- <child :message="childId" v-on:gotoParent="closePage"></child> -->
-      <child v-on:gotoParent="closePage"></child>
+      <child :message="childId" v-on:gotoParent="closePage"></child>
     </div>
   </div>
 </template>
@@ -309,9 +308,6 @@ import child from '@/components/details';
 import countTo from 'vue-count-to';
 export default {
   name: "page",
-  provide: {
-    message: 'testInfo'
-  },
   components: {
     child,
     countTo
@@ -453,7 +449,7 @@ export default {
       barData: [],
       block: false, //用于标记是否到县区级别
       show: false,
-      childId: 'test',
+      childId: '',
       timeCount: 60,
       timer: '',
       j: 1
@@ -1488,6 +1484,7 @@ export default {
                   myCompOverlay.hide();
                 });
                 marker.addEventListener("click",()=>{
+                  this.childId = this.mapData[i].id;
                   this.show = true;
                 })
               }
@@ -1793,6 +1790,11 @@ export default {
       this.getTopData1();
       this.getTopData2();
       this.getBookData();
+      var brower = navigator.userAgent;
+      if (brower.indexOf("Firefox") > -1) {        //判断是否为火狐浏览器
+        this.$refs.hotTr.style.top = -32 + 'px';
+        this.$refs.statisticsTr.style.top = -32 + 'px';
+      } 
     });
     this.getCurrentTime();
     this.countDown();
@@ -1800,7 +1802,7 @@ export default {
   filters: {
     cutString: function(val) {
       if (val && val.length > 5) {
-        return val.slice(0, 5);
+        return val.substr(0,5);
       }
     }
   }
