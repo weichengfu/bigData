@@ -298,7 +298,7 @@
     </div>
     <!-- 详情页 -->
     <div class="activityPage" v-if="show">
-      <child :message="childId" v-on:gotoParent="closePage"></child>
+      <child :message="childInfo" v-on:gotoParent="closePage"></child>
     </div>
   </div>
 </template>
@@ -449,7 +449,7 @@ export default {
       barData: [],
       block: false, //用于标记是否到县区级别
       show: false,
-      childId: '',
+      childInfo: {},
       timeCount: 60,
       timer: '',
       j: 1
@@ -460,10 +460,11 @@ export default {
       this.map = new BMap.Map("earth", { enableMapClick: false,minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
       this.map.enableScrollWheelZoom();
+      // this.map.setCurrentCity("杭州");
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
-      let w = width * 0.28;
-      let h = height * 0.33;
+      let w = width * 0.28;    //缩放组件相对屏幕的位置（左）
+      let h = height * 0.33;    //                     （上）
       var navigation = new BMap.NavigationControl({offset: new BMap.Size(w, h), type: BMAP_NAVIGATION_CONTROL_SMALL}); 
       this.map.addControl(navigation); 
       var geocoder = new BMap.Geocoder();
@@ -1417,6 +1418,7 @@ export default {
             // console.log('res',res);
             this.mapData = res.data.DATA;
             this.map.clearOverlays();
+            this.getBoundary(this.place);
             if (this.block) {
               for (let i = 0; i < this.mapData.length; i++) {
                 let point = new BMap.Point(
@@ -1484,7 +1486,8 @@ export default {
                   myCompOverlay.hide();
                 });
                 marker.addEventListener("click",()=>{
-                  this.childId = this.mapData[i].id;
+                  this.childInfo.id = this.mapData[i].id;
+                  this.childInfo.type = this.type;
                   this.show = true;
                 })
               }
@@ -1771,6 +1774,25 @@ export default {
         };
         this.countDown();
       },60000)
+    },
+    /**
+     * 获取高亮区域边界
+     */
+    getBoundary: function(place){
+      var bdary = new BMap.Boundary();
+      bdary.get(place, (rs)=>{       //获取行政区域
+          console.log(rs);
+          // this.map.clearOverlays();        //清除地图覆盖物  
+          var ply = new BMap.Polygon(rs.boundaries[0], {strokeWeight: 2, strokeColor: "Aqua", fillOpacity: 0.01}); //建立多边形覆盖物
+          this.map.addOverlay(ply);  //添加覆盖物  
+          // var count = rs.boundaries.length; //行政区域的点有多少个
+          // console.log('count',count);
+          // for(let i = 0; i < count; i++){
+          //     var ply = new BMap.Polygon(rs.boundaries[i], {strokeWeight: 2, strokeColor: "#ff0000"}); //建立多边形覆盖物
+          //     this.map.addOverlay(ply);  //添加覆盖物
+          //     this.map.setViewport(ply.getPath());    //调整视野         
+          // }                
+      });   
     }
   },
   created() {

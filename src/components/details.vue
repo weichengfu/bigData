@@ -47,7 +47,7 @@ export default {
     created(){
         // console.log(this.message);
         this.$axios
-        .get("/BigScreen/Index/activityDetail?id="+this.message)
+        .get("/BigScreen/Index/activityDetail?id="+this.message.id)
         .then((res)=>{
                 if (res.data.CODE == "ok") {
                     // console.log(res)
@@ -61,6 +61,15 @@ export default {
           }).catch((res)=>{
               console.log(res)
           })
+        //   this.$axios
+        // .post("https://open.ys7.com/api/lapp/live/address/get",this.$qs.stringify({ 
+        //     accessToken: 'at.4v752uhj7oew8cpkaw4j655h617nmo5t-1hpv7s0z9j-0hqdr3w-cnbxsym69'
+        //  }))
+        // .then((res)=>{
+        //     console.log(res);
+        //   }).catch((res)=>{
+        //       console.log(res)
+        //   })
     },
     mounted(){
         this.$nextTick(function(){
