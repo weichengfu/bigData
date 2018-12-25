@@ -25,7 +25,8 @@
                         <!-- <video :src="details.vido" controls="controls" height="216" width="100%"></video> -->
                         <video id="myPlayer" height="216" width="100%" poster="" controls playsInline webkit-playsinline autoplay>
                             <!-- <source src="rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b" type="" /> -->
-                            <source src="http://hls.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8" type="application/x-mpegURL" />
+                            <!-- <source src="http://hls.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8" type="application/x-mpegURL" /> -->
+                            <source src="http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8" type="application/x-mpegURL" />
                             <!-- <source src="[这里填入从开放平台官网获取到的ws协议URL]"  /> -->
                         </video>
                     </div>

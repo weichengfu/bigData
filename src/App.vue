@@ -34,6 +34,7 @@ export default {
 body{
   margin: 0;
 }
+/* 引入字体 */
 @font-face {
   font-family: 'specialNumber';
   src: url('../display_free_tfb.ttf') format('truetype');

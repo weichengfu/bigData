@@ -90,7 +90,7 @@
             <div class="table-body" v-for="item in tableData" :key="item.activity_id">
               <span class="number">
                 <!-- {{item.number}} -->
-                <countTo :startVal='1' :endVal='item.peopleNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="item.peopleNum" :duration="3000"></countTo>
               </span>
             </div>
           </div>
@@ -134,7 +134,7 @@
             <div class="statistics-item">
               注册
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.registerNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.registerNum" :duration="3000"></countTo>
               </span>人
             </div>
           </div>
@@ -143,19 +143,19 @@
             <div class="statistics-item">
               活动
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.activityNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.activityNum" :duration="3000"></countTo>
               </span>场
             </div>
             <div class="statistics-item">
               报名
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.activityApplyNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.activityApplyNum" :duration="3000"></countTo>
               </span>人
             </div>
             <div class="statistics-item">
               参与
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.activityJoinNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.activityJoinNum" :duration="3000"></countTo>
               </span>人
             </div>
           </div>
@@ -164,19 +164,27 @@
             <div class="statistics-item">
               志愿者
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.volunteerNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.volunteerNum" :duration="3000"></countTo>
               </span>人
             </div>
             <div class="statistics-item">
               志愿项目
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.volunteerActivityNum' :duration='3000'></countTo>
+                <countTo
+                  :startVal="1"
+                  :endVal="statisticData.volunteerActivityNum"
+                  :duration="3000"
+                ></countTo>
               </span>个
             </div>
             <div class="statistics-item">
               参与
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.volunteerActivityApplyNum' :duration='3000'></countTo>
+                <countTo
+                  :startVal="1"
+                  :endVal="statisticData.volunteerActivityApplyNum"
+                  :duration="3000"
+                ></countTo>
               </span>人
             </div>
           </div>
@@ -185,13 +193,13 @@
             <div class="statistics-item">
               场地预定
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.spaceAppointNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.spaceAppointNum" :duration="3000"></countTo>
               </span>次
             </div>
             <div class="statistics-item">
               场地使用
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.spaceUsedNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.spaceUsedNum" :duration="3000"></countTo>
               </span>人
             </div>
           </div>
@@ -200,13 +208,13 @@
             <div class="statistics-item">
               服务点单
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.serviceNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.serviceNum" :duration="3000"></countTo>
               </span>次
             </div>
             <div class="statistics-item">
               覆盖区县
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.serviceCoverNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.serviceCoverNum" :duration="3000"></countTo>
               </span>个
             </div>
           </div>
@@ -215,13 +223,13 @@
             <div class="statistics-item">
               资讯发布
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.informationNum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.informationNum" :duration="3000"></countTo>
               </span>篇
             </div>
             <div class="statistics-item">
               浏览
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal='1' :endVal='statisticData.informationSum' :duration='3000'></countTo>
+                <countTo :startVal="1" :endVal="statisticData.informationSum" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -231,7 +239,7 @@
       <div class="topBox border">
         <div class="left-box">
           <div class="box-header" style="margin-bottom:20px;">场馆热力指数TOP5</div>
-          <div class="box-row" v-for="item in stadium" :key="item.name">
+          <div class="box-row" v-for="item in stadium" :key="item.id">
             <el-tooltip
               v-if="item.name&&item.name.length>5"
               class="item"
@@ -239,18 +247,21 @@
               :content="item.name"
               placement="top"
             >
-              <span style="cursor:pointer;">{{item.name|cutString}}<span style="font-weight:bold;">...</span></span>
+              <span style="cursor:pointer;">
+                {{item.name|cutString}}
+                <span style="font-weight:bold;">...</span>
+              </span>
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="number right">
-              <countTo :startVal='1' :endVal='item.value' :duration='3000'></countTo>
+              <countTo :startVal="1" :endVal="item.value" :duration="3000"></countTo>
             </span>
           </div>
         </div>
         <div class="jianbian" style="height: auto;"></div>
         <div class="right-box">
           <div class="box-header" style="margin-bottom:20px;">场地预定TOP5</div>
-          <div class="box-row" v-for="item in site" :key="item.name">
+          <div class="box-row" v-for="item in site" :key="item.id">
             <el-tooltip
               v-if="item.name&&item.name.length>5"
               class="item"
@@ -258,12 +269,15 @@
               :content="item.name"
               placement="top"
             >
-              <span style="cursor:pointer;">{{item.name|cutString}}<span style="font-weight:bold;">...</span></span>
+              <span style="cursor:pointer;">
+                {{item.name|cutString}}
+                <span style="font-weight:bold;">...</span>
+              </span>
             </el-tooltip>
             <span v-else>{{item.name}}</span>
             <span class="right">&nbsp;次</span>
             <span class="number right">
-              <countTo :startVal='1' :endVal='item.value' :duration='3000'></countTo>
+              <countTo :startVal="1" :endVal="item.value" :duration="3000"></countTo>
             </span>
           </div>
         </div>
@@ -304,8 +318,8 @@
 </template>
 <script>
 var echarts = require("echarts");
-import child from '@/components/details';
-import countTo from 'vue-count-to';
+import child from "@/components/details";
+import countTo from "vue-count-to";
 export default {
   name: "page",
   components: {
@@ -411,23 +425,23 @@ export default {
       rightButton: [
         {
           name: "活动热力",
-          value: 'activity'
+          value: "activity"
         },
         {
           name: "场馆热力",
-          value: 'stadium'
+          value: "stadium"
         },
         {
           name: "场地预定热力",
-          value: 'space'
+          value: "space"
         },
         {
           name: "服务点单热力",
-          value: 'service'
+          value: "service"
         },
         {
           name: "志愿者热力",
-          value: 'volunteer'
+          value: "volunteer"
         }
       ],
       button_area: "left",
@@ -451,22 +465,27 @@ export default {
       show: false,
       childInfo: {},
       timeCount: 60,
-      timer: '',
+      timer: "",
       j: 1
     };
   },
   methods: {
     initEchart: function() {
-      this.map = new BMap.Map("earth", { enableMapClick: false,minZoom: 6 });
+      this.map = new BMap.Map("earth", { enableMapClick: false, minZoom: 6 });
+      this.map = new BMap.Map("earth", { minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
       this.map.enableScrollWheelZoom();
-      // this.map.setCurrentCity("杭州");
+      this.map.disableDoubleClickZoom();
+      this.map.enableKeyboard();
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
-      let w = width * 0.28;    //缩放组件相对屏幕的位置（左）
-      let h = height * 0.33;    //                     （上）
-      var navigation = new BMap.NavigationControl({offset: new BMap.Size(w, h), type: BMAP_NAVIGATION_CONTROL_SMALL}); 
-      this.map.addControl(navigation); 
+      let w = width * 0.28; //缩放组件相对屏幕的位置（左）
+      let h = height * 0.43; //                     （上）
+      var navigation = new BMap.NavigationControl({
+        offset: new BMap.Size(w, h),
+        type: BMAP_NAVIGATION_CONTROL_SMALL
+      });
+      this.map.addControl(navigation);
       var geocoder = new BMap.Geocoder();
       // 拖拽后获取中心点坐标
       this.map.addEventListener("dragend", e => {
@@ -514,7 +533,7 @@ export default {
             this.place = "浙江省";
             this.refresh();
           }
-        } else if (zoom < 13) {
+        } else if (zoom < 13) {   
           geocoder.getLocation(center, res => {
             if (res.addressComponents.province == "浙江省") {
               if (this.place != res.addressComponents.city) {
@@ -525,6 +544,7 @@ export default {
             }
           });
         } else {
+          // console.log('123');
           geocoder.getLocation(center, res => {
             //获取位置
             if (res.addressComponents.province == "浙江省") {
@@ -655,18 +675,18 @@ export default {
             }
           },
           {
-              featureType: "city",
-              elementType: "labels.text.fill",
-              stylers: {
-                color: "#ffffff"
-              }
+            featureType: "city",
+            elementType: "labels.text.fill",
+            stylers: {
+              color: "#ffffff"
+            }
           },
           {
-              featureType: "city",
-              elementType: "labels.text.stroke",
-              stylers: {
-                  "color": "#ffffff40"
-              }
+            featureType: "city",
+            elementType: "labels.text.stroke",
+            stylers: {
+              color: "#ffffff40"
+            }
           }
         ]
       };
@@ -800,8 +820,8 @@ export default {
     initLine: function() {
       let width = document.body.clientWidth;
       let y = 10;
-      if(width<1680){
-        y= 30
+      if (width < 1680) {
+        y = 30;
       }
       this.line = echarts.init(this.$refs.trend);
       this.line.setOption({
@@ -870,17 +890,24 @@ export default {
           axisPointer: {
             type: "shadow"
           },
-          formatter: function (params) {
-              let txt = params[0].name + '<br>';
-              for(let i=0;i<params.length;i++){
-                  if(i==0){
-                    params[i].marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFBC70;'></span>";
-                  }else{
-                    params[i].marker = "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#0087FF;'></span>";
-                  }
-                  txt += params[i].marker + params[i].seriesName  + ': ' + Math.abs(params[i].data) + '<br>'
+          formatter: function(params) {
+            let txt = params[0].name + "<br>";
+            for (let i = 0; i < params.length; i++) {
+              if (i == 0) {
+                params[i].marker =
+                  "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFBC70;'></span>";
+              } else {
+                params[i].marker =
+                  "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#0087FF;'></span>";
               }
-              return txt
+              txt +=
+                params[i].marker +
+                params[i].seriesName +
+                ": " +
+                Math.abs(params[i].data) +
+                "<br>";
+            }
+            return txt;
           }
         },
         grid: {
@@ -903,13 +930,13 @@ export default {
               color: "white"
             }
           },
-          axisLabel:{
-            formatter: function (data) {
-                if(Math.abs(data)>10000){
-                  return Math.abs(data)/10000 + '万';
-                }else{
-                  return (Math.abs(data));
-                }
+          axisLabel: {
+            formatter: function(data) {
+              if (Math.abs(data) > 9999) {
+                return Math.abs(data) / 10000 + "万";
+              } else {
+                return Math.abs(data);
+              }
             },
             rotate: 45,
             showMinLabel: true
@@ -927,12 +954,12 @@ export default {
               color: "white"
             }
           },
-          axisLabel:{
-            formatter: function (data) {
+          axisLabel: {
+            formatter: function(data) {
               // console.log(data);
-              if(data.length>5){
-                return data.slice(0,5) + '...';
-              }else{
+              if (data.length > 5) {
+                return data.slice(0, 5) + "...";
+              } else {
                 return data;
               }
             },
@@ -963,7 +990,9 @@ export default {
             },
             barCategoryGap: "50%",
             label: {
-              formatter: function (value) { return (Math.abs(value.data))}
+              formatter: function(value) {
+                return Math.abs(value.data);
+              }
             }
           },
           {
@@ -1063,10 +1092,14 @@ export default {
       }
     },
     rightClick: function() {
-      if (this.button_area == "left") {
-        this.button_area = "right";
-        this.buttonData = this.rightButton;
-        this.getMapData();
+      if(this.block){
+        return
+      }else{
+        if (this.button_area == "left") {
+          this.button_area = "right";
+          this.buttonData = this.rightButton;
+          this.getMapData();
+        }
       }
     },
     buttonClick: function(val, val1) {
@@ -1113,42 +1146,6 @@ export default {
       }
     },
     /**
-     * 连接服务器函数
-     */
-    // getConect: function() {
-    //   var socket = new WebSocket(
-    //     "ws://http://why.hz.backustech.com/BigScreen/Index/hotActivityList"
-    //   );
-    //   if (socket.readyState == 0) {
-    //     this.$message({
-    //       message: "正在尝试连接",
-    //       type: "warning"
-    //     });
-    //   } else if (socket.readyState == 1) {
-    //     this.$message({
-    //       message: "连接成功，可以通信了",
-    //       type: "success"
-    //     });
-    //     socket.onopen = function() {
-    //       console.log("123");
-    //     };
-    //     socket.onmessage = function(event) {
-    //       // var data = event.data;
-    //       // 处理数据
-    //     };
-    //   } else if (socket.readyState == 2) {
-    //     this.$message({
-    //       message: "连接正在关闭",
-    //       type: "warning"
-    //     });
-    //   } else {
-    //     this.$message({
-    //       message: "连接已经关闭，或者打开连接失败",
-    //       type: "warning"
-    //     });
-    //   }
-    // },
-    /**
      * 当前时间函数
      */
     getCurrentTime: function() {
@@ -1166,15 +1163,7 @@ export default {
       let second = time.getSeconds();
       second = second > 9 ? second : "0" + second;
       this.currentTime =
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        " " +
-        hour +
-        ":" +
-        minute;
+        year + "-" + month + "-" + day + " " + hour + ":" + minute;
     },
     /**
      * 获得月数据
@@ -1256,7 +1245,7 @@ export default {
               }
             }
             // console.log(this.lineData);
-            if(this.line){
+            if (this.line) {
               this.line.clear();
             }
             this.initLine();
@@ -1352,26 +1341,26 @@ export default {
     /**
      * 动画线型图
      */
-    moveLine: function(){
-      this.timer = setTimeout(()=>{
+    moveLine: function() {
+      this.timer = setTimeout(() => {
         let option = this.line.getOption();
         let selected = {};
-        for(let i=0;i<this.legendData.length;i++){
-          if(this.j==i){
+        for (let i = 0; i < this.legendData.length; i++) {
+          if (this.j == i) {
             selected[this.legendData[i]] = true;
-          }else{
+          } else {
             selected[this.legendData[i]] = false;
           }
-        };
+        }
         this.line.clear();
         option.legend[0].selected = selected;
         this.line.setOption(option);
         this.j += 1;
-        if(this.j == this.legendData.length){
+        if (this.j == this.legendData.length) {
           this.j = 0;
-        };
+        }
         this.moveLine();
-      },5000)
+      }, 5000);
     },
     /**
      * 获取志愿者分布数据
@@ -1415,17 +1404,24 @@ export default {
         )
         .then(res => {
           if (res.data.CODE == "ok") {
-            // console.log('res',res);
             this.mapData = res.data.DATA;
             this.map.clearOverlays();
             this.getBoundary(this.place);
             if (this.block) {
+              let array = [];
               for (let i = 0; i < this.mapData.length; i++) {
+                let y=0;
                 let point = new BMap.Point(
                   this.mapData[i].lng,
                   this.mapData[i].lat
                 );
-                var marker = new BMap.Marker(point); // 创建标注
+                for(let j=0;j<array.length;j++){
+                  if(array[j].lng==point.lng && array[j].lat==point.lat){
+                    y += 10;
+                  }
+                };
+                array.push(point);
+                let marker = new BMap.Marker(point,{offset:new BMap.Size(0,y)}); // 创建标注
                 this.map.addOverlay(marker);
                 // let myIcon = new BMap.Icon("https://static-public.hz.backustech.com/1544089445631", new BMap.Size(48,48),{anchor: new BMap.Size(20,70)});
                 // var marker1 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
@@ -1438,7 +1434,7 @@ export default {
                 }
                 ComplexCustomOverlay.prototype = new BMap.Overlay();
                 var that = this;
-                ComplexCustomOverlay.prototype.initialize = function(map1){
+                ComplexCustomOverlay.prototype.initialize = function(map1) {
                   this._map = map1;
                   var div = (this._div = document.createElement("div"));
                   div.style.position = "absolute";
@@ -1464,35 +1460,33 @@ export default {
                   var map1 = this._map;
                   var pixel = map1.pointToOverlayPixel(this._point);
                   this._div.style.left = pixel.x + 10 + "px";
-                  this._div.style.top = pixel.y - 30 + "px";
+                  this._div.style.top = pixel.y - 30 + y + "px";
                 };
-                if(this.type == 'activity'){
+                if (this.type == "activity") {
                   var txt = "活动名称：" + this.mapData[i].name;
-                }else{
+                } else {
                   var txt = "场馆名称：" + this.mapData[i].name;
                 }
                 var txt1 = "地址：" + this.mapData[i].address;
-                let myCompOverlay = new ComplexCustomOverlay(
-                  point,
-                  txt,
-                  txt1
-                );
+                let myCompOverlay = new ComplexCustomOverlay(point, txt, txt1);
                 this.map.addOverlay(myCompOverlay);
                 myCompOverlay.hide();
-                marker.addEventListener("mouseover", ()=> {
+                marker.enableDragging();
+                // marker.setAnimation(BMAP_ANIMATION_BOUNCE)
+                marker.addEventListener("mouseover", () => {
                   myCompOverlay.show();
                 });
-                marker.addEventListener("mouseout", ()=> {
+                marker.addEventListener("mouseout", () => {
                   myCompOverlay.hide();
                 });
-                marker.addEventListener("click",()=>{
+                marker.addEventListener("click", () => {
                   this.childInfo.id = this.mapData[i].id;
                   this.childInfo.type = this.type;
                   this.show = true;
-                })
+                });
               }
             } else {
-              if(this.button_area == 'left'){
+              if (this.button_area == "left") {
                 for (let i = 0; i < this.mapData.length; i++) {
                   let offsetLeft = -5;
                   if (this.mapData[i].value[2] > 9) {
@@ -1526,34 +1520,34 @@ export default {
                     let zoom = this.map.getZoom();
                     geocoder.getLocation(point, res => {
                       //根据坐标解析地名
-                      this.block = false;
-                      if(zoom<11){
+                      // this.block = false;
+                      if(zoom < 11) {
                         this.city = res.addressComponents.city;
                         this.place = res.addressComponents.city;
-                        this.refresh();
                         this.map.centerAndZoom(point, 11);
+                        this.refresh();
                       }else {
-                        this.block = true;
                         this.place = res.addressComponents.district;
                         this.city = res.addressComponents.city;
-                        this.refresh();
                         this.map.centerAndZoom(point, 14);
+                        this.block = true;
+                        this.refresh();
                       }
                     });
                   });
                   let zoom = this.map.getZoom();
                   let value = this.mapData[i].value[2] * 200;
-                  if(zoom<11){
+                  if (zoom < 11) {
                     if (value < 7000) {
                       value = 7000;
                     }
-                  }else{
+                  } else {
                     value = this.mapData[i].value[2] * 100;
-                    if(value<1000){
+                    if (value < 1000) {
                       value = 1000;
                     }
                   }
-                  let circle = new BMap.Circle(point, value, {
+                  var circle = new BMap.Circle(point, value, {
                     fillColor: "#FFAA00",
                     strokeColor: "orange",
                     strokeOpacity: 0.7
@@ -1577,10 +1571,10 @@ export default {
                   this.map.addOverlay(overLable);
                   overLable.hide();
                   this.map.addOverlay(circle);
-                  circle.addEventListener("mouseover", function() {
+                  circle.addEventListener("mouseover", () => {
                     overLable.show();
                   });
-                  circle.addEventListener("mouseout", function() {
+                  circle.addEventListener("mouseout", () => {
                     overLable.hide();
                   });
                   circle.addEventListener("click", () => {
@@ -1588,13 +1582,13 @@ export default {
                     let zoom = this.map.getZoom();
                     geocoder.getLocation(point, res => {
                       //根据坐标解析地名
-                      this.block = false;
-                      if(zoom<11){
+                      // this.block = false;
+                      if (zoom < 11) {
                         this.city = res.addressComponents.city;
                         this.place = res.addressComponents.city;
                         this.refresh();
                         this.map.centerAndZoom(point, 11);
-                      }else {
+                      } else {
                         this.block = true;
                         this.place = res.addressComponents.district;
                         this.city = res.addressComponents.city;
@@ -1604,19 +1598,19 @@ export default {
                     });
                   });
                 }
-              }else{
+              } else {
                 let points = [];
-                for(let i=0;i<this.mapData.length;i++){
+                for (let i = 0; i < this.mapData.length; i++) {
                   let point = {
-                    "lng": this.mapData[i].value[0],
-                    "lat": this.mapData[i].value[1],
-                    "count": this.mapData[i].value[2]
+                    lng: this.mapData[i].value[0],
+                    lat: this.mapData[i].value[1],
+                    count: this.mapData[i].value[2]
                   };
                   points.push(point);
-                };
-                let heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":30});
-	              this.map.addOverlay(heatmapOverlay);
-	              heatmapOverlay.setDataSet({data:points,max:100});
+                }
+                let heatmapOverlay = new BMapLib.HeatmapOverlay({ radius: 30 });
+                this.map.addOverlay(heatmapOverlay);
+                heatmapOverlay.setDataSet({ data: points, max: 100 });
               }
             }
           } else {
@@ -1642,7 +1636,7 @@ export default {
         .then(res => {
           if (res.data.CODE == "ok") {
             //  console.log(res);
-            if(this.statisticData != res.data.DATA){
+            if (this.statisticData != res.data.DATA) {
               this.statisticData = res.data.DATA;
             }
           } else {
@@ -1742,57 +1736,44 @@ export default {
       this.getBookData();
       this.getCurrentTime();
       this.timeCount = 60;
-      this.trend = '0';
+      this.trend = "0";
       this.j = 1;
     },
     /**
      * 关闭活动页
      */
-    closePage: function (data){
-      if(data == "closePage"){
+    closePage: function(data) {
+      if (data == "closePage") {
         this.show = false;
       }
     },
     /**
      * 倒计时函数
      */
-    countDown: function(){
-      // setInterval(()=>{
-      //   this.timeCount -= 1;
-      //   console.log(this.timeCount);
-      //   if(this.timeCount == 0){
-      //     this.refresh();
-      //     this.getCurrentTime();
-      //   }
-      // },1000)
-      setTimeout(()=>{
+    countDown: function() {
+      setTimeout(() => {
         this.timeCount = 0;
         // console.log(this.timeCount);
-        if(this.timeCount == 0){
+        if (this.timeCount == 0) {
           this.refresh();
           this.getCurrentTime();
-        };
+        }
         this.countDown();
-      },60000)
+      }, 60000);
     },
     /**
      * 获取高亮区域边界
      */
-    getBoundary: function(place){
-      var bdary = new BMap.Boundary();
-      bdary.get(place, (rs)=>{       //获取行政区域
-          console.log(rs);
-          // this.map.clearOverlays();        //清除地图覆盖物  
-          var ply = new BMap.Polygon(rs.boundaries[0], {strokeWeight: 2, strokeColor: "Aqua", fillOpacity: 0.01}); //建立多边形覆盖物
-          this.map.addOverlay(ply);  //添加覆盖物  
-          // var count = rs.boundaries.length; //行政区域的点有多少个
-          // console.log('count',count);
-          // for(let i = 0; i < count; i++){
-          //     var ply = new BMap.Polygon(rs.boundaries[i], {strokeWeight: 2, strokeColor: "#ff0000"}); //建立多边形覆盖物
-          //     this.map.addOverlay(ply);  //添加覆盖物
-          //     this.map.setViewport(ply.getPath());    //调整视野         
-          // }                
-      });   
+    getBoundary: function(place) {
+      var bdary = new BMap.Boundary();    //一个行政区域的边界
+      bdary.get(place, rs => {
+        var ply = new BMap.Polygon(rs.boundaries[0], {     
+          strokeWeight: 2,
+          strokeColor: "Aqua",
+          fillColor: ''
+        }); //建立多边形覆盖物
+        this.map.addOverlay(ply); //添加覆盖物
+      });
     }
   },
   created() {
@@ -1813,10 +1794,11 @@ export default {
       this.getTopData2();
       this.getBookData();
       var brower = navigator.userAgent;
-      if (brower.indexOf("Firefox") > -1) {        //判断是否为火狐浏览器
-        this.$refs.hotTr.style.top = -32 + 'px';
-        this.$refs.statisticsTr.style.top = -32 + 'px';
-      } 
+      if (brower.indexOf("Firefox") > -1) {
+        //判断是否为火狐浏览器
+        this.$refs.hotTr.style.top = -32 + "px";
+        this.$refs.statisticsTr.style.top = -32 + "px";
+      }
     });
     this.getCurrentTime();
     this.countDown();
@@ -1824,7 +1806,7 @@ export default {
   filters: {
     cutString: function(val) {
       if (val && val.length > 5) {
-        return val.substr(0,5);
+        return val.substr(0, 5);
       }
     }
   }
