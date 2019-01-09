@@ -50,7 +50,7 @@
                         <div class="content-info" style="margin-top:24px;">报名日期:{{details.enterTime}}</div>
                         <div class="content-info" style="margin-bottom:40px;">报名人数:{{details.enterPeople}}</div>
                         <div class="content-video">
-                            <video :src="details.vido" controls="controls" height="216" width="100%"></video>
+                            <video :src="details.vido" controls="controls" height="216" style="width:100%;"></video>
                         </div>
                     </div>
                     <div class="right-content" v-html="details.h5"></div>

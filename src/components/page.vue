@@ -544,7 +544,6 @@ export default {
             }
           });
         } else {
-          // console.log('123');
           geocoder.getLocation(center, res => {
             //获取位置
             if (res.addressComponents.province == "浙江省") {
@@ -1556,8 +1555,7 @@ export default {
                     position: point, // 指定文本标注所在的地理位置
                     offset: new BMap.Size(10, -10) //设置文本偏移量
                   };
-                  let text =
-                    this.mapData[i].name + " : " + this.mapData[i].value[2];
+                  let text = this.mapData[i].name + " : " + this.mapData[i].value[2]; 
                   let overLable = new BMap.Label(text, position); // 创建文本标注对象
                   overLable.setStyle({
                     color: "white",
@@ -1589,11 +1587,11 @@ export default {
                         this.refresh();
                         this.map.centerAndZoom(point, 11);
                       } else {
-                        this.block = true;
                         this.place = res.addressComponents.district;
                         this.city = res.addressComponents.city;
-                        this.refresh();
                         this.map.centerAndZoom(point, 14);
+                        this.block = true;
+                        this.refresh();
                       }
                     });
                   });

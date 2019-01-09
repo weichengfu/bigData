@@ -12,26 +12,47 @@
                         <div class="content-title" style="cursor:pointer;">{{details.title|cutString}}<span style="font-weight:bold;">...</span></div>
                     </el-tooltip>
                     <div v-else class="content-title" style="cursor:pointer;">{{details.title}}</div>
-                    <div class="content-time" style="margin-bottom:8px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/time.png">{{details.time}}</div>
-                    <div class="content-time" style="margin-bottom:24px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/icon.png">{{details.place}}</div>
+                    <div v-if="message.type=='activity'">
+                        <div class="content-time" style="margin-bottom:8px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/time.png">&nbsp;{{details.time}}</div>
+                        <div class="content-time" style="margin-bottom:24px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/icon.png">&nbsp;{{details.place}}</div>
+                    </div>
+                    <div v-else>
+                        <div class="content-time" style="margin-bottom:8px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/icon.png">&nbsp;地址:&nbsp;{{details.place}}</div>
+                        <div class="content-time" style="margin-bottom:24px;"><img width="20" height="20" style="vertical-align:text-top;" src="../assets/time.png">&nbsp;开放时间:&nbsp;{{details.time}}</div>
+                    </div>
                     <div class="jianbian" style="height:1px;width:100%;"></div>
-                    <div class="content-info" style="margin-top:15px;">主办方:{{details.sponsor}}</div>
-                    <div class="content-info" style="margin:8px 0;">发布方:{{details.issuer}}</div>
-                    <div class="content-info" style="margin-bottom:15px;">联系电话:{{details.phone}}</div>
+                    <div v-if="message.type=='activity'">
+                        <div class="content-info" style="margin-top:15px;">主办方:&nbsp;{{details.sponsor}}</div>
+                        <div class="content-info" style="margin:8px 0;">发布方:&nbsp;{{details.issuer}}</div>
+                        <div class="content-info" style="margin-bottom:15px;">联系电话:&nbsp;{{details.phone}}</div>
+                    </div>
+                    <div v-else>
+                        <div class="content-info" style="margin-top:15px;margin-bottom:8px;">联系电话:&nbsp;{{details.phone}}</div>
+                        <div class="content-info" style="margin-bottom:15px;">官方链接:&nbsp;{{details.officalLink}}</div>
+                    </div>
                     <div class="jianbian" style="height:1px;width:100%;"></div>
-                    <div class="content-info" style="margin-top:24px;">报名日期:{{details.enterTime}}</div>
-                    <div class="content-info" style="margin-bottom:40px;">报名人数:{{details.enterPeople}}</div>
-                    <div class="content-video">
-                        <!-- <video :src="details.vido" controls="controls" height="216" width="100%"></video> -->
-                        <video id="myPlayer" height="216" width="100%" poster="" controls playsInline webkit-playsinline autoplay>
-                            <!-- <source src="rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b" type="" /> -->
-                            <!-- <source src="http://hls.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b.m3u8" type="application/x-mpegURL" /> -->
-                            <source src="http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8" type="application/x-mpegURL" />
-                            <!-- <source src="[这里填入从开放平台官网获取到的ws协议URL]"  /> -->
-                        </video>
+                    <div v-if="message.type=='activity'">
+                        <div class="content-info" style="margin-top:24px;">报名日期:&nbsp;{{details.enterTime}}</div>
+                        <div class="content-info" style="margin-bottom:40px;">报名人数:&nbsp;{{details.enterPeople}}</div>
+                        <div class="content-video">
+                            <video id="myPlayer" height="216" style="width:100%;" poster="" controls playsInline webkit-playsinline autoplay>
+                                <source :src="src" type="" />
+                                <source ref="source" :src="src1" type="application/x-mpegURL" />
+                            </video>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <div class="content-time" style="margin:16px 0;">微信公众号</div>
+                        <img v-if="details.img" :src="details.img" height="120" width="120" alt="">
+                        <div v-else class="content-time">暂无</div>
                     </div>
                 </div>
-                <div class="right-content" v-html="details.h5"></div>
+                <div v-if="message.type=='activity'" class="right-content" v-html="details.h5"></div>
+                <div v-else class="right-content">
+                    <div style="font-size: 24px;color: #D6ECFF;margin-bottom: 24px;font-family: PingFangSC-Medium;">场馆介绍</div>
+                    <img :src="details.img" alt="" style="margin-bottom:40px;">
+                    <div style="font-family: PingFangSC-Regular;font-size: 18px;color: #ADD9FF;line-height: 30px;">{{details.introduce}}</div>
+                </div>
             </div>
         </fieldset>
     </div>
@@ -42,26 +63,15 @@ export default {
     props : ['message'],
     data(){
         return {
-            details: ''
+            details: '',
+            src1: 'http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8',
+            src: 'rtmp://rtmp.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec',
+            // src: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b',
+            player: ''
         }
     },
     created(){
-        // console.log(this.message);
-        this.$axios
-        .get("/BigScreen/Index/activityDetail?id="+this.message.id)
-        .then((res)=>{
-                if (res.data.CODE == "ok") {
-                    // console.log(res)
-                    this.details = res.data.DATA.details;
-                } else {
-                    this.$message({
-                    message: res.data.MESSAGE,
-                    type: "error"
-                    });
-                }
-          }).catch((res)=>{
-              console.log(res)
-          })
+        this.getDetailData();
         //   this.$axios
         // .post("https://open.ys7.com/api/lapp/live/address/get",this.$qs.stringify({ 
         //     accessToken: 'at.4v752uhj7oew8cpkaw4j655h617nmo5t-1hpv7s0z9j-0hqdr3w-cnbxsym69'
@@ -74,7 +84,9 @@ export default {
     },
     mounted(){
         this.$nextTick(function(){
-            var player = new EZUIPlayer('myPlayer');
+            if(this.message.type=='activity'){
+                this.player = new EZUIPlayer('myPlayer');
+            }
             var brower = navigator.userAgent;
             if (brower.indexOf("Firefox") > -1) {        //判断是否为火狐浏览器
                 this.$refs.hotTr.style.top = -32 + 'px';
@@ -86,12 +98,27 @@ export default {
         })
     },
     methods: {
-         closePage: function(){
+        closePage: function(){
+            if(this.message.type=='activity'){
+                this.player.stop();
+            }
             this.$emit("gotoParent","closePage");
         },
         getDetailData: function(){
-             this.$axios.post('',this.$qs.stringify({})).then(res=>{
-                
+             this.$axios.post('/BigScreen/Index/mapDetail',this.$qs.stringify({
+                 id: this.message.id,
+                 type: this.message.type
+             })).then(res=>{
+                if (res.data.CODE == "ok") {
+                    this.details = res.data.DATA.details;
+                } else {
+                    this.$message({
+                    message: res.data.MESSAGE,
+                    type: "error"
+                    });
+                }
+            }).catch(res=>{
+                console.log(res);
             })
         }
     },
