@@ -1409,8 +1409,8 @@ export default {
             this.getBoundary(this.place);
             if (this.block) {      //绘制标记点
               if(this.mapData.length<5){
-                let lng = 0;
-                let lat = 0;
+                let lng=0;
+                let lat=0;
                 for(let i=0;i<this.mapData.length;i++){
                   if(this.mapData[i].lng != 0){
                     lng += this.mapData[i].lng;
@@ -1425,21 +1425,7 @@ export default {
                 );
                 this.map.centerAndZoom(point, 14);
               }else{
-                let lng = 0;
-                let lat = 0;
-                this.mapData.sort(this.compare('lat'));
-                let index = Math.floor(this.mapData.length / 2);
-                for(let i=index-2;i<index+3;i++){
-                  lng += this.mapData[i].lng;
-                  lat += this.mapData[i].lat;
-                }
-                lng = lng / 5;
-                lat = lat / 5;
-                let point = new BMap.Point(
-                  lng,
-                  lat
-                );
-                this.map.centerAndZoom(point, 14);
+
               }
               this.mapData.sort(this.compare('lat'));
               let array = [];

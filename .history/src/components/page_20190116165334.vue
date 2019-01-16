@@ -470,13 +470,12 @@ export default {
     };
   },
   methods: {
-    //地图初始化函数
     initEchart: function() {
       this.map = new BMap.Map("earth", { enableMapClick: false, minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
-      this.map.enableScrollWheelZoom();      //启用鼠标滚轮
-      this.map.disableDoubleClickZoom();    //禁用地图双击放大
-      this.map.enableKeyboard();  //启用键盘操作 
+      this.map.enableScrollWheelZoom();
+      this.map.disableDoubleClickZoom();
+      this.map.enableKeyboard();
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
@@ -1405,43 +1404,11 @@ export default {
         .then(res => {
           if (res.data.CODE == "ok") {
             this.mapData = res.data.DATA;
+            this.mapData.sort(this.compare('lat'));
+            console.log(this.mapData);
             this.map.clearOverlays();
             this.getBoundary(this.place);
             if (this.block) {      //绘制标记点
-              if(this.mapData.length<5){
-                let lng = 0;
-                let lat = 0;
-                for(let i=0;i<this.mapData.length;i++){
-                  if(this.mapData[i].lng != 0){
-                    lng += this.mapData[i].lng;
-                    lat += this.mapData[i].lat;
-                  }
-                }
-                lng = lng / this.mapData.length;
-                lat = lat / this.mapData.length;
-                let point = new BMap.Point(
-                  lng,
-                  lat
-                );
-                this.map.centerAndZoom(point, 14);
-              }else{
-                let lng = 0;
-                let lat = 0;
-                this.mapData.sort(this.compare('lat'));
-                let index = Math.floor(this.mapData.length / 2);
-                for(let i=index-2;i<index+3;i++){
-                  lng += this.mapData[i].lng;
-                  lat += this.mapData[i].lat;
-                }
-                lng = lng / 5;
-                lat = lat / 5;
-                let point = new BMap.Point(
-                  lng,
-                  lat
-                );
-                this.map.centerAndZoom(point, 14);
-              }
-              this.mapData.sort(this.compare('lat'));
               let array = [];
               for (let i = 0; i < this.mapData.length; i++) {
                 let y=0;

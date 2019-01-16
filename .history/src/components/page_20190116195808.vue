@@ -1429,7 +1429,7 @@ export default {
                 let lat = 0;
                 this.mapData.sort(this.compare('lat'));
                 let index = Math.floor(this.mapData.length / 2);
-                for(let i=index-2;i<index+3;i++){
+                for(let i=index-2;i<indx+3;i++){
                   lng += this.mapData[i].lng;
                   lat += this.mapData[i].lat;
                 }

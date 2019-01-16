@@ -470,13 +470,13 @@ export default {
     };
   },
   methods: {
-    //地图初始化函数
     initEchart: function() {
       this.map = new BMap.Map("earth", { enableMapClick: false, minZoom: 6 });
+      this.map = new BMap.Map("earth", { minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
-      this.map.enableScrollWheelZoom();      //启用鼠标滚轮
-      this.map.disableDoubleClickZoom();    //禁用地图双击放大
-      this.map.enableKeyboard();  //启用键盘操作 
+      this.map.enableScrollWheelZoom();
+      this.map.disableDoubleClickZoom();
+      this.map.enableKeyboard();
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
@@ -1407,41 +1407,7 @@ export default {
             this.mapData = res.data.DATA;
             this.map.clearOverlays();
             this.getBoundary(this.place);
-            if (this.block) {      //绘制标记点
-              if(this.mapData.length<5){
-                let lng = 0;
-                let lat = 0;
-                for(let i=0;i<this.mapData.length;i++){
-                  if(this.mapData[i].lng != 0){
-                    lng += this.mapData[i].lng;
-                    lat += this.mapData[i].lat;
-                  }
-                }
-                lng = lng / this.mapData.length;
-                lat = lat / this.mapData.length;
-                let point = new BMap.Point(
-                  lng,
-                  lat
-                );
-                this.map.centerAndZoom(point, 14);
-              }else{
-                let lng = 0;
-                let lat = 0;
-                this.mapData.sort(this.compare('lat'));
-                let index = Math.floor(this.mapData.length / 2);
-                for(let i=index-2;i<index+3;i++){
-                  lng += this.mapData[i].lng;
-                  lat += this.mapData[i].lat;
-                }
-                lng = lng / 5;
-                lat = lat / 5;
-                let point = new BMap.Point(
-                  lng,
-                  lat
-                );
-                this.map.centerAndZoom(point, 14);
-              }
-              this.mapData.sort(this.compare('lat'));
+            if (this.block) {
               let array = [];
               for (let i = 0; i < this.mapData.length; i++) {
                 let y=0;
@@ -1449,7 +1415,7 @@ export default {
                   this.mapData[i].lng,
                   this.mapData[i].lat
                 );
-                for(let j=0;j<array.length;j++){                 //当绘制点位置重复时，向下偏移10个单位
+                for(let j=0;j<array.length;j++){
                   if(array[j].lng==point.lng && array[j].lat==point.lat){
                     y += 10;
                   }
@@ -1520,7 +1486,7 @@ export default {
                 });
               }
             } else {
-              if (this.button_area == "left") {            //绘制散点图
+              if (this.button_area == "left") {
                 for (let i = 0; i < this.mapData.length; i++) {
                   let offsetLeft = -5;
                   if (this.mapData[i].value[2] > 9) {
@@ -1631,7 +1597,7 @@ export default {
                     });
                   });
                 }
-              } else {       //绘制热力图
+              } else {
                 let points = [];
                 for (let i = 0; i < this.mapData.length; i++) {
                   let point = {
@@ -1807,14 +1773,6 @@ export default {
         }); //建立多边形覆盖物
         this.map.addOverlay(ply); //添加覆盖物
       });
-    },
-    /**
-     * 数组排序函数
-     */
-    compare: function(key){
-      return function(a,b){
-        return b[key] - a[key];
-      }
     }
   },
   created() {

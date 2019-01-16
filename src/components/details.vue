@@ -36,7 +36,7 @@
                         <div class="content-info" style="margin-bottom:40px;">报名人数:&nbsp;{{details.enterPeople}}</div>
                         <div class="content-video">
                             <video id="myPlayer" height="216" style="width:100%;" poster="" controls playsInline webkit-playsinline autoplay>
-                                <source :src="src" type="" />
+                                <source v-if="details.video_data && details.video_data.length" :src="details.video_data[0].param.url" type="" />
                                 <source ref="source" :src="src1" type="application/x-mpegURL" />
                             </video>
                         </div>
@@ -99,10 +99,10 @@ export default {
     },
     methods: {
         closePage: function(){
+            this.$emit("gotoParent","closePage");
             if(this.message.type=='activity'){
                 this.player.stop();
             }
-            this.$emit("gotoParent","closePage");
         },
         getDetailData: function(){
              this.$axios.post('/BigScreen/Index/mapDetail',this.$qs.stringify({
