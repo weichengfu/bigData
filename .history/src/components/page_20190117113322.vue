@@ -465,7 +465,6 @@ export default {
       show: false,
       childInfo: {},
       timer: "",
-      timer1: "",
       j: 1
     };
   },
@@ -474,9 +473,9 @@ export default {
     initEchart: function() {
       this.map = new BMap.Map("earth", { enableMapClick: false, minZoom: 6 });
       this.map.centerAndZoom("浙江省", 8);
-      this.map.enableScrollWheelZoom(); //启用鼠标滚轮
-      this.map.disableDoubleClickZoom(); //禁用地图双击放大
-      this.map.enableKeyboard(); //启用键盘操作
+      this.map.enableScrollWheelZoom();      //启用鼠标滚轮
+      this.map.disableDoubleClickZoom();    //禁用地图双击放大
+      this.map.enableKeyboard();  //启用键盘操作 
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
@@ -501,9 +500,7 @@ export default {
               this.city = "浙江省";
               this.place = "浙江省";
               this.refresh();
-              clearTimeout(this.timer1);
-              this.countDown();
-              console.log("1");
+              console.log('1')
             }
           } else if (zoom < 11) {
             if (res.addressComponents.province == "浙江省") {
@@ -511,9 +508,7 @@ export default {
                 this.place = res.addressComponents.city;
                 this.city = res.addressComponents.city;
                 this.refresh();
-                clearTimeout(this.timer1);
-                this.countDown();
-                console.log("2");
+                console.log('2')
               }
             }
           } else {
@@ -523,9 +518,7 @@ export default {
                 this.place = res.addressComponents.district;
                 this.city = res.addressComponents.city;
                 this.refresh();
-                clearTimeout(this.timer1);
-                this.countDown();
-                console.log("3");
+                console.log('3')
               }
             }
           }
@@ -542,20 +535,16 @@ export default {
             this.city = "浙江省";
             this.place = "浙江省";
             this.refresh();
-            clearTimeout(this.timer1);
-            this.countDown();
-            console.log("4");
+            console.log('4')
           }
-        } else if (zoom < 11) {
+        } else if (zoom < 11) {   
           geocoder.getLocation(center, res => {
             if (res.addressComponents.province == "浙江省") {
               if (this.place != res.addressComponents.city) {
                 this.place = res.addressComponents.city;
                 this.city = res.addressComponents.city;
                 this.refresh();
-                clearTimeout(this.timer1);
-                this.countDown();
-                console.log("5");
+                console.log('5')
               }
             }
           });
@@ -568,9 +557,7 @@ export default {
                 this.place = res.addressComponents.district;
                 this.city = res.addressComponents.city;
                 this.refresh();
-                clearTimeout(this.timer1);
-                this.countDown();
-                console.log("6");
+                console.log('6')
               }
             }
           });
@@ -1104,9 +1091,9 @@ export default {
       }
     },
     rightClick: function() {
-      if (this.block) {
-        return;
-      } else {
+      if(this.block){
+        return
+      }else{
         if (this.button_area == "left") {
           this.button_area = "right";
           this.buttonData = this.rightButton;
@@ -1132,15 +1119,11 @@ export default {
         if (val == "浙江省") {
           this.map.centerAndZoom("浙江省", 8);
           this.refresh();
-          clearTimeout(this.timer1);
-          this.countDown();
-          console.log(7);
+          console.log(7)
         } else {
           this.map.centerAndZoom(val, 10);
           this.refresh();
-          clearTimeout(this.timer1);
-          this.countDown();
-          console.log(8);
+          console.log(8)
         }
       }
     },
@@ -1425,128 +1408,120 @@ export default {
             this.mapData = res.data.DATA;
             this.map.clearOverlays();
             this.getBoundary(this.place);
-            if (this.block) {
-              //绘制标记点
-              if (this.mapData.length > 0) {
-                if (this.mapData.length < 5) {
-                  let lng = 0;
-                  let lat = 0;
-                  for (let i = 0; i < this.mapData.length; i++) {
-                    if (this.mapData[i].lng != 0) {
-                      lng += this.mapData[i].lng;
-                      lat += this.mapData[i].lat;
-                    }
-                  }
-                  lng = lng / this.mapData.length;
-                  lat = lat / this.mapData.length;
-                  let point = new BMap.Point(lng, lat);
-                  this.map.centerAndZoom(point, 14);
-                } else {
-                  let lng = 0;
-                  let lat = 0;
-                  this.mapData.sort(this.compare("lat"));
-                  let index = Math.floor(this.mapData.length / 2);
-                  for (let i = index - 2; i < index + 3; i++) {
+            if (this.block) {      //绘制标记点
+              if(this.mapData.length<5){
+                let lng = 0;
+                let lat = 0;
+                for(let i=0;i<this.mapData.length;i++){
+                  if(this.mapData[i].lng != 0){
                     lng += this.mapData[i].lng;
                     lat += this.mapData[i].lat;
                   }
-                  lng = lng / 5;
-                  lat = lat / 5;
-                  let point = new BMap.Point(lng, lat);
-                  this.map.centerAndZoom(point, 14);
                 }
-                this.mapData.sort(this.compare("lat"));
-                let array = [];
-                for (let i = 0; i < this.mapData.length; i++) {
-                  let y = 0;
-                  let point = new BMap.Point(
-                    this.mapData[i].lng,
-                    this.mapData[i].lat
-                  );
-                  for (let j = 0; j < array.length; j++) {
-                    //当绘制点位置重复时，向下偏移10个单位
-                    if (
-                      array[j].lng == point.lng &&
-                      array[j].lat == point.lat
-                    ) {
-                      y += 10;
-                    }
+                lng = lng / this.mapData.length;
+                lat = lat / this.mapData.length;
+                let point = new BMap.Point(
+                  lng,
+                  lat
+                );
+                this.map.centerAndZoom(point, 14);
+              }else{
+                let lng = 0;
+                let lat = 0;
+                this.mapData.sort(this.compare('lat'));
+                let index = Math.floor(this.mapData.length / 2);
+                for(let i=index-2;i<index+3;i++){
+                  lng += this.mapData[i].lng;
+                  lat += this.mapData[i].lat;
+                }
+                lng = lng / 5;
+                lat = lat / 5;
+                let point = new BMap.Point(
+                  lng,
+                  lat
+                );
+                this.map.centerAndZoom(point, 14);
+              }
+              this.mapData.sort(this.compare('lat'));
+              let array = [];
+              for (let i = 0; i < this.mapData.length; i++) {
+                let y=0;
+                let point = new BMap.Point(
+                  this.mapData[i].lng,
+                  this.mapData[i].lat
+                );
+                for(let j=0;j<array.length;j++){                 //当绘制点位置重复时，向下偏移10个单位
+                  if(array[j].lng==point.lng && array[j].lat==point.lat){
+                    y += 10;
                   }
-                  array.push(point);
-                  let marker = new BMap.Marker(point, {
-                    offset: new BMap.Size(0, y)
-                  }); // 创建标注
-                  this.map.addOverlay(marker);
-                  // let myIcon = new BMap.Icon("https://static-public.hz.backustech.com/1544089445631", new BMap.Size(48,48),{anchor: new BMap.Size(20,70)});
-                  // var marker1 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
-                  // this.map.addOverlay(marker1);
-                  // 复杂的自定义覆盖物
-                  function ComplexCustomOverlay(point, text, text1) {
-                    this._point = point;
-                    this._text = text;
-                    this._text1 = text1;
-                  }
-                  ComplexCustomOverlay.prototype = new BMap.Overlay();
-                  var that = this;
-                  ComplexCustomOverlay.prototype.initialize = function(map1) {
-                    this._map = map1;
-                    var div = (this._div = document.createElement("div"));
-                    div.style.position = "absolute";
-                    div.style.backgroundColor = "rgba(0,0,0,0.5)";
-                    div.style.color = "white";
-                    div.style.height = "32px";
-                    div.style.padding = "5px 10px";
-                    div.style.whiteSpace = "nowrap";
-                    div.style.fontSize = "12px";
-                    div.style.borderRadius = "5px";
-                    var span = document.createElement("span");
-                    div.appendChild(span);
-                    span.appendChild(document.createTextNode(this._text));
-                    var br = document.createElement("br");
-                    div.appendChild(br);
-                    var span1 = document.createElement("span");
-                    div.appendChild(span1);
-                    span1.appendChild(document.createTextNode(this._text1));
-                    that.map.getPanes().labelPane.appendChild(div);
-                    return div;
-                  };
-                  ComplexCustomOverlay.prototype.draw = function() {
-                    var map1 = this._map;
-                    var pixel = map1.pointToOverlayPixel(this._point);
-                    this._div.style.left = pixel.x + 10 + "px";
-                    this._div.style.top = pixel.y - 30 + y + "px";
-                  };
-                  if (this.type == "activity") {
-                    var txt = "活动名称：" + this.mapData[i].name;
-                  } else {
-                    var txt = "场馆名称：" + this.mapData[i].name;
-                  }
-                  var txt1 = "地址：" + this.mapData[i].address;
-                  let myCompOverlay = new ComplexCustomOverlay(
-                    point,
-                    txt,
-                    txt1
-                  );
-                  this.map.addOverlay(myCompOverlay);
+                };
+                array.push(point);
+                let marker = new BMap.Marker(point,{offset:new BMap.Size(0,y)}); // 创建标注
+                this.map.addOverlay(marker);
+                // let myIcon = new BMap.Icon("https://static-public.hz.backustech.com/1544089445631", new BMap.Size(48,48),{anchor: new BMap.Size(20,70)});
+                // var marker1 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+                // this.map.addOverlay(marker1);
+                // 复杂的自定义覆盖物
+                function ComplexCustomOverlay(point, text, text1) {
+                  this._point = point;
+                  this._text = text;
+                  this._text1 = text1;
+                }
+                ComplexCustomOverlay.prototype = new BMap.Overlay();
+                var that = this;
+                ComplexCustomOverlay.prototype.initialize = function(map1) {
+                  this._map = map1;
+                  var div = (this._div = document.createElement("div"));
+                  div.style.position = "absolute";
+                  div.style.backgroundColor = "rgba(0,0,0,0.5)";
+                  div.style.color = "white";
+                  div.style.height = "32px";
+                  div.style.padding = "5px 10px";
+                  div.style.whiteSpace = "nowrap";
+                  div.style.fontSize = "12px";
+                  div.style.borderRadius = "5px";
+                  var span = document.createElement("span");
+                  div.appendChild(span);
+                  span.appendChild(document.createTextNode(this._text));
+                  var br = document.createElement("br");
+                  div.appendChild(br);
+                  var span1 = document.createElement("span");
+                  div.appendChild(span1);
+                  span1.appendChild(document.createTextNode(this._text1));
+                  that.map.getPanes().labelPane.appendChild(div);
+                  return div;
+                };
+                ComplexCustomOverlay.prototype.draw = function() {
+                  var map1 = this._map;
+                  var pixel = map1.pointToOverlayPixel(this._point);
+                  this._div.style.left = pixel.x + 10 + "px";
+                  this._div.style.top = pixel.y - 30 + y + "px";
+                };
+                if (this.type == "activity") {
+                  var txt = "活动名称：" + this.mapData[i].name;
+                } else {
+                  var txt = "场馆名称：" + this.mapData[i].name;
+                }
+                var txt1 = "地址：" + this.mapData[i].address;
+                let myCompOverlay = new ComplexCustomOverlay(point, txt, txt1);
+                this.map.addOverlay(myCompOverlay);
+                myCompOverlay.hide();
+                marker.enableDragging();
+                // marker.setAnimation(BMAP_ANIMATION_BOUNCE)
+                marker.addEventListener("mouseover", () => {
+                  myCompOverlay.show();
+                });
+                marker.addEventListener("mouseout", () => {
                   myCompOverlay.hide();
-                  marker.enableDragging();
-                  // marker.setAnimation(BMAP_ANIMATION_BOUNCE)
-                  marker.addEventListener("mouseover", () => {
-                    myCompOverlay.show();
-                  });
-                  marker.addEventListener("mouseout", () => {
-                    myCompOverlay.hide();
-                  });
-                  marker.addEventListener("click", () => {
-                    this.childInfo.id = this.mapData[i].id;
-                    this.childInfo.type = this.type;
-                    this.show = true;
-                  });
-                }
+                });
+                marker.addEventListener("click", () => {
+                  this.childInfo.id = this.mapData[i].id;
+                  this.childInfo.type = this.type;
+                  this.show = true;
+                });
               }
             } else {
-              if (this.button_area == "left") {
-                //绘制散点图
+              if (this.button_area == "left") {            //绘制散点图
                 for (let i = 0; i < this.mapData.length; i++) {
                   let offsetLeft = -5;
                   if (this.mapData[i].value[2] > 9) {
@@ -1581,23 +1556,19 @@ export default {
                     geocoder.getLocation(point, res => {
                       //根据坐标解析地名
                       // this.block = false;
-                      if (zoom < 9) {
+                      if(zoom < 9) {
                         this.city = res.addressComponents.city;
                         this.place = res.addressComponents.city;
                         this.map.centerAndZoom(point, 10);
                         this.refresh();
-                        clearTimeout(this.timer1);
-                        this.countDown();
-                        console.log("9");
-                      } else {
+                        console.log('9')
+                      }else {
                         this.place = res.addressComponents.district;
                         this.city = res.addressComponents.city;
                         this.map.centerAndZoom(point, 12);
                         this.block = true;
                         this.refresh();
-                        clearTimeout(this.timer1);
-                        this.countDown();
-                        console.log("10");
+                        console.log('10')
                       }
                     });
                   });
@@ -1622,8 +1593,7 @@ export default {
                     position: point, // 指定文本标注所在的地理位置
                     offset: new BMap.Size(10, -10) //设置文本偏移量
                   };
-                  let text =
-                    this.mapData[i].name + " : " + this.mapData[i].value[2];
+                  let text = this.mapData[i].name + " : " + this.mapData[i].value[2]; 
                   let overLable = new BMap.Label(text, position); // 创建文本标注对象
                   overLable.setStyle({
                     color: "white",
@@ -1653,9 +1623,7 @@ export default {
                         this.city = res.addressComponents.city;
                         this.place = res.addressComponents.city;
                         this.refresh();
-                        clearTimeout(this.timer1);
-                        this.countDown();
-                        console.log("11");
+                        console.log('11')
                         this.map.centerAndZoom(point, 10);
                       } else {
                         this.place = res.addressComponents.district;
@@ -1663,15 +1631,12 @@ export default {
                         this.map.centerAndZoom(point, 12);
                         this.block = true;
                         this.refresh();
-                        clearTimeout(this.timer1);
-                        this.countDown();
-                        console.log("12");
+                        console.log('12')
                       }
                     });
                   });
                 }
-              } else {
-                //绘制热力图
+              } else {       //绘制热力图
                 let points = [];
                 for (let i = 0; i < this.mapData.length; i++) {
                   let point = {
@@ -1823,10 +1788,10 @@ export default {
      * 定时器函数，每分钟执行一次
      */
     countDown: function() {
-      this.timer1 = setTimeout(() => {
-        this.refresh();
-        console.log("13");
-        this.getCurrentTime();
+      setTimeout(() => {
+          this.refresh();
+          console.log('13')
+          this.getCurrentTime();
         this.countDown();
       }, 60000);
     },
@@ -1834,12 +1799,12 @@ export default {
      * 获取高亮区域边界
      */
     getBoundary: function(place) {
-      var bdary = new BMap.Boundary(); //一个行政区域的边界
+      var bdary = new BMap.Boundary();    //一个行政区域的边界
       bdary.get(place, rs => {
-        var ply = new BMap.Polygon(rs.boundaries[0], {
+        var ply = new BMap.Polygon(rs.boundaries[0], {     
           strokeWeight: 2,
           strokeColor: "Aqua",
-          fillColor: ""
+          fillColor: ''
         }); //建立多边形覆盖物
         this.map.addOverlay(ply); //添加覆盖物
       });
@@ -1847,10 +1812,10 @@ export default {
     /**
      * 数组排序函数
      */
-    compare: function(key) {
-      return function(a, b) {
+    compare: function(key){
+      return function(a,b){
         return b[key] - a[key];
-      };
+      }
     }
   },
   created() {
