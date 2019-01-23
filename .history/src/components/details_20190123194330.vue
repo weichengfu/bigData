@@ -104,12 +104,7 @@ export default {
     methods: {
         closePage: function(){
             this.$emit("gotoParent","closePage");
-            var brower = navigator.userAgent;
-            let safari = true;
-            if(!(brower.indexOf("Chrome") > -1) && (brower.indexOf("Safari") > -1)){
-                safari = false;
-            }
-            if(this.message.type=='activity' && safari){
+            if(this.message.type=='activity' && !(brower.indexOf("Safari") > -1)){
                 this.player.stop();
             }
         },

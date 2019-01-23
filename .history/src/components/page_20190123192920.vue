@@ -1871,12 +1871,8 @@ export default {
       this.getTopData2();
       this.getBookData();
       var brower = navigator.userAgent;
-      let safari = false;
-      if(!(brower.indexOf("Chrome") > -1) && (brower.indexOf("Safari") > -1)){
-        safari = true;
-      }
-      console.log('brower',brower);
-      if ((brower.indexOf("Firefox") > -1)||safari) {
+      console.log(brower);
+      if ((brower.indexOf("Firefox") > -1)||(brower.indexOf("Safari") > -1)) {
         //判断是否为火狐浏览器或safari浏览器
         this.$refs.hotTr.style.top = -32 + "px";
         this.$refs.statisticsTr.style.top = -32 + "px";

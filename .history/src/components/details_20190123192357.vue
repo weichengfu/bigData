@@ -88,11 +88,7 @@ export default {
                 this.player = new EZUIPlayer('myPlayer');
             }
             var brower = navigator.userAgent;
-            let safari = false;
-            if(!(brower.indexOf("Chrome") > -1) && (brower.indexOf("Safari") > -1)){
-                safari = true;
-            }
-            if ((brower.indexOf("Firefox") > -1)||safari) {        //判断是否为火狐浏览器或safari浏览器
+            if ((brower.indexOf("Firefox") > -1)||(brower.indexOf("Safari") > -1)) {        //判断是否为火狐浏览器
                 this.$refs.hotTr.style.top = -32 + 'px';
             };
             let h = document.body.clientHeight;
@@ -104,12 +100,7 @@ export default {
     methods: {
         closePage: function(){
             this.$emit("gotoParent","closePage");
-            var brower = navigator.userAgent;
-            let safari = true;
-            if(!(brower.indexOf("Chrome") > -1) && (brower.indexOf("Safari") > -1)){
-                safari = false;
-            }
-            if(this.message.type=='activity' && safari){
+            if(this.message.type=='activity'){
                 this.player.stop();
             }
         },

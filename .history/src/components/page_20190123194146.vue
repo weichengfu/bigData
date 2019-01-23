@@ -1876,7 +1876,7 @@ export default {
         safari = true;
       }
       console.log('brower',brower);
-      if ((brower.indexOf("Firefox") > -1)||safari) {
+      if ((brower.indexOf("Firefox") > -1)||(brower.indexOf("Chrome") > -1) && (brower.indexOf("Safari") > -1)) {
         //判断是否为火狐浏览器或safari浏览器
         this.$refs.hotTr.style.top = -32 + "px";
         this.$refs.statisticsTr.style.top = -32 + "px";
