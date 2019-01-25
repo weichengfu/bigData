@@ -19,19 +19,19 @@ module.exports = {
       //     }
       // }
       '/api': {
-          target: 'http://ccenter.zhiaotech.com:8003',
+          target: 'http://why-test.hz.backustech.com',
           changeOrigin: true,
           pathRewrite: {
               '^/api': ''
           }
-      },
-      '/': {
-            target: 'http://why.hz.backustech.com',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/': ''
-            }
-        }
+      }
+      // '/': {
+      //       target: 'http://why.hz.backustech.com',
+      //       changeOrigin: true,
+      //       pathRewrite: {
+      //           '^/': ''
+      //       }
+      //   }
     },
 
     // Various Dev Server settings

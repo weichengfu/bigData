@@ -24,14 +24,14 @@ module.exports = {
           pathRewrite: {
               '^/api': ''
           }
-      },
-      '/': {
-            target: 'http://why.hz.backustech.com',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/': ''
-            }
-        }
+      }
+      // '/': {
+      //       target: 'http://why.hz.backustech.com',
+      //       changeOrigin: true,
+      //       pathRewrite: {
+      //           '^/': ''
+      //       }
+      //   }
     },
 
     // Various Dev Server settings

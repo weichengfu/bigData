@@ -18,13 +18,6 @@ module.exports = {
       //         '^/api': ''
       //     }
       // }
-      '/api': {
-          target: 'http://ccenter.zhiaotech.com:8003',
-          changeOrigin: true,
-          pathRewrite: {
-              '^/api': ''
-          }
-      },
       '/': {
             target: 'http://why.hz.backustech.com',
             changeOrigin: true,

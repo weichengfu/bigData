@@ -128,13 +128,13 @@
             <div class="statistics-item">
               今日人流量
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal="1" :endVal="TrafficStatistics.today_num" :duration="3000"></countTo>
+                <countTo :startVal="1" :endVal="statisticData.activityNum" :duration="3000"></countTo>
               </span>人次
             </div>
             <div class="statistics-item">
               昨日人流量
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal="1" :endVal="TrafficStatistics.yesterday_num" :duration="3000"></countTo>
+                <countTo :startVal="1" :endVal="statisticData.activityApplyNum" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -142,7 +142,7 @@
             <div class="statistics-item">
               今年人流量
               <span class="number" style="margin:0 8px;">
-                <countTo :startVal="1" :endVal="TrafficStatistics.year_num" :duration="3000"></countTo>
+                <countTo :startVal="1" :endVal="statisticData.activityJoinNum" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -1834,7 +1834,6 @@ export default {
       this.getCurrentTime();
       this.trend = "0";
       this.j = 1;
-      this.getTrafficStatisticsData();
     },
     /**
      * 关闭活动页

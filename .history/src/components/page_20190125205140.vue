@@ -1834,7 +1834,6 @@ export default {
       this.getCurrentTime();
       this.trend = "0";
       this.j = 1;
-      this.getTrafficStatisticsData();
     },
     /**
      * 关闭活动页
