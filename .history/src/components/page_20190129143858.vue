@@ -491,9 +491,7 @@ export default {
       timer1: "",
       j: 1,        //用于记录月趋势图切换栏目
       TrafficStatistics: {      //人流统计
-        today_num: 0,
-        yesterday_num: 0,
-        year_num: 0
+
       }
     };
   },
@@ -508,12 +506,8 @@ export default {
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
-      console.log('height',height);
       let w = width * 0.28; //缩放组件相对屏幕的位置（左）
       let h = height * 0.43; //                     （上）
-      if(height<720){
-        h = height * 0.46;
-      }                  
       var navigation = new BMap.NavigationControl({
         offset: new BMap.Size(w, h),
         type: BMAP_NAVIGATION_CONTROL_SMALL
@@ -1897,7 +1891,7 @@ export default {
     getTrafficStatisticsData :function(){
       this.$axios
         .get(
-          "https://ccenter.zhiaotech.com/api/person/show.json"
+          "http://ccenter.zhiaotech.com:8003/api/person/show.json"
         )
         .then(res => {
           if(res.status==200){

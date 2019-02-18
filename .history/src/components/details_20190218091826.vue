@@ -32,7 +32,7 @@
                     </div>
                     <div class="jianbian" style="height:1px;width:100%;"></div>
                     <div v-if="message.type=='activity'">
-                        <div class="content-info" style="margin-top:24px;margin-bottom:8px;">报名日期:&nbsp;{{details.enterTime}}</div>
+                        <div class="content-info" style="margin-top:24px;">报名日期:&nbsp;{{details.enterTime}}</div>
                         <div class="content-info" style="margin-bottom:40px;">报名人数:&nbsp;{{details.enterPeople}}</div>
                         <div class="content-video">
                             <video id="myPlayer" height="216" style="width:100%;" poster="" controls playsInline webkit-playsinline autoplay>
@@ -97,7 +97,7 @@ export default {
             };
             let h = document.body.clientHeight;
             if(h<720){
-                document.getElementById('myPlayer').style.height = 140 + 'px';
+                document.getElementById('myPlayer').style.maxHeight = 160 + 'px';
             }
         })
     },
@@ -194,9 +194,6 @@ export default {
     }
     .right-content img{
         max-width: 100% !important;
-    }
-    #myPlayer{
-        height: 
     }
 </style>
 

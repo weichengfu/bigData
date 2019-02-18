@@ -387,16 +387,9 @@
   left: 0;
   top: 0;
 }
-.margin-number{
-  margin: 0 8px;
-}
 @media screen and (max-width: 1690px) {
   .statistics-item{
     margin-right: 10px;
-  }
-  .margin-number{
-    margin: 0px;
-    margin-left: 6px;
   }
   .topBox{
     font-size: 12px;

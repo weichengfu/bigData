@@ -511,9 +511,6 @@ export default {
       console.log('height',height);
       let w = width * 0.28; //缩放组件相对屏幕的位置（左）
       let h = height * 0.43; //                     （上）
-      if(height<720){
-        h = height * 0.46;
-      }                  
       var navigation = new BMap.NavigationControl({
         offset: new BMap.Size(w, h),
         type: BMAP_NAVIGATION_CONTROL_SMALL
