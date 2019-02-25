@@ -510,7 +510,7 @@ export default {
       let height = document.body.clientHeight;
       console.log('height',height);
       let w = width * 0.28; //缩放组件相对屏幕的位置（左）
-      let h = height * 0.43; //                     （上）
+      let h = height * 0.43; //                      （上）
       if(height<720){
         h = height * 0.46;
       }                  
@@ -1907,6 +1907,9 @@ export default {
         .catch(res => {
           console.log(res);
         });
+        setTimeout(()=>{
+          this.getTrafficStatisticsData();
+        },5000)
     }
   },
   created() {
@@ -1940,9 +1943,6 @@ export default {
     this.getCurrentTime();
     this.countDown();
     this.getTrafficStatisticsData();
-    setTimeout(()=>{
-      this.getTrafficStatisticsData();
-    },10000)
   },
   filters: {
     cutString: function(val) {

@@ -125,15 +125,38 @@
         </legend>
         <div class="statistics-body" v-if="statisticData">
           <div class="sta-row">
-            <!-- <div class="statistics-item">到馆<span class="number" style="margin:0 8px;">180</span>人</div> -->
+            <div class="statistics-item">
+              今日人流量
+              <span class="number margin-number">
+                <countTo :startVal="1" :endVal="TrafficStatistics.today_num" :duration="3000"></countTo>
+              </span>人次
+            </div>
+            <div class="statistics-item">
+              昨日人流量
+              <span class="number margin-number">
+                <countTo :startVal="1" :endVal="TrafficStatistics.yesterday_num" :duration="3000"></countTo>
+              </span>人次
+            </div>
+          </div>
+          <div class="sta-row">
+            <div class="statistics-item">
+              今年人流量
+              <span class="number margin-number">
+                <countTo :startVal="1" :endVal="TrafficStatistics.year_num" :duration="3000"></countTo>
+              </span>人次
+            </div>
+          </div>
+          <div class="jianbian" style="height: 1px;width: 100%;"></div>
+          <div class="sta-row">
+            <!-- <div class="statistics-item">到馆<span class="number margin-number">180</span>人</div> -->
             <!-- <div class="statistics-item">到馆
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <animate-number from="1" :to="statisticData" duration="3000" easing="easeOutQuad"></animate-number>
               </span>人
             </div>-->
             <div class="statistics-item">
               注册
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.registerNum" :duration="3000"></countTo>
               </span>人
             </div>
@@ -142,19 +165,19 @@
           <div class="sta-row">
             <div class="statistics-item">
               活动
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.activityNum" :duration="3000"></countTo>
               </span>场
             </div>
             <div class="statistics-item">
               报名
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.activityApplyNum" :duration="3000"></countTo>
               </span>人
             </div>
             <div class="statistics-item">
               参与
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.activityJoinNum" :duration="3000"></countTo>
               </span>人
             </div>
@@ -163,13 +186,13 @@
           <div class="sta-row">
             <div class="statistics-item">
               志愿者
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.volunteerNum" :duration="3000"></countTo>
               </span>人
             </div>
             <div class="statistics-item">
               志愿项目
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo
                   :startVal="1"
                   :endVal="statisticData.volunteerActivityNum"
@@ -179,7 +202,7 @@
             </div>
             <div class="statistics-item">
               参与
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo
                   :startVal="1"
                   :endVal="statisticData.volunteerActivityApplyNum"
@@ -192,13 +215,13 @@
           <div class="sta-row">
             <div class="statistics-item">
               场地预定
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.spaceAppointNum" :duration="3000"></countTo>
               </span>次
             </div>
             <div class="statistics-item">
               场地使用
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.spaceUsedNum" :duration="3000"></countTo>
               </span>人
             </div>
@@ -207,13 +230,13 @@
           <div class="sta-row">
             <div class="statistics-item">
               服务点单
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.serviceNum" :duration="3000"></countTo>
               </span>次
             </div>
             <div class="statistics-item">
               覆盖区县
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.serviceCoverNum" :duration="3000"></countTo>
               </span>个
             </div>
@@ -222,13 +245,13 @@
           <div class="sta-row">
             <div class="statistics-item">
               资讯发布
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.informationNum" :duration="3000"></countTo>
               </span>篇
             </div>
             <div class="statistics-item">
               浏览
-              <span class="number" style="margin:0 8px;">
+              <span class="number margin-number">
                 <countTo :startVal="1" :endVal="statisticData.informationSum" :duration="3000"></countTo>
               </span>人次
             </div>
@@ -466,7 +489,12 @@ export default {
       childInfo: {},
       timer: "",
       timer1: "",
-      j: 1
+      j: 1,        //用于记录月趋势图切换栏目
+      TrafficStatistics: {      //人流统计
+        today_num: 0,
+        yesterday_num: 0,
+        year_num: 0
+      }
     };
   },
   methods: {
@@ -480,8 +508,12 @@ export default {
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
+      console.log('height',height);
       let w = width * 0.28; //缩放组件相对屏幕的位置（左）
-      let h = height * 0.43; //                     （上）
+      let h = height * 0.43; //                      （上）
+      if(height<720){
+        h = height * 0.46;
+      }                  
       var navigation = new BMap.NavigationControl({
         offset: new BMap.Size(w, h),
         type: BMAP_NAVIGATION_CONTROL_SMALL
@@ -737,6 +769,10 @@ export default {
             type: "pie",
             radius: "50%",
             center: ["50%", "60%"],
+            labelLine: {
+              length: 10,   //第一段视觉引导线的长度
+              length2: 5    //第二段视觉引导线的长度
+            },
             data: this.pie1Data,
             itemStyle: {
               emphasis: {
@@ -773,9 +809,12 @@ export default {
           {
             name: "服务类型",
             type: "pie",
-            radius: "50%",
-            radius: ["30%", "60%"],
+            radius: ["30%", "50%"],
             center: ["50%", "60%"],
+            labelLine: {
+              length: 10,   //第一段视觉引导线的长度
+              length2: 5    //第二段视觉引导线的长度
+            },
             data: this.pie2Data,
             itemStyle: {
               emphasis: {
@@ -1851,6 +1890,26 @@ export default {
       return function(a, b) {
         return b[key] - a[key];
       };
+    },
+    /**
+     * 获取人流统计数据
+     */
+    getTrafficStatisticsData :function(){
+      this.$axios
+        .get(
+          "https://ccenter.zhiaotech.com/api/person/show.json"
+        )
+        .then(res => {
+          if(res.status==200){
+            this.TrafficStatistics = res.data.data;
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
+        setTimeout(()=>{
+          this.getTrafficStatisticsData();
+        },5000)
     }
   },
   created() {
@@ -1871,8 +1930,11 @@ export default {
       this.getTopData2();
       this.getBookData();
       var brower = navigator.userAgent;
-      console.log(brower);
-      if ((brower.indexOf("Firefox") > -1)||(brower.indexOf("Safari") > -1)) {
+      let safari = false;
+      if(!(brower.indexOf("Chrome") > -1) && (brower.indexOf("Safari") > -1)){
+        safari = true;
+      }
+      if ((brower.indexOf("Firefox") > -1)||safari) {
         //判断是否为火狐浏览器或safari浏览器
         this.$refs.hotTr.style.top = -32 + "px";
         this.$refs.statisticsTr.style.top = -32 + "px";
@@ -1880,11 +1942,15 @@ export default {
     });
     this.getCurrentTime();
     this.countDown();
+    this.getTrafficStatisticsData();
+    setTimeout(()=>{
+      this.getTrafficStatisticsData();
+    },5000)
   },
   filters: {
     cutString: function(val) {
       if (val && val.length > 5) {
-        return val.substr(0, 5);
+        return val.substr(0, 4);
       }
     }
   }
