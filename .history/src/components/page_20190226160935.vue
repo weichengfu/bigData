@@ -128,13 +128,13 @@
             <div class="statistics-item">
               今日人流量
               <span class="number margin-number">
-                <countTo :startVal="1" :endVal="TrafficStatistics.today_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics.today_num1" :endVal="TrafficStatistics.today_num" :duration="3000"></countTo>
               </span>人次
             </div>
             <div class="statistics-item">
               昨日人流量
               <span class="number margin-number">
-                <countTo :startVal="1" :endVal="TrafficStatistics.yesterday_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics.yesterday_num1" :endVal="TrafficStatistics.yesterday_num" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -142,7 +142,7 @@
             <div class="statistics-item">
               今年人流量
               <span class="number margin-number">
-                <countTo :startVal="1" :endVal="TrafficStatistics.year_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics.year_num1" :endVal="TrafficStatistics.year_num" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -157,7 +157,7 @@
             <div class="statistics-item">
               注册
               <span class="number margin-number">
-                <countTo :startVal="1" :endVal="statisticData.registerNum" :duration="3000"></countTo>
+                <countTo :startVal="statisticData.registerNum" :endVal="statisticData.registerNum" :duration="3000"></countTo>
               </span>人
             </div>
           </div>
@@ -482,7 +482,10 @@ export default {
       place: "浙江省",
       type: "activity",
       mapData: [],
-      statisticData: "",
+      // statisticData: "",
+      statisticData: {
+        registerNum: 0
+      },
       barData: [],
       block: false, //用于标记是否到县区级别
       show: false,
@@ -508,8 +511,12 @@ export default {
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
+      console.log('height',height);
       let w = width * 0.28; //缩放组件相对屏幕的位置（左）
-      let h = height * 0.43; //                     （上）
+      let h = height * 0.43; //                      （上）
+      if(height<720){
+        h = height * 0.46;
+      }                  
       var navigation = new BMap.NavigationControl({
         offset: new BMap.Size(w, h),
         type: BMAP_NAVIGATION_CONTROL_SMALL
@@ -1893,7 +1900,7 @@ export default {
     getTrafficStatisticsData :function(){
       this.$axios
         .get(
-          "http://ccenter.zhiaotech.com:8003/api/person/show.json"
+          "https://ccenter.zhiaotech.com/api/person/show.json"
         )
         .then(res => {
           if(res.status==200){
@@ -1903,6 +1910,9 @@ export default {
         .catch(res => {
           console.log(res);
         });
+        setTimeout(()=>{
+          this.getTrafficStatisticsData();
+        },4000)
     }
   },
   created() {
@@ -1936,9 +1946,6 @@ export default {
     this.getCurrentTime();
     this.countDown();
     this.getTrafficStatisticsData();
-    setTimeout(()=>{
-      this.getTrafficStatisticsData();
-    },10000)
   },
   filters: {
     cutString: function(val) {
