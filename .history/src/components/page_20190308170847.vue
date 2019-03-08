@@ -1924,19 +1924,12 @@ export default {
     getTrafficStatisticsData :function(){
       let time = new Date().getTime();
       let str = "time="+time+"&secret=zhiao";
-      console.log(str);
       let authorization = md5(str);
       let param = encodeURI(authorization);
-      console.log(authorization);
-      console.log(param);
       this.$axios
         .get(
-          "https://ccenter.zhiaotech.com/api/person/show.json",{
-              headers: {
-                  'Authorization': param
-              }
-
-          }
+          "/api/api/person/show.json?" + param
+          // "https://ccenter.zhiaotech.com/api/person/show.json?"+param
         )
         .then(res => {
           if(res.status==200){

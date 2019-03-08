@@ -1931,12 +1931,7 @@ export default {
       console.log(param);
       this.$axios
         .get(
-          "https://ccenter.zhiaotech.com/api/person/show.json",{
-              headers: {
-                  'Authorization': param
-              }
-
-          }
+          "https://ccenter.zhiaotech.com/api/person/show.json?"+param
         )
         .then(res => {
           if(res.status==200){

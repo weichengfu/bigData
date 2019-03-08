@@ -119,78 +119,11 @@
         </div>
       </div>
       <div v-else-if="activeButton==2" class="details-content">
-          <div class="wrap-module">
-              <div class="statisticsModule">
-                <div v-for="(item,index) in statisticsData" :key="index" class="statistic-item">
-                    <div class="statistic-item-key">{{item.key}}</div>
-                    <div class="statistic-item-value">{{item.value}}</div>
-                </div>
-              </div>
-              <div class="tableModule">
-                  <div class="tableModule-title">
-                      <img src="../assets/intelligence_icon_equipment.png" style="vertical-align:middle;" alt="">
-                      设备列表
-                  </div>
-                  <div class="tableModule-header">
-                      <div class="tableModule-header-item" v-for="(item,index) in header" :key="index">{{item.title}}</div>
-                  </div>
-                  <div class="tableModule-body">
-                      <div v-for="(item,index) in equipmentList" :key="index">
-                          <div class="tableModule-body-row">
-                              <div>{{item.name}}</div>
-                              <div>{{item.type}}</div>
-                              <div>{{item.status}}</div>
-                              <div>{{item.time}}</div>
-                          </div>
-                          <div class="jianbian" style="height:1px;width:100%;"></div>
-                      </div>
-                  </div>
-              </div>
-              <div class="tableModule">
-                  <div class="tableModule-title">
-                      <img src="../assets/intelligence_icon_visitor.png" style="vertical-align:middle;" alt="">
-                      访客记录
-                  </div>
-                  <div class="tableModule-header">
-                      <div class="tableModule-header-item" v-for="(item,index) in header" :key="index">{{item.title}}</div>
-                  </div>
-                  <div class="tableModule-body">
-                      <div v-for="(item,index) in equipmentList" :key="index">
-                          <div class="tableModule-body-row">
-                              <div>{{item.name}}</div>
-                              <div>{{item.type}}</div>
-                              <div>{{item.status}}</div>
-                              <div>{{item.time}}</div>
-                          </div>
-                          <div class="jianbian" style="height:1px;width:100%;"></div>
-                      </div>
-                  </div>
-              </div>
+          <div class="statisticsModule">
+              <div v-for="item in "></div>
           </div>
       </div>
-      <div v-else class="details-content">
-          <div class="wrap-video-box">
-              <div class="video-item">
-                  <video
-                    id="myPlayer"
-                    height="216"
-                    style="width:100%;"
-                    poster
-                    controls
-                    playsinline
-                    webkit-playsinline
-                    autoplay
-                  >
-                    <source
-                    v-if="details.video_data && details.video_data.length"
-                    :src="details.video_data[0].param.url"
-                    type
-                    >
-                    <source ref="source" :src="src1" type="application/x-mpegURL">
-                </video>
-              </div>
-          </div>
-      </div>
+      <div v-else class="details-content">实时监控</div>
     </fieldset>
   </div>
 </template>
@@ -207,37 +140,7 @@ export default {
       // src: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b',
       player: "",
       activeButton: "",
-      statisticsData: [
-          {key: '今日流量',value: 37},
-          {key: '昨日人流量',value: 287},
-          {key: '今年人流量',value: 4320}
-      ],
-      equipmentList: [
-          {
-              name: '门禁摄像头',
-              type: '摄像机',
-              status: '在线',
-              time: 678
-          },
-          {
-              name: '门禁摄像头',
-              type: '摄像机',
-              status: '在线',
-              time: 678
-          },
-          {
-              name: '门禁摄像头',
-              type: '摄像机',
-              status: '在线',
-              time: 678
-          }
-      ],
-      header: [
-          {title: '设备名称'},
-          {title: '设备类型'},
-          {title: '设备状态'},
-          {title: '累计服务时长'}
-      ]
+      statisticsData: ""
     };
   },
   created() {
@@ -344,7 +247,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 39px;
-  overflow-y: auto;
 }
 .left-content {
   width: 30.1%;
@@ -380,82 +282,6 @@ export default {
 .detailsButton{
     top: 50px;
     text-align: center;
-}
-.statisticsModule{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding-top: 108px;
-}
-.statistic-item{
-    width: 19.4%;
-    height: 233px;
-    background-image: linear-gradient(-180deg, rgba(0,135,255,0.24) 0%, rgba(0,135,255,0.00) 100%);
-    border: 1px solid #ADD9FF;
-    box-shadow: 0 0 8px 0 rgba(0,135,255,0.50);
-    border-radius: 2px;
-    text-align: center;
-}
-.statistic-item-key{
-    font-family: PingFangSC-Medium;
-    font-size: 30px;
-    color: #ADD9FF;
-    margin-top: 68px;
-    margin-bottom: 32px;
-}
-.statistic-item-value{
-    font-family: Helvetica;
-    font-size: 35px;
-    color: #FFCC00;
-    text-shadow: 0 0 4px rgba(255,238,0,0.50);
-}
-.wrap-module{
-    width: 100%;
-    padding: 0 5%;
-}
-.tableModule{
-    margin-top: 120px;
-}
-.tableModule-title{
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #00FFFF;
-}
-.tableModule-header{
-    display: flex;
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #D6ECFF;
-    margin-top: 32px;
-    justify-content: space-between;
-}
-.tableModule-header-item{
-    width: 12%;
-    text-align: center;
-}
-.tableModule-body-row{
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    height: 62px;
-    line-height: 62px;
-}
-.tableModule-body-row div{
-     width: 12%;
-}
-.tableModule-body{
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #ADD9FF;
-}
-.wrap-video-box{
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    padding-top: 50px;
-}
-.video-item{
-    width: 33.3%;
 }
 </style>
 

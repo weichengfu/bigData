@@ -448,15 +448,6 @@ export default {
     font-size: 16px;
     color: #ADD9FF;
 }
-.wrap-video-box{
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    padding-top: 50px;
-}
-.video-item{
-    width: 33.3%;
-}
 </style>
 
 

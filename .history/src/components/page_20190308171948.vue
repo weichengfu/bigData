@@ -1933,7 +1933,7 @@ export default {
         .get(
           "https://ccenter.zhiaotech.com/api/person/show.json",{
               headers: {
-                  'Authorization': param
+                  'Authorization': param,
               }
 
           }

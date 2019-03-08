@@ -343,7 +343,6 @@
 var echarts = require("echarts");
 import child from "@/components/details";
 import countTo from "vue-count-to";
-import md5 from 'js-md5';
 export default {
   name: "page",
   components: {
@@ -1924,19 +1923,11 @@ export default {
     getTrafficStatisticsData :function(){
       let time = new Date().getTime();
       let str = "time="+time+"&secret=zhiao";
-      console.log(str);
       let authorization = md5(str);
       let param = encodeURI(authorization);
-      console.log(authorization);
-      console.log(param);
       this.$axios
         .get(
-          "https://ccenter.zhiaotech.com/api/person/show.json",{
-              headers: {
-                  'Authorization': param
-              }
-
-          }
+          "https://ccenter.zhiaotech.com/api/person/show.json"
         )
         .then(res => {
           if(res.status==200){

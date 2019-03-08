@@ -170,25 +170,23 @@
       </div>
       <div v-else class="details-content">
           <div class="wrap-video-box">
-              <div class="video-item">
-                  <video
-                    id="myPlayer"
-                    height="216"
-                    style="width:100%;"
-                    poster
-                    controls
-                    playsinline
-                    webkit-playsinline
-                    autoplay
-                  >
-                    <source
-                    v-if="details.video_data && details.video_data.length"
-                    :src="details.video_data[0].param.url"
-                    type
-                    >
-                    <source ref="source" :src="src1" type="application/x-mpegURL">
-                </video>
-              </div>
+              <video
+                id="myPlayer"
+                height="216"
+                style="width:100%;"
+                poster
+                controls
+                playsinline
+                webkit-playsinline
+                autoplay
+              >
+                <source
+                  v-if="details.video_data && details.video_data.length"
+                  :src="details.video_data[0].param.url"
+                  type
+                >
+                <source ref="source" :src="src1" type="application/x-mpegURL">
+              </video>
           </div>
       </div>
     </fieldset>
@@ -447,15 +445,6 @@ export default {
     font-family: PingFangSC-Regular;
     font-size: 16px;
     color: #ADD9FF;
-}
-.wrap-video-box{
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    padding-top: 50px;
-}
-.video-item{
-    width: 33.3%;
 }
 </style>
 

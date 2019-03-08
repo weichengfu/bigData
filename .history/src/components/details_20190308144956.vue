@@ -125,72 +125,10 @@
                     <div class="statistic-item-key">{{item.key}}</div>
                     <div class="statistic-item-value">{{item.value}}</div>
                 </div>
-              </div>
-              <div class="tableModule">
-                  <div class="tableModule-title">
-                      <img src="../assets/intelligence_icon_equipment.png" style="vertical-align:middle;" alt="">
-                      设备列表
-                  </div>
-                  <div class="tableModule-header">
-                      <div class="tableModule-header-item" v-for="(item,index) in header" :key="index">{{item.title}}</div>
-                  </div>
-                  <div class="tableModule-body">
-                      <div v-for="(item,index) in equipmentList" :key="index">
-                          <div class="tableModule-body-row">
-                              <div>{{item.name}}</div>
-                              <div>{{item.type}}</div>
-                              <div>{{item.status}}</div>
-                              <div>{{item.time}}</div>
-                          </div>
-                          <div class="jianbian" style="height:1px;width:100%;"></div>
-                      </div>
-                  </div>
-              </div>
-              <div class="tableModule">
-                  <div class="tableModule-title">
-                      <img src="../assets/intelligence_icon_visitor.png" style="vertical-align:middle;" alt="">
-                      访客记录
-                  </div>
-                  <div class="tableModule-header">
-                      <div class="tableModule-header-item" v-for="(item,index) in header" :key="index">{{item.title}}</div>
-                  </div>
-                  <div class="tableModule-body">
-                      <div v-for="(item,index) in equipmentList" :key="index">
-                          <div class="tableModule-body-row">
-                              <div>{{item.name}}</div>
-                              <div>{{item.type}}</div>
-                              <div>{{item.status}}</div>
-                              <div>{{item.time}}</div>
-                          </div>
-                          <div class="jianbian" style="height:1px;width:100%;"></div>
-                      </div>
-                  </div>
-              </div>
+            </div>
           </div>
       </div>
-      <div v-else class="details-content">
-          <div class="wrap-video-box">
-              <div class="video-item">
-                  <video
-                    id="myPlayer"
-                    height="216"
-                    style="width:100%;"
-                    poster
-                    controls
-                    playsinline
-                    webkit-playsinline
-                    autoplay
-                  >
-                    <source
-                    v-if="details.video_data && details.video_data.length"
-                    :src="details.video_data[0].param.url"
-                    type
-                    >
-                    <source ref="source" :src="src1" type="application/x-mpegURL">
-                </video>
-              </div>
-          </div>
-      </div>
+      <div v-else class="details-content">实时监控</div>
     </fieldset>
   </div>
 </template>
@@ -211,32 +149,6 @@ export default {
           {key: '今日流量',value: 37},
           {key: '昨日人流量',value: 287},
           {key: '今年人流量',value: 4320}
-      ],
-      equipmentList: [
-          {
-              name: '门禁摄像头',
-              type: '摄像机',
-              status: '在线',
-              time: 678
-          },
-          {
-              name: '门禁摄像头',
-              type: '摄像机',
-              status: '在线',
-              time: 678
-          },
-          {
-              name: '门禁摄像头',
-              type: '摄像机',
-              status: '在线',
-              time: 678
-          }
-      ],
-      header: [
-          {title: '设备名称'},
-          {title: '设备类型'},
-          {title: '设备状态'},
-          {title: '累计服务时长'}
       ]
     };
   },
@@ -411,51 +323,7 @@ export default {
 }
 .wrap-module{
     width: 100%;
-    padding: 0 5%;
-}
-.tableModule{
-    margin-top: 120px;
-}
-.tableModule-title{
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #00FFFF;
-}
-.tableModule-header{
-    display: flex;
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #D6ECFF;
-    margin-top: 32px;
-    justify-content: space-between;
-}
-.tableModule-header-item{
-    width: 12%;
-    text-align: center;
-}
-.tableModule-body-row{
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    height: 62px;
-    line-height: 62px;
-}
-.tableModule-body-row div{
-     width: 12%;
-}
-.tableModule-body{
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #ADD9FF;
-}
-.wrap-video-box{
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    padding-top: 50px;
-}
-.video-item{
-    width: 33.3%;
+    padding: 0 3%;
 }
 </style>
 

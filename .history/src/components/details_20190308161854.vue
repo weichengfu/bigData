@@ -451,8 +451,6 @@ export default {
 .wrap-video-box{
     display: flex;
     width: 100%;
-    flex-wrap: wrap;
-    padding-top: 50px;
 }
 .video-item{
     width: 33.3%;
