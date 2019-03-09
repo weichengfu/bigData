@@ -128,13 +128,13 @@
             <div class="statistics-item">
               今日人流量
               <span class="number margin-number">
-                <countTo :startVal="statisticData1.today_num" :endVal="statisticData.today_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics1.today_num" :endVal="TrafficStatistics.today_num" :duration="3000"></countTo>
               </span>人次
             </div>
             <div class="statistics-item">
               昨日人流量
               <span class="number margin-number">
-                <countTo :startVal="statisticData1.yesterday_num" :endVal="statisticData.yesterday_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics1.yesterday_num" :endVal="TrafficStatistics.yesterday_num" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -142,7 +142,7 @@
             <div class="statistics-item">
               今年人流量
               <span class="number margin-number">
-                <countTo :startVal="statisticData1.year_num" :endVal="statisticData.year_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics1.year_num" :endVal="TrafficStatistics.year_num" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -506,9 +506,7 @@ export default {
         serviceCoverNum: 0,
         informationNum: 0,
         informationSum: 0,
-        today_num: 0,
-        yesterday_num: 0,
-        year_num: 0
+        
       },
       barData: [],
       block: false, //用于标记是否到县区级别
@@ -536,7 +534,7 @@ export default {
       this.getBoundary(this.place);
       let width = document.body.clientWidth;
       let height = document.body.clientHeight;
-      // console.log('height',height);
+      console.log('height',height);
       let w = width * 0.28; //缩放组件相对屏幕的位置（左）
       let h = height * 0.43; //                      （上）
       if(height<720){
@@ -563,6 +561,7 @@ export default {
               this.refresh();
               clearTimeout(this.timer1);
               this.countDown();
+              console.log("1");
             }
           } else if (zoom < 11) {
             if (res.addressComponents.province == "浙江省") {
@@ -572,6 +571,7 @@ export default {
                 this.refresh();
                 clearTimeout(this.timer1);
                 this.countDown();
+                console.log("2");
               }
             }
           } else {
@@ -583,6 +583,7 @@ export default {
                 this.refresh();
                 clearTimeout(this.timer1);
                 this.countDown();
+                console.log("3");
               }
             }
           }
@@ -601,6 +602,7 @@ export default {
             this.refresh();
             clearTimeout(this.timer1);
             this.countDown();
+            console.log("4");
           }
         } else if (zoom < 11) {
           geocoder.getLocation(center, res => {
@@ -611,6 +613,7 @@ export default {
                 this.refresh();
                 clearTimeout(this.timer1);
                 this.countDown();
+                console.log("5");
               }
             }
           });
@@ -625,6 +628,7 @@ export default {
                 this.refresh();
                 clearTimeout(this.timer1);
                 this.countDown();
+                console.log("6");
               }
             }
           });
@@ -1195,11 +1199,13 @@ export default {
           this.refresh();
           clearTimeout(this.timer1);
           this.countDown();
+          console.log(7);
         } else {
           this.map.centerAndZoom(val, 10);
           this.refresh();
           clearTimeout(this.timer1);
           this.countDown();
+          console.log(8);
         }
       }
     },
@@ -1647,6 +1653,7 @@ export default {
                         this.refresh();
                         clearTimeout(this.timer1);
                         this.countDown();
+                        console.log("9");
                       } else {
                         this.place = res.addressComponents.district;
                         this.city = res.addressComponents.city;
@@ -1655,6 +1662,7 @@ export default {
                         this.refresh();
                         clearTimeout(this.timer1);
                         this.countDown();
+                        console.log("10");
                       }
                     });
                   });
@@ -1712,6 +1720,7 @@ export default {
                         this.refresh();
                         clearTimeout(this.timer1);
                         this.countDown();
+                        console.log("11");
                         this.map.centerAndZoom(point, 10);
                       } else {
                         this.place = res.addressComponents.district;
@@ -1721,6 +1730,7 @@ export default {
                         this.refresh();
                         clearTimeout(this.timer1);
                         this.countDown();
+                        console.log("12");
                       }
                     });
                   });
@@ -1763,9 +1773,6 @@ export default {
         )
         .then(res => {
           if (res.data.CODE == "ok") {
-             setTimeout(()=>{
-              this.getStatisticsData();
-            },4000)
             //  console.log(res);
             if (this.statisticData) {
               this.statisticData1 = this.statisticData;
@@ -1858,7 +1865,7 @@ export default {
     refresh: function() {
       this.getMapData();
       this.getHotActivity();
-      // this.getStatisticsData();
+      this.getStatisticsData();
       this.getLoveData();
       this.initBar();
       this.getTrendData();
@@ -1884,6 +1891,7 @@ export default {
     countDown: function() {
       this.timer1 = setTimeout(() => {
         this.refresh();
+        console.log("13");
         this.getCurrentTime();
         this.countDown();
       }, 60000);
@@ -1916,33 +1924,37 @@ export default {
     getTrafficStatisticsData :function(){
       let time = new Date().getTime();
       let str = "time="+time+"&secret=zhiao";
+      console.log(str);
       let authorization = md5(str);
-    //   this.$axios
-    //     .get(
-    //       "https://ccenter.zhiaotech.com/api/person/show.json",{
-    //           headers: {
-    //               'Authorization': authorization,
-    //               'time': time
-    //           }
-    //       }
-    //     )
-    //     .then(res => {
-    //       if(res.status==200){
-    //         if(this.TrafficStatistics){
-    //           this.TrafficStatistics1 = this.TrafficStatistics;
-    //         }
-    //         this.TrafficStatistics = res.data.data;
-    //       }else{
-    //         this.TrafficStatistics = this.TrafficStatistics1;
-    //       }
-    //     })
-    //     .catch(res => {
-    //       this.TrafficStatistics = this.TrafficStatistics1;
-    //       console.log(res);
-    //     });
-    //     setTimeout(()=>{
-    //       this.getTrafficStatisticsData();
-    //     },4000)
+      let param = encodeURI(authorization);
+      console.log(authorization);
+      console.log(param);
+      this.$axios
+        .get(
+          "https://ccenter.zhiaotech.com/api/person/show.json",{
+              headers: {
+                  'Authorization': param
+              }
+
+          }
+        )
+        .then(res => {
+          if(res.status==200){
+            if(this.TrafficStatistics){
+              this.TrafficStatistics1 = this.TrafficStatistics;
+            }
+            this.TrafficStatistics = res.data.data;
+          }else{
+            this.TrafficStatistics = this.TrafficStatistics1;
+          }
+        })
+        .catch(res => {
+          this.TrafficStatistics = this.TrafficStatistics1;
+          console.log(res);
+        });
+        setTimeout(()=>{
+          this.getTrafficStatisticsData();
+        },4000)
     }
   },
   created() {
@@ -1975,7 +1987,7 @@ export default {
     });
     this.getCurrentTime();
     this.countDown();
-    // this.getTrafficStatisticsData();
+    this.getTrafficStatisticsData();
   },
   filters: {
     cutString: function(val) {

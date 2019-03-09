@@ -426,19 +426,6 @@ export default {
   margin-top: 39px;
   overflow-y: auto;
 }
-.details-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.details-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.details-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
 .right-content::-webkit-scrollbar {
         width: 10px;     
         height: 10px;
@@ -447,10 +434,12 @@ export default {
         border-radius: 10px;
         box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         background: rgba(255,255,255,0.30);
+        background: #26D321;
     }
 .right-content::-webkit-scrollbar-track {
         box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         border-radius: 10px;
+        background: #EDEDED;
     }
 .left-content {
   width: 30.1%;

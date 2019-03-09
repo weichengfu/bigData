@@ -426,32 +426,6 @@ export default {
   margin-top: 39px;
   overflow-y: auto;
 }
-.details-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.details-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.details-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
-.right-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.right-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.right-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
 .left-content {
   width: 30.1%;
   height: 100%;
@@ -596,11 +570,10 @@ export default {
   background: #26D321;
 }
 .noDataPage{
+  width: 100%;
+  height: 100%;
   text-align: center;
-  position: absolute;
-  top: 40%;
-  left: 0;
-  right: 0;
+  padding-top: 40%;
 }
 .markedWords{
   font-family: PingFangSC-Regular;

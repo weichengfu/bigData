@@ -6,7 +6,7 @@
       <!-- 左下角 -->
       <div class="hot-lb corner2"></div>
        <!-- tab切换框 -->
-        <div class="switch-button detailsButton" v-if="message.type=='stadium'||message.type=='smartTerminal'">
+        <div class="switch-button detailsButton">
             <div
                 class="child-button"
                 :class="{'active-father-button': activeButton == 1}"
@@ -119,62 +119,58 @@
         </div>
       </div>
       <div v-else-if="activeButton==2" class="details-content">
-          <div class="wrap-module" v-if="smartTerminal">
+          <div class="wrap-module">
               <div class="statisticsModule">
-                <div v-for="(item,index) in smartTerminal.peopleCounting" :key="index" class="statistic-item">
+                <div v-for="(item,index) in statisticsData" :key="index" class="statistic-item">
                     <div class="statistic-item-key">{{item.key}}</div>
                     <div class="statistic-item-value">{{item.value}}</div>
                 </div>
               </div>
-              <div class="tableModule" v-if="smartTerminal.equipmentList && smartTerminal.equipmentList.length">
+              <div class="tableModule">
                   <div class="tableModule-title">
                       <img src="../assets/intelligence_icon_equipment.png" style="vertical-align:middle;" alt="">
                       设备列表
                   </div>
                   <div class="tableModule-header">
-                      <div class="tableModule-header-item" v-for="(item,index) in header" :class="index==2?'formatTime':''" :key="index">{{item.title}}</div>
+                      <div class="tableModule-header-item" v-for="(item,index) in header" :key="index">{{item.title}}</div>
                   </div>
                   <div class="tableModule-body">
-                      <div v-for="(item,index) in smartTerminal.equipmentList" :key="index">
+                      <div v-for="(item,index) in equipmentList" :key="index">
                           <div class="tableModule-body-row">
-                              <div>{{item.equipment_title}}</div>
-                              <div>{{item.equipment_type_title}}</div>
-                              <div class="formatTime"><div class="statusDot" :class="item.status==1?'green':'red'"></div>{{item.status|getStatus}}</div>
-                              <div>{{item.service_time}}</div>
+                              <div>{{item.name}}</div>
+                              <div>{{item.type}}</div>
+                              <div><div class="statusDot"></div>{{item.status}}</div>
+                              <div>{{item.time}}</div>
                           </div>
                           <div class="jianbian" style="height:1px;width:100%;"></div>
                       </div>
                   </div>
               </div>
-              <div class="tableModule" v-if="smartTerminal.visitorsRecord && smartTerminal.visitorsRecord.length">
+              <div class="tableModule">
                   <div class="tableModule-title">
                       <img src="../assets/intelligence_icon_visitor.png" style="vertical-align:middle;" alt="">
                       访客记录
                   </div>
                   <div class="tableModule-header">
-                      <div class="tableModule-header-item" v-for="(item,index) in header1" :class="index==2?'formatTime':''" :key="index">{{item.title}}</div>
+                      <div class="tableModule-header-item" v-for="(item,index) in header" :key="index">{{item.title}}</div>
                   </div>
                   <div class="tableModule-body">
-                      <div v-for="(item,index) in smartTerminal.visitorsRecord" :key="index">
+                      <div v-for="(item,index) in equipmentList" :key="index">
                           <div class="tableModule-body-row">
-                              <div><img :src="item.avatar" alt="" class="avatar"></div>
-                              <div>{{item.user_name}}</div>
-                              <div class="formatTime">{{item.visitor_time|formatTime}}</div>
+                              <div>{{item.name}}</div>
+                              <div>{{item.type}}</div>
                               <div>{{item.status}}</div>
+                              <div>{{item.time}}</div>
                           </div>
                           <div class="jianbian" style="height:1px;width:100%;"></div>
                       </div>
                   </div>
               </div>
           </div>
-          <div v-else class="noDataPage">
-              <img src="../assets/universally_icon_terminalunit.png" alt="">
-              <div class="markedWords">未安装智能终端设备</div>
-          </div>
       </div>
       <div v-else class="details-content">
-          <div class="wrap-video-box" v-if="monitoring && monitoring.length">
-              <div class="video-item" v-for="item in monitoring" :key="item.video_id">
+          <div class="wrap-video-box">
+              <div class="video-item">
                   <video
                     id="myPlayer"
                     height="216"
@@ -186,18 +182,13 @@
                     autoplay
                   >
                     <source
-                    v-if="item.video_data"
-                    :src="item.video_data.url"
+                    v-if="details.video_data && details.video_data.length"
+                    :src="details.video_data[0].param.url"
                     type
                     >
-                    <source ref="source" :src="item.video_data.url" type="application/x-mpegURL">
+                    <source ref="source" :src="src1" type="application/x-mpegURL">
                 </video>
-                <div class="video-title">{{item.video_title}}</div>
               </div>
-          </div>
-          <div v-else class="noDataPage">
-            <img src="../assets/universally_icon_webcam.png" alt="">
-            <div class="markedWords">未添加监控摄像头</div>
           </div>
       </div>
     </fieldset>
@@ -209,10 +200,9 @@ export default {
   props: ["message"],
   data() {
     return {
-      details: "",    //接收活动详情和场馆详情的数据
-      smartTerminal: "",   //接收智能终端的数据
-      monitoring: "",     //接收实时监控的数据
-      src1: "http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8",
+      details: "",
+      src1:
+        "http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8",
       src: "rtmp://rtmp.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec",
       // src: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b',
       player: "",
@@ -247,16 +237,11 @@ export default {
           {title: '设备类型'},
           {title: '设备状态'},
           {title: '累计服务时长'}
-      ],
-      header1: [
-          {title: '头像'},
-          {title: '用户名'},
-          {title: '访问时间'},
-          {title: '状态'}
       ]
     };
   },
   created() {
+    this.getDetailData();
     //   this.$axios
     // .post("https://open.ys7.com/api/lapp/live/address/get",this.$qs.stringify({
     //     accessToken: 'at.4v752uhj7oew8cpkaw4j655h617nmo5t-1hpv7s0z9j-0hqdr3w-cnbxsym69'
@@ -266,16 +251,6 @@ export default {
     //   }).catch((res)=>{
     //       console.log(res)
     //   })
-    if(this.message.type == 'stadium'){
-      this.activeButton = 1;
-      this.getStadiumAndSmartTerminalData();
-    }else if(this.message.type == 'smartTerminal'){
-      this.activeButton = 2;
-      this.getStadiumAndSmartTerminalData();
-    }else{
-      this.activeButton = 1;
-      this.getDetailData();
-    }
   },
   mounted() {
     this.$nextTick(function() {
@@ -321,6 +296,7 @@ export default {
         .then(res => {
           if (res.data.CODE == "ok") {
             this.details = res.data.DATA.details;
+            console.log('details',details);
           } else {
             this.$message({
               message: res.data.MESSAGE,
@@ -334,68 +310,12 @@ export default {
     },
     switchButton: function(val){
        this.activeButton = val;
-       this.getStadiumAndSmartTerminalData();
-    },
-    getStadiumAndSmartTerminalData: function(){
-      let type;
-      if(this.activeButton == 1){
-        type = 'stadium';
-      }else if(this.activeButton == 2){
-        type = 'smartTerminal';
-      }else{
-        type = 'monitoring';
-      };
-      this.$axios
-        .get(
-          "/BigScreen/Index/mapDetail?type=" + type + '&id=' + this.message.id 
-        )
-        .then(res => {
-          if (res.data.CODE == "ok") {
-            if(this.activeButton == 1){
-              this.details = res.data.DATA.details; 
-            }else if(this.activeButton == 2){
-              this.smartTerminal = res.data.DATA;
-            }else{
-              this.monitoring = res.data.DATA.monitoringList;
-            }
-          } else {
-            this.$message({
-              message: res.data.MESSAGE,
-              type: "error"
-            });
-          }
-        })
-        .catch(res => {
-          console.log(res);
-        });
     }
   },
   filters: {
     cutString: function(val) {
       if (val && val.length > 8) {
         return val.substr(0, 8);
-      }
-    },
-    formatTime: function(val) {
-      let time = new Date(val);
-      let year = time.getFullYear();
-      let month = time.getMonth() + 1;
-      let day = time.getDate();
-      let hour = time.getHours();
-      let minute = time.getMinutes();
-      month = month>10? month : '0'+ month;
-      day = day>10? day : '0' + day;
-      hour = hour>10? hour : '0' + hour;
-      minute = minute>10? minute: '0' + minute;
-      return year + '-' + month + '-' + day + ' ' + hour + ':' + minute; 
-    },
-    getStatus: function(val){
-      if(val==0){
-        return '离线'
-      }else if(val==1){
-        return '在线'
-      }else{
-        return '停用'
       }
     }
   }
@@ -426,32 +346,6 @@ export default {
   margin-top: 39px;
   overflow-y: auto;
 }
-.details-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.details-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.details-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
-.right-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.right-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.right-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
 .left-content {
   width: 30.1%;
   height: 100%;
@@ -562,51 +456,12 @@ export default {
 }
 .video-item{
     width: 33.3%;
-    padding: 10px;
 }
 .statusDot{
-  width: 16px !important;
+  width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: #00FFFF;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-.video-title{
-  font-family: PingFangSC-Medium;
-  font-size: 20px;
-  color: #D6ECFF;
-  margin: 16px 0;
-}
-.avatar{
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-  overflow: hidden;
-  vertical-align: middle;
-}
-.formatTime{
-  width: 26% !important;
-}
-.red{
- background: #D0021B;
-}
-.green{
-  background: #26D321;
-}
-.noDataPage{
-  text-align: center;
-  position: absolute;
-  top: 40%;
-  left: 0;
-  right: 0;
-}
-.markedWords{
-  font-family: PingFangSC-Regular;
-  font-size: 22px;
-  color: #FFFFFF;
-  margin-top: 16px;
+  color: #00FFFF;
 }
 </style>
 

@@ -166,6 +166,7 @@
                       </div>
                   </div>
               </div>
+              <div style="height:1200px;"></div>
           </div>
           <div v-else class="noDataPage">
               <img src="../assets/universally_icon_terminalunit.png" alt="">

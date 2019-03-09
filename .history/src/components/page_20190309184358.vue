@@ -1763,14 +1763,14 @@ export default {
         )
         .then(res => {
           if (res.data.CODE == "ok") {
-             setTimeout(()=>{
-              this.getStatisticsData();
-            },4000)
             //  console.log(res);
             if (this.statisticData) {
               this.statisticData1 = this.statisticData;
             }
             this.statisticData = res.data.DATA;
+            setTimeout(()=>{
+              this.getStatisticsData();
+            },4000)
           } else {
             this.$message({
               message: res.data.MESSAGE,
@@ -1858,7 +1858,7 @@ export default {
     refresh: function() {
       this.getMapData();
       this.getHotActivity();
-      // this.getStatisticsData();
+      this.getStatisticsData();
       this.getLoveData();
       this.initBar();
       this.getTrendData();

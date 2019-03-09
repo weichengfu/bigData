@@ -128,13 +128,13 @@
             <div class="statistics-item">
               今日人流量
               <span class="number margin-number">
-                <countTo :startVal="statisticData1.today_num" :endVal="statisticData.today_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics1.today_num" :endVal="TrafficStatistics.today_num" :duration="3000"></countTo>
               </span>人次
             </div>
             <div class="statistics-item">
               昨日人流量
               <span class="number margin-number">
-                <countTo :startVal="statisticData1.yesterday_num" :endVal="statisticData.yesterday_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics1.yesterday_num" :endVal="TrafficStatistics.yesterday_num" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -142,7 +142,7 @@
             <div class="statistics-item">
               今年人流量
               <span class="number margin-number">
-                <countTo :startVal="statisticData1.year_num" :endVal="statisticData.year_num" :duration="3000"></countTo>
+                <countTo :startVal="TrafficStatistics1.year_num" :endVal="TrafficStatistics.year_num" :duration="3000"></countTo>
               </span>人次
             </div>
           </div>
@@ -506,9 +506,7 @@ export default {
         serviceCoverNum: 0,
         informationNum: 0,
         informationSum: 0,
-        today_num: 0,
-        yesterday_num: 0,
-        year_num: 0
+        
       },
       barData: [],
       block: false, //用于标记是否到县区级别
@@ -1763,9 +1761,6 @@ export default {
         )
         .then(res => {
           if (res.data.CODE == "ok") {
-             setTimeout(()=>{
-              this.getStatisticsData();
-            },4000)
             //  console.log(res);
             if (this.statisticData) {
               this.statisticData1 = this.statisticData;
@@ -1858,7 +1853,7 @@ export default {
     refresh: function() {
       this.getMapData();
       this.getHotActivity();
-      // this.getStatisticsData();
+      this.getStatisticsData();
       this.getLoveData();
       this.initBar();
       this.getTrendData();

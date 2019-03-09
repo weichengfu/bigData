@@ -167,9 +167,8 @@
                   </div>
               </div>
           </div>
-          <div v-else class="noDataPage">
+          <div v-else>
               <img src="../assets/universally_icon_terminalunit.png" alt="">
-              <div class="markedWords">未安装智能终端设备</div>
           </div>
       </div>
       <div v-else class="details-content">
@@ -195,9 +194,8 @@
                 <div class="video-title">{{item.video_title}}</div>
               </div>
           </div>
-          <div v-else class="noDataPage">
+          <div v-else>
             <img src="../assets/universally_icon_webcam.png" alt="">
-            <div class="markedWords">未添加监控摄像头</div>
           </div>
       </div>
     </fieldset>
@@ -426,32 +424,6 @@ export default {
   margin-top: 39px;
   overflow-y: auto;
 }
-.details-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.details-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.details-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
-.right-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.right-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.right-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
-    }
 .left-content {
   width: 30.1%;
   height: 100%;
@@ -594,19 +566,6 @@ export default {
 }
 .green{
   background: #26D321;
-}
-.noDataPage{
-  text-align: center;
-  position: absolute;
-  top: 40%;
-  left: 0;
-  right: 0;
-}
-.markedWords{
-  font-family: PingFangSC-Regular;
-  font-size: 22px;
-  color: #FFFFFF;
-  margin-top: 16px;
 }
 </style>
 

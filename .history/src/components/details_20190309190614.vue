@@ -26,7 +26,7 @@
       <legend class="title">
         <div class="inner-title" style="cursor:pointer;" @click="closePage">返回</div>
       </legend>
-      <div class="details-content" v-if="activeButton==1">
+      <div class="details-content details-content-1" v-if="activeButton==1">
         <div class="left-content">
           <el-tooltip
             v-if="details.title&&details.title.length>8"
@@ -426,31 +426,19 @@ export default {
   margin-top: 39px;
   overflow-y: auto;
 }
-.details-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
+.details-content-1::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
     }
-.details-content::-webkit-scrollbar-thumb {
+.details-content-1::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
         border-radius: 10px;
         box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
+        background: rgba(255,255,255,0.30);;
     }
-.details-content::-webkit-scrollbar-track {
+.details-content-1::-webkit-scrollbar-track {/*滚动条里面轨道*/
         box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         border-radius: 10px;
-    }
-.right-content::-webkit-scrollbar {
-        width: 10px;     
-        height: 10px;
-    }
-.right-content::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        background: rgba(255,255,255,0.30);
-    }
-.right-content::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        border-radius: 10px;
+        background: #EDEDED;
     }
 .left-content {
   width: 30.1%;

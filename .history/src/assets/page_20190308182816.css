@@ -89,7 +89,7 @@
   cursor: pointer;
   display: inline-block;
 }
-.button:nth-child(6){
+.button:nth-child(5){
   margin-right: 0;
 }
 .active-button {
