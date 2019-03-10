@@ -160,7 +160,7 @@
                               <div><img :src="item.avatar" alt="" class="avatar"></div>
                               <div>{{item.user_name}}</div>
                               <div class="formatTime">{{item.visitor_time|formatTime}}</div>
-                              <div>{{item.status}}</div>
+                              <div>{{item.status|getStatus1}}</div>
                           </div>
                           <div class="jianbian" style="height:1px;width:100%;"></div>
                       </div>
@@ -216,7 +216,7 @@ export default {
       src: "rtmp://rtmp.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec",
       // src: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b',
       player: "",
-      videoPlayer: "",
+      videoPlayer: [],
       activeButton: "",
       equipmentList: [
           {
@@ -297,9 +297,19 @@ export default {
   },
   updated() {
       if(this.activeButton == 3){
+          this.videoPlayer = [];
           for(let i=0;i<this.monitoring.length;i++){
               let id = this.bindId(this.monitoring[i].video_id)
-            this.videoPlayer = new EZUIPlayer(id);
+              let key = new EZUIPlayer(id);
+            this.videoPlayer.push({
+                player : key
+            })
+          }
+      }else{
+          if(this.videoPlayer && this.videoPlayer.length){
+              for(let i=0;i<this.videoPlayer.length;i++){
+                  this.videoPlayer[i].player.stop();
+              }
           }
       }
   },
@@ -379,7 +389,7 @@ export default {
         return 'player' + val;
     }
   },
-  filters: {
+  filters: {         //过滤器
     cutString: function(val) {
       if (val && val.length > 8) {
         return val.substr(0, 8);
@@ -406,6 +416,15 @@ export default {
       }else{
         return '停用'
       }
+    },
+    getStatus1: function(val){
+        if(val==1){
+            return '正常'
+        }else if(val==2){
+            return '禁用'
+        }else{
+            return '-'
+        }
     }
   }
 };
