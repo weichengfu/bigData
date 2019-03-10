@@ -6,7 +6,7 @@
       <!-- 左下角 -->
       <div class="hot-lb corner2"></div>
        <!-- tab切换框 -->
-        <div class="switch-button detailsButton" v-if="message.type=='stadium'||message.type=='smartTerminal'">
+        <div class="switch-button detailsButton" ref="detailsButton" v-if="message.type=='stadium'||message.type=='smartTerminal'">
             <div
                 class="child-button"
                 :class="{'active-father-button': activeButton == 1}"
@@ -26,7 +26,7 @@
       <legend class="title">
         <div class="inner-title" style="cursor:pointer;" @click="closePage">返回</div>
       </legend>
-      <div class="details-content" v-if="activeButton==1">
+      <div class="details-content"  ref="detailsContent" v-if="activeButton==1">
         <div class="left-content">
           <el-tooltip
             v-if="details.title&&details.title.length>8"
@@ -109,7 +109,7 @@
         </div>
         <div v-if="message.type=='activity'" class="right-content" v-html="details.h5"></div>
         <div v-else class="right-content">
-          <div
+          <div v-if="details.introduce"
             style="font-size: 24px;color: #D6ECFF;margin-bottom: 24px;font-family: PingFangSC-Medium;"
           >场馆介绍</div>
           <img :src="details.img" alt style="margin-bottom:40px;">
@@ -176,7 +176,7 @@
           <div class="wrap-video-box" v-if="monitoring && monitoring.length">
               <div class="video-item" v-for="item in monitoring" :key="item.video_id">
                   <video
-                    id="myPlayer"
+                    :id="bindId(item.video_id)"
                     height="216"
                     style="width:100%;"
                     poster
@@ -212,16 +212,12 @@ export default {
       details: "",    //接收活动详情和场馆详情的数据
       smartTerminal: "",   //接收智能终端的数据
       monitoring: "",     //接收实时监控的数据
-      src1: "http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8",
+      src1: "http://hls.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec.m3u8",     //临时地址待数据完善
       src: "rtmp://rtmp.open.ys7.com/openlive/4692d42076d842c485d7fd6da42546ec",
       // src: 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b',
       player: "",
+      videoPlayer: "",
       activeButton: "",
-      statisticsData: [
-          {key: '今日流量',value: 37},
-          {key: '昨日人流量',value: 287},
-          {key: '今年人流量',value: 4320}
-      ],
       equipmentList: [
           {
               name: '门禁摄像头',
@@ -285,17 +281,27 @@ export default {
       var brower = navigator.userAgent;
       let safari = false;
       if (!(brower.indexOf("Chrome") > -1) && brower.indexOf("Safari") > -1) {
-        safari = true;
+        safari = true;           //苹果浏览器
       }
-      if (brower.indexOf("Firefox") > -1 || safari) {
+      if (brower.indexOf("Firefox") > -1 || safari) {     //做浏览器兼容
         //判断是否为火狐浏览器或safari浏览器
         this.$refs.hotTr.style.top = -32 + "px";
+        this.$refs.detailsButton.style.top = 30 + "px";
+        this.$refs.detailsContent.style.marginTop = 90 + "px";
       }
       let h = document.body.clientHeight;
       if (h < 720) {
         document.getElementById("myPlayer").style.height = 140 + "px";
       }
     });
+  },
+  updated() {
+      if(this.activeButton == 3){
+          for(let i=0;i<this.monitoring.length;i++){
+              let id = this.bindId(this.monitoring[i].video_id)
+            this.videoPlayer = new EZUIPlayer(id);
+          }
+      }
   },
   methods: {
     closePage: function() {
@@ -347,7 +353,7 @@ export default {
       };
       this.$axios
         .get(
-          "/BigScreen/Index/mapDetail?type=" + type + '&id=' + this.message.id 
+          "/BigScreen/Index/mapDetail?type=" + type + '&id=706'
         )
         .then(res => {
           if (res.data.CODE == "ok") {
@@ -368,6 +374,9 @@ export default {
         .catch(res => {
           console.log(res);
         });
+    },
+    bindId: function(val){
+        return 'player' + val;
     }
   },
   filters: {
@@ -420,10 +429,10 @@ export default {
 }
 .details-content {
   width: 100%;
-  height: 85%;
+  height: 80%;
   display: flex;
   justify-content: space-between;
-  margin-top: 39px;
+  margin-top: 60px;
   overflow-y: auto;
 }
 .details-content::-webkit-scrollbar {
@@ -491,7 +500,7 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding-top: 108px;
+    padding-top: 78px;
 }
 .statistic-item{
     width: 19.4%;
@@ -563,6 +572,7 @@ export default {
 .video-item{
     width: 33.3%;
     padding: 10px;
+    box-sizing: border-box;
 }
 .statusDot{
   width: 16px !important;
@@ -607,6 +617,11 @@ export default {
   font-size: 22px;
   color: #FFFFFF;
   margin-top: 16px;
+}
+@media screen and (max-width: 1690px) {
+    .statistic-item{
+        width: 24%;
+    }
 }
 @media screen and (max-width: 1440px) {
   .statistic-item{
