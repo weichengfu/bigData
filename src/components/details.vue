@@ -353,7 +353,7 @@ export default {
       };
       this.$axios
         .get(
-          "/BigScreen/Index/mapDetail?type=" + type + '&id=706'
+          "/BigScreen/Index/mapDetail?type=" + type + '&id=' + this.message.id
         )
         .then(res => {
           if (res.data.CODE == "ok") {
