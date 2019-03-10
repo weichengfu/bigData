@@ -612,9 +612,6 @@ export default {
   .statistic-item{
     width: 26%;
   }
-  .details-wrap{
-    width: 70%;
-  }
 }
 </style>
 

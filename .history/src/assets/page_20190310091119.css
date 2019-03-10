@@ -1,0 +1,495 @@
+.page {
+  position: relative;
+  background-image: url(../assets/background.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#earth{
+  position: absolute;
+  margin-top: -30vh;
+  width: 100%;
+  height: 130vh;
+}
+.switch-button{
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #ADD9FF;
+  background: rgba(0,0,0,0.70);
+  background-image: linear-gradient(-180deg, rgba(0,135,255,0.24) 0%, rgba(0,135,255,0.00) 100%);
+  border: 1px solid #ADD9FF;
+  box-shadow: 0 0 4px 0 rgba(0,135,255,0.50);
+  border-radius: 1px;
+}
+.child-button{
+  width: 104px;
+  height: 32px;
+  line-height: 32px;
+  display: inline-block;
+  cursor: pointer;
+}
+.under-button{
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.left-area {
+  position: absolute;
+  left: 32px;
+  top: 0;
+  height: 100vh;
+  width: 25%;
+  box-sizing: border-box;
+  padding-top: 28px;
+}
+.right-area {
+  position: absolute;
+  right: 32px;
+  top: 0;
+  box-sizing: border-box;
+  width: 25%;
+  height: 100vh;
+  padding-top: 28px;
+}
+.time{
+  position: absolute;
+  top: 26px;
+  right: 60px;
+  color: white;
+}
+.left-button {
+  position: absolute;
+  left: 27.5%;
+  top: 128px;
+}
+.right-button {
+  position: absolute;
+  right: 27.5%;
+  top: 128px;
+}
+.button {
+  width: 104px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7);
+  background-image: linear-gradient(
+    -180deg,
+    rgba(0, 135, 255, 0.24) 0%,
+    rgba(0, 135, 255, 0) 100%
+  );
+  border: 1px solid #add9ff;
+  box-shadow: 0 0 4px 0 rgba(0, 135, 255, 0.5);
+  border-radius: 1px;
+  line-height: 32px;
+  margin-right: 8px;
+  font-size: 12px;
+  color: #add9ff;
+  cursor: pointer;
+  display: inline-block;
+}
+.button:nth-child(6){
+  margin-right: 0;
+}
+.active-button {
+  border-color: #00ffff;
+  color: #00ffff;
+}
+.active-father-button{
+  background-image: linear-gradient(-180deg, #99CFFF 0%, rgba(153,207,255,0.00) 100%);
+  border-radius: 1px;
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+.corner1 {
+  background-image: url(../assets/top-right.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 44px;
+  height: 36px;
+}
+.corner2 {
+  background-image: url(../assets/left-bottom.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 44px;
+  height: 36px;
+}
+.hot-tr {
+  top: 15px;
+  right: -9px;
+}
+.hot-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.hotActivity {
+  position: absolute;
+  width: 100%;
+  height: 45.8%;
+  box-sizing: border-box;
+}
+.title {
+  text-align: left;
+  background-image: url(../assets/title.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 124px;
+  height: 48px;
+  line-height: 48px;
+}
+.love {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  height: 23.5%;
+  width: 100%;
+}
+.love-tr {
+  top: -9px;
+  right: -9px;
+}
+.love-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.volunteer {
+  position: absolute;
+  bottom: 1%;
+  width: 100%;
+  height: 23.5%;
+}
+.volunteer-tr {
+  top: -9px;
+  right: -9px;
+}
+.volunteer-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.statistics {
+  position: absolute;
+  text-align: left;
+  width: 100%;
+  height: 45.8%;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+.statistics-tr {
+  top: 15px;
+  right: -9px;
+}
+.statistics-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.sta-row {
+  height: 11.5%;
+  position: relative;
+}
+.statistics-body {
+  padding: 0 10px;
+  font-size: 14px;
+  color: #d6ecff;
+  height: 86%;
+}
+.number {
+  font-family: "specialNumber";
+  font-size: 14px;
+  color: #ffcc00;
+  text-shadow: 0 0 4px rgba(255, 238, 0, 0.5);
+}
+.statistics-item {
+  display: inline-block;
+  margin-right: 32px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.statistics-item:nth-child(3){
+  margin-right: 0;
+}
+.trend {
+  position: absolute;
+  bottom: 1%;
+  left: 27.5%;
+  right: 27.5%;
+  height: 23.5%;
+}
+.trend-tr {
+  top: -9px;
+  right: -9px;
+}
+.trend-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.topBox {
+  position: absolute;
+  width: 100%;
+  height: 23.5%;
+  box-sizing: border-box;
+  top: 50%;
+  display: flex;
+  padding: 10px;
+  font-size: 14px;
+  color: #d6ecff;
+  text-align: left;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+.topBox-tr {
+  top: -9px;
+  right: -9px;
+}
+.topBox-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.left-box,
+.right-box {
+  width: 50%;
+}
+.left-box {
+  padding-left: 32px;
+  padding-right: 23px;
+}
+.right-box {
+  padding: 0 24px;
+} 
+.book {
+  position: absolute;
+  width: 100%;
+  height: 23.5%;
+  bottom: 1%;
+}
+.book-tr {
+  top: -9px;
+  right: -9px;
+}
+.book-lb {
+  bottom: -9px;
+  left: -9px;
+}
+.el-select .el-input__inner {
+  background: rgba(255, 255, 255, 0);
+  width: 102px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 1px;
+  border: none;
+  font-size: 16px;
+  color: #ffffff;
+  position: relative;
+  top: -6px;
+}
+.el-input__suffix {
+  top: -6px;
+}
+.table {
+  display: flex;
+  box-sizing: border-box;
+  text-align: left;
+  height: 86%;
+}
+.table-title {
+  font-size: 12px;
+  color: #00ffff;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+.table-col {
+  box-sizing: border-box;
+  padding-left: 14px;
+}
+.table-body {
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #d6ecff;
+  height: 10.5%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.jianbian {
+  width: 1px;
+  background: radial-gradient(
+    circle,
+    rgba(173, 217, 255, 1),
+    rgba(173, 217, 255, 0.1)
+  );
+}
+.inner-title {
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #add9ff;
+  text-align: center;
+}
+.header {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 65.6%;
+  height: 120px;
+  background-image: url(../assets/header.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-top: 24px;
+  font-size: 32px;
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(255, 238, 0, 0.5);
+}
+/* 公共边框样式 */
+.border {
+  background: rgba(0, 0, 0, 0.7);
+  background-image: linear-gradient(
+    -180deg,
+    rgba(0, 135, 255, 0.24) 0%,
+    rgba(0, 135, 255, 0) 100%
+  );
+  border: 1px solid #add9ff;
+  box-shadow: 0 0 8px 0 rgba(0, 135, 255, 0.5);
+  border-radius: 1px;
+}
+.box-header {
+  font-size: 12px;
+  color: #add9ff;
+}
+.box-row {
+  height: 16%;
+}
+.switch-title {
+  position: absolute;
+  left: 40px;
+  top: 10px;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #d6ecff;
+}
+.trend-switch {
+  cursor: pointer;
+}
+.activeTrend {
+  font-size: 16px;
+  color: #00ffff;
+}
+.right{
+  float: right;
+}
+.activityPage{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.margin-number{
+  margin: 0 8px;
+}
+@media screen and (max-width: 1690px) {
+  .statistics-item{
+    margin-right: 10px;
+  }
+  .margin-number{
+    margin: 0px;
+    margin-left: 6px;
+  }
+  .topBox{
+    font-size: 12px;
+  }
+  .left-box{
+    padding: 0 10px;
+  }
+  .right-box{
+    padding: 0 10px;
+  }
+  .statistics-item{
+    margin-right: 15px;
+  }
+}
+@media screen and (max-width: 1620px) {
+  .statistics-item{
+    margin-right: 10px;
+    font-size: 12px;
+  }
+  .statistics-body{
+    font-size: 13px;
+    padding: 0;
+  }
+  .number{
+    font-size: 13px;
+  }
+  .topBox{
+    font-size: 12px;
+  }
+  .left-box{
+    padding: 0 10px;
+  }
+  .right-box{
+    padding: 0 10px;
+  }
+}
+@media screen and (max-width: 1440px) {
+  fieldset{
+    padding: 0;
+  }
+  .table-body{
+    font-size: 12px;
+  }
+  .statistics{
+    padding: 0;
+    height: 45%;
+  }
+  .statistics-body{
+    font-size: 12px;
+    padding-left: 14px;
+  }
+  .statistics-item{
+    margin-right: 8px;
+  }
+  .number{
+    font-size: 12px;
+  }
+  .left-box{
+    padding: 0 10px;
+  }
+  .right-box{
+    padding: 0 10px;
+  }
+  .topBox{
+    font-size: 12px;
+  }
+  .trend{
+    left: 28%;
+    right: 28%;
+  }
+  .left-area{
+    left: 20px;
+  }
+  .right-area{
+    right: 20px;
+  }
+  .table-title{
+    margin-bottom: 10px;
+  }
+  .hotActivity{
+    height: 45%;
+  }
+  .under-button{
+    bottom: 26%;
+  }
+  .button{
+    width: 90px;
+  }
+  .statistic-item{
+    width: 24%;
+  }
+}
+

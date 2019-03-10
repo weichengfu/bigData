@@ -610,10 +610,7 @@ export default {
 }
 @media screen and (max-width: 1440px) {
   .statistic-item{
-    width: 26%;
-  }
-  .details-wrap{
-    width: 70%;
+    width: 24%;
   }
 }
 </style>
