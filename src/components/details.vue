@@ -392,10 +392,10 @@ export default {
       let day = time.getDate();
       let hour = time.getHours();
       let minute = time.getMinutes();
-      month = month>10? month : '0'+ month;
-      day = day>10? day : '0' + day;
-      hour = hour>10? hour : '0' + hour;
-      minute = minute>10? minute: '0' + minute;
+      month = month>9? month : '0'+ month;
+      day = day>9? day : '0' + day;
+      hour = hour>9? hour : '0' + hour;
+      minute = minute>9? minute: '0' + minute;
       return year + '-' + month + '-' + day + ' ' + hour + ':' + minute; 
     },
     getStatus: function(val){
