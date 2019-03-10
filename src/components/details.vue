@@ -177,8 +177,8 @@
               <div class="video-item" v-for="item in monitoring" :key="item.video_id">
                   <video
                     :id="bindId(item.video_id)"
-                    height="216"
                     style="width:100%;"
+                    height="240"
                     poster
                     controls
                     playsinline
@@ -353,7 +353,7 @@ export default {
       };
       this.$axios
         .get(
-          "/BigScreen/Index/mapDetail?type=" + type + '&id=' + this.message.id
+          "/BigScreen/Index/mapDetail?type=" + type + '&id=706'
         )
         .then(res => {
           if (res.data.CODE == "ok") {
@@ -386,7 +386,7 @@ export default {
       }
     },
     formatTime: function(val) {
-      let time = new Date(val);
+      let time = new Date(val*1000);
       let year = time.getFullYear();
       let month = time.getMonth() + 1;
       let day = time.getDate();
@@ -411,7 +411,7 @@ export default {
 };
 </script>
 <style>
-@import "../assets/page.css";
+@import "../css/page.css";
 .details {
   width: 100vw;
   height: 100vh;
@@ -570,7 +570,7 @@ export default {
     padding-top: 50px;
 }
 .video-item{
-    width: 33.3%;
+    width: 40%;
     padding: 10px;
     box-sizing: border-box;
 }

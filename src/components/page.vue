@@ -1913,9 +1913,6 @@ export default {
      * 获取人流统计数据
      */
     getTrafficStatisticsData :function(){
-      let time = new Date().getTime();
-      let str = "time="+time+"&secret=zhiao";
-      let authorization = md5(str);
     //   this.$axios
     //     .get(
     //       "https://ccenter.zhiaotech.com/api/person/show.json",{
@@ -1986,6 +1983,6 @@ export default {
 };
 </script>
 <style>
-@import "../assets/page.css";
+@import "../css/page.css";
 </style>
 
