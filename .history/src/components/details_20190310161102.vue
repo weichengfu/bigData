@@ -103,7 +103,7 @@
           </div>
           <div v-else>
             <div class="content-time" style="margin:16px 0;">微信公众号</div>
-            <img v-if="details.ewm" :src="details.ewm" height="120" width="120" alt>
+            <img v-if="details.img" :src="details.img" height="120" width="120" alt>
             <div v-else class="content-time">暂无</div>
           </div>
         </div>
@@ -363,7 +363,7 @@ export default {
       };
       this.$axios
         .get(
-          "/BigScreen/Index/mapDetail?type=" + type + '&id=' + this.message.id
+          "/BigScreen/Index/mapDetail?type=" + type + '&id=706'
         )
         .then(res => {
           if (res.data.CODE == "ok") {
@@ -587,7 +587,6 @@ export default {
     width: 100%;
     flex-wrap: wrap;
     padding-top: 50px;
-    justify-content: space-around;
 }
 .video-item{
     width: 40%;
